@@ -1109,7 +1109,7 @@ function(frame)
     if(type == "terms")
       pred[, smooth.wanted] <- pred[, smooth.wanted] + pred.s[
                                                               , smooth.wanted]
-    else pred <- drop(pred + pred.s %*% rep(1, n.smooths))
+    else pred <- drop(rowSums(pred) + rowSums(pred.s))
    if(type == "response") {
      famob <- family(object)
      pred <- famob$linkinv(pred)
