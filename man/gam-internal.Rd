@@ -25,11 +25,13 @@
 \alias{gplot.matrix}
 \alias{gplot.numeric}
 \alias{labels.gam}
+\alias{lo.wam}
 \alias{newdata.predict.gam}
 \alias{polylo}
 \alias{print.gam}
 \alias{print.summary.gam}
 \alias{random}
+\alias{s.wam}
 \alias{ylim.scale}
 \description{Internal gam functions}
 \author{Trevor Hastie}

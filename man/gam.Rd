@@ -119,6 +119,10 @@ An object \code{gam.slist} (currently set to
 produce particular output, custom built to serve as building blocks in
 the backfitting algorithm. This allows users to add their own smoothing
 methods. See the documentation for these methods for further information.
+In addition, the object \code{gam.wlist} (currently set to
+\code{c("s","lo")}) lists the smoothers for which efficient backfitters
+are provided. These are invoked if all the smoothing methods are of one
+kind (either all \code{"lo"} or all \code{"s"}). 
 }
 \value{
 \code{gam} returns an object of class \code{gam}, which inherits from

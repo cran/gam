@@ -1823,7 +1823,8 @@ C Output from Public domain Ratfor, version 1.0
       end
       subroutine matpm(x,dx,mmx,mx,y,dy,mmy,my,z)
       integer dx(2),dy(2)
-      integer mx(1), my(1), mmx(1), mmy(1)
+      integer mmx(1), mmy(1)
+      integer mx(1), my(1)
       double precision x(1), y(1),z(1),ddot
       integer n,p,q,i,j
       n=dx(1)
@@ -1850,7 +1851,8 @@ C Output from Public domain Ratfor, version 1.0
       end
       subroutine matptm(x,dx,mmx,mx,y,dy,mmy,my,z)
       integer dx(2),dy(2)
-      integer mx(1), my(1), mmx(1), mmy(1)
+      integer mmx(1), mmy(1)
+      integer mx(1), my(1)
       double precision x(1), y(1),z(1),ddot
       integer n,p,q,i,j
       call colmis(mmx,dx(1),dx(2),mx)
@@ -1880,12 +1882,12 @@ C Output from Public domain Ratfor, version 1.0
       subroutine rowmis(m,n,p,vec)
       integer n,p
       integer m(n,p)
-      logical vec(1)
+      integer vec(1)
       do23659 i = 1,n 
-      vec(i)=.false.
+      vec(i)=0
       do23661 j = 1,p 
       if(m(i,j).ne.0)then
-      vec(i) = .true.
+      vec(i) = 1
       endif
 23661 continue
 23662 continue
@@ -1896,12 +1898,12 @@ C Output from Public domain Ratfor, version 1.0
       subroutine colmis(m,n,p,vec)
       integer n,p
       integer m(n,p)
-      logical vec(1)
+      integer vec(1)
       do23665 j = 1,p 
-      vec(j)=.false.
+      vec(j)=0
       do23667 i = 1,n 
       if(m(i,j).ne.0)then
-      vec(j) = .true.
+      vec(j) = 1
       endif
 23667 continue
 23668 continue

@@ -166,7 +166,7 @@ C Output from Public domain Ratfor, version 1.0
       sout(i)=sout(i)-sbar -(xin(i)-xbar)*xsbar/dsum
 23038 continue
 23039 continue
-      call unpack(n,nef,match,sout,smo)
+      call unpck(n,nef,match,sout,smo)
       return
       end
       double precision function wmean(n,y,w)

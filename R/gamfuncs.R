@@ -285,7 +285,7 @@ gam.fit <-
             etastart = NULL, mustart = NULL, offset = rep(0, nobs),
             family = gaussian(), control = gam.control())
 {
-  ynames <- names(y)
+  ynames <- if(is.matrix(y)) dimnames(y)[[1]] else names(y)
   xnames<-dimnames(x)[[2]]
   nobs <- NROW(y)
   nvars<-ncol(x)
@@ -435,9 +435,9 @@ gam.fit <-
   names(eta) <- ynames
   fit$additive.predictors<-eta
   fit$fitted.values<-mu
-  ## for compatibility with lm, which has a full-length weights vector
+ ## for compatibility with lm, which has a full-length weights vector
   names(fit$weights) <- ynames
-  names(fit$effects) <- c( xxnames[seq(len=fitqr$rank)],
+   names(fit$effects) <- c( xxnames[seq(len=fitqr$rank)],
                            rep.int("", sum(good) - fitqr$rank)
                           )
   if(length(fit$smooth)>0) fit$smooth.frame<-smooth.frame[smooth.labels]
@@ -452,9 +452,6 @@ gam.fit <-
     ## calculate AIC
     aic.model <-
 	aic(y, n, mu, weights, new.dev) + 2*rank
-
-
-  
   if(!is.null(fit$smooth)) {
     nonzeroWt <- (wz > 0)
     nl.chisq <-if((family$family != "gaussian") || all(nonzeroWt))
@@ -518,6 +515,7 @@ function(x, y, w = rep(1, length(y)), span = 0.5, degree = 1, ncols = p, xeval
 		liv,
 		lv,
 		v = double(lv),
+                integer(2*ncols),
 		double(nef * (p + ncols + 8) + 2 * p + n + 9),
                         PACKAGE="gam")
 	if(!missing(xeval)) {
@@ -641,10 +639,10 @@ function(x, y, w, df = sum(non.zero), sigma = 0)
   mat <- gam.match(x)
   omat <- mat$o
   nef <- mat$nef
-                                        #
-                                        # in rgam.r, splsm calls both splsm1 and splsm2.
-                                        # splsm2 needs (10+2*4)*(nef+2)+5*nef+n+15 doubles for work.
-                                        # splsm1 needs 3*nef+2*n+10.
+  ##
+  ## in rgam.r, splsm calls both splsm1 and splsm2.
+  ## splsm2 needs (10+2*4)*(nef+2)+5*nef+n+15 doubles for work.
+  ## splsm1 needs 3*nef+2*n+10.
   work.len <- max(3 * nef + 2 * n + 10, (10 + 2 * 4) * (nef + 2) + 5 *
                   nef + n + 15)
   fit <- .Fortran("splsm",
@@ -753,7 +751,7 @@ function(x, knots, nknots, coef, smallest, scale)
 	pred
 }
 "gam.wlist" <-
-NULL
+c("s","lo")
 "gplot" <-
 function(x, ...)
 UseMethod("gplot")
@@ -956,7 +954,7 @@ labels.gam<-function(object,...){
   nvars <- length(vars)
   if(nvars > 1) {
     scalars <- sapply(vars, length) == 1
-                                        # a bit of freedom in giving the span and degree
+    ## a bit of freedom in giving the span and degree
     if(any(scalars)) {
       nvars <- nvars - sum(scalars)
       mcall <- c(mcall, as.call(vars[scalars]))
@@ -1004,9 +1002,9 @@ labels.gam<-function(object,...){
       nas <- nas %*% array(1, c(p, 1))
     attr(polyx, "NAs") <- seq(nobs)[nas > 0.]
   }
-  if(span * nobs < 1)
-    stop(paste("span is too small; the minimum is 1/n =", format(
-                                                                 round(1/nobs, 4.))))
+##  if(span * nobs < 1)
+##    stop(paste("span is too small; the minimum is 1/n =", format(
+##                                                                 round(1/nobs, 4.))))
   real.call <- substitute(gam.lo(data[[chcall]], z, w, span = span, 
                                  degree = degree, ncols = p), list(span = span, degree = degree,
                                                     chcall = chcall, p = p))
@@ -1015,6 +1013,107 @@ labels.gam<-function(object,...){
   attributes(polyx) <- atts
   class(polyx) <- c("smooth", "matrix")
   polyx
+}
+"lo.wam" <-
+function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
+	se = TRUE, ...)
+{
+	if(is.data.frame(smooth.frame)) {
+		first <- TRUE
+		# first call to wam; set up some things
+		#on first entry, smooth.frame is a data frame with elements the terms to be
+		#smoothed in which
+		data <- smooth.frame[, names(which), drop = FALSE]
+		smooth.frame <- gam.match(data)
+		dx <- as.integer(dim(x))
+		oldClass(data) <- NULL
+		atts <- lapply(data, attributes)
+		span <- sapply(atts, "[[", "span")
+		degree <- sapply(atts, "[[", "degree")
+		nvars <- sapply(atts, "[[", "ncols")
+		ndim <- sapply(atts, "[[", "dim")[2.,  ]
+		npetc <- as.integer(c(dx, length(which), 0., maxit, 0.))
+		nef <- smooth.frame$nef
+		nvmax <- 200. + 300. * (1. - 1./log(apply(cbind(nef - 200.,
+			3.), 1., max)))
+		nspar <- (nef * span + 1.)
+		liv <- 50. + (2.^nvars + 4.) * nvmax + 2. * nef
+		lv <- 50. + (3. * nvars + 3.) * nvmax + nef + (ifelse(degree ==
+			2., ((nvars + 2.) * (nvars + 1.))/2., nvars + 1.) +
+			2.) * nspar
+		LL <- nspar * nvmax
+		liv <- liv + LL
+		lv <- lv + (nvars + 1.) * LL
+		which <- sapply(which, "[", 1.)
+		wddnfl <- cbind(unlist(which), nvars, ndim, degree, nef, liv,
+			lv, nvmax)
+		storage.mode(wddnfl) <- "integer"
+		spatol <- as.double(c(span, tol))
+		nwork <- 9. * dx[1.] + sum(nef * (nvars + ndim + 4.) + 5. +
+			3. * ndim)
+		liv <- sum(liv)
+		lv <- sum(lv)
+		smooth.frame <- c(smooth.frame, list(npetc = npetc, wddnfl = 
+			wddnfl, spatol = spatol,niwork=2*sum(nvars), nwork = nwork, liv = liv,
+			lv = lv))
+	}
+	else first <- FALSE
+	storage.mode(y) <- "double"
+	storage.mode(w) <- "double"
+	n <- smooth.frame$npetc[1.]
+	p <- smooth.frame$npetc[2.]
+	q <- smooth.frame$npetc[3.]
+	fit <- .Fortran("baklo",
+		x,
+		y = y,
+		w = w,
+		npetc = smooth.frame$npetc,
+		smooth.frame$wddnfl,
+		smooth.frame$spatol,
+		smooth.frame$o,
+		etal = double(n),
+		s = s,
+		eta = double(n),
+		beta = double(p),
+		var = s,
+		df = double(q),
+		qr = x,
+		qraux = double(p),
+		qpivot = as.integer(1.:p),
+                effects=double(n),
+		integer(smooth.frame$liv),
+		double(smooth.frame$lv),
+                integer(smooth.frame$niwork),
+		double(smooth.frame$nwork),
+                        PACKAGE="gam")
+
+	nit <- fit$npetc[4.]
+	qrank <- fit$npetc[6.]
+	if((nit == maxit) & maxit > 1.)
+		warning(paste("lo.wam convergence not obtained in ", maxit,
+			" iterations"))
+	names(fit$df) <- dimnames(s)[[2]]
+	names(fit$beta) <- labels(x)[[2]]
+                qrx <- structure(list(qr = fit$qr,qraux = fit$qraux,
+                     rank = qrank, pivot = fit$qpivot,tol=1e-7),class="qr")
+        effects<-fit$effects
+        r1 <- seq(len = qrx$rank)
+        dn <- colnames(x)
+        if (is.null(dn)) 
+          dn <- paste("x", 1:p, sep = "")
+        names(effects) <- c(dn[qrx$pivot[r1]], rep.int("", n - qrx$rank))
+	rl <- list(coefficients = fit$beta, residuals = fit$y - fit$eta, 
+                   fitted.values = fit$eta,
+                   effects=effects, weights=w, rank=qrank,
+                   assign=attr(x,"assign"),
+                   qr=qrx,
+                   smooth = fit$s,
+                   nl.df = fit$df - 1,
+                   )
+	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0.)
+	if(se)
+		rl <- c(rl, list(var = fit$var))
+	c(list(smooth.frame = smooth.frame), rl)
 }
 "na.gam.replace" <-
 function(frame)
@@ -1072,7 +1171,10 @@ function(frame)
      warning("No standard errors (currently) for gam predictions with newdata")
    }
    ##First get the linear predictions
-   pred<-predict.glm(object,newdata,type="terms",dispersion=dispersion,se.fit=FALSE,terms=terms)
+   type <- match.arg(type)
+   local.type<-type
+   if(type=="response")local.type<-"link"
+   pred<-predict.glm(object,newdata,type=local.type,dispersion=dispersion,se.fit=FALSE,terms=terms)
    ##Build up the smooth.frame for the new data
    tt <- terms(object)
     Terms <- delete.response(tt)
@@ -1085,13 +1187,8 @@ function(frame)
    n.smooths<-length(smooth.labels)
    if (!is.null(cl <- attr(Terms, "dataClasses"))) 
       .checkMFClasses(cl, smooth.frame)
-   offset <- if (!is.null(off.num <- attr(tt, "offset"))) 
-     eval(attr(tt, "variables")[[off.num + 1]], newdata)
-    else if (!is.null(object$offset)) 
-      eval(object$call$offset, newdata)
-       
-  out.attrs <- attr(newdata, "out.attrs")
-  type <- match.arg(type)
+    out.attrs <- attr(newdata, "out.attrs")
+  
 
    w <- object$weights
    pred.s <- array(0, c(nrows, n.smooths), list(row.names(smooth.frame), 
@@ -1109,13 +1206,15 @@ function(frame)
     if(type == "terms")
       pred[, smooth.wanted] <- pred[, smooth.wanted] + pred.s[
                                                               , smooth.wanted]
-    else pred <- drop(rowSums(pred) + rowSums(pred.s))
+    else pred <- pred + rowSums(pred.s)
    if(type == "response") {
      famob <- family(object)
      pred <- famob$linkinv(pred)
    }
   }
-  else pred <- NextMethod("predict")
+  else {
+    pred<-predict.glm(object,newdata,type=type,dispersion=dispersion,se.fit=se.fit,terms=terms)
+  }
   if(type != "terms" && !is.null(out.attrs)) {
     if(!is.null(out.attrs)) {
       if(se.fit) {
@@ -1208,7 +1307,7 @@ pred
                   ,
                   {
                     cat("Type in a new scale\n")
-                    scale <- eval(parse())
+                    scale <- eval(parse(n=1))
                     scalemenu <- paste("scale (", round(
                                                         scale, 1), ")", sep = "")
                   }
@@ -1261,6 +1360,7 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
     monomial <- TRUE
   if (degree > 1) {
     if (monomial) {
+      ad<-seq(degree)
       px <- x
       cc <- sapply(split(paste(diag(np)), rep(seq(np), 
                                               rep(np, np))), paste, collapse = "")
@@ -1271,12 +1371,13 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
         cc <- c(cc, sapply(split(paste(diag(np) * i), 
                                  rep(seq(np), rep(np, np))), paste, collapse = ""))
       }
+      
     }
     else {
       matarray <- array(x, c(dd, degree))
       for (i in 2:degree) matarray[, , i] <- x^i
       matarray <- aperm(matarray, c(1, 3, 2))
-      x <- matarray[, , np]
+      x <- matarray[, , np,drop=FALSE]
       ad0 <- seq(degree)
       ad <- ad0
       ncol.mat0 <- degree
@@ -1288,10 +1389,11 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
         index <- rep(seq(ncol.x), rep(ncol.mat0, ncol.x))
         newad <- ad0[index0] + ad[index]
         retain <- newad <= degree
-        mat0 <- matarray[, , ii]
+        mat0 <- matarray[, , ii,drop=FALSE]
+        browser()
         if (any(retain)) 
-          newmat <- mat0[, index0[retain], drop = FALSE] * 
-            x[, index[retain], drop = FALSE]
+          newmat <- mat0[, index0[retain],, drop = FALSE] * 
+            x[, index[retain], ,drop = FALSE]
         else newmat <- NULL
         ddn <- paste(d0[index0[retain]], cc[index[retain]], 
                      sep = "")
@@ -1377,8 +1479,9 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
   else newdata.predict.gam(object, newdata, type, dispersion,se.fit, na.action, terms, ...)
 }
 "preplot.gam" <-
-  function(object, newdata, terms = labels(object),...)
+  function(object, newdata, terms = labels.gam(object),...)
 {
+  ## this labels.gam above is because there does not seem to be a label method for glms
   Terms <- object$terms
   a <- attributes(Terms)
   Call <- object$call
@@ -1387,7 +1490,7 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
   names(xvars) <- all.terms
   terms <- sapply(terms,match.arg, all.terms)
   Interactions <- a$order > 1
-  if(any(Interactions)) {
+ if(any(Interactions)) {
     all.terms <- all.terms[!Interactions]
     TM <- match(terms, all.terms, 0)
     if(!all(TM)) {
@@ -1396,11 +1499,11 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
               )
     }
   }
-  xvars <- xvars[terms]
+   xvars <- xvars[terms]
   xnames <- as.list(terms)
   names(xnames) <- terms
   modes <- sapply(xvars, mode)
-  for(term in terms[modes != "name"]) {
+   for(term in terms[modes != "name"]) {
     evars <- all.names(xvars[term], functions = FALSE, unique = TRUE)
     if(!length(evars))
       next
@@ -1416,12 +1519,14 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
   }
   xvars <- c(as.name("list"), xvars)
   mode(xvars) <- "call"
+
   if(!missing(newdata))
     xvars <- eval(xvars, newdata)
   else {
     if(!is.null(Call$subset) | !is.null(Call$na.action) | !is.null(
                                                                    options("na.action")[[1]])) {
       Rownames <- names(object$fitted)
+
       if(!(Rl <- length(Rownames)))
         stop("need to have names for fitted.values when call has a subset or na.action argument"
              )
@@ -1441,9 +1546,9 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
     }
   }
   if(missing(newdata))
-    pred <- predict.gam(object, type = "terms", terms = terms,
+    pred <- predict(object, type = "terms", terms = terms,
 			se.fit = TRUE)
-  else pred <- predict.gam(object, newdata, type = "terms", terms = terms,
+  else pred <- predict(object, newdata, type = "terms", terms = terms,
                            se.fit = TRUE)
   fits <- pred$fit
   if(is.null(fits)) {
@@ -1454,9 +1559,9 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
   gamplot <- xnames
   for(term in terms) {
     x <- xvars[[term]]
-                                        # oldClass(x) <- unique(c(oldClass(x), data.class(unclass(x))))
+    ## oldClass(x) <- unique(c(oldClass(x), data.class(unclass(x))))
     xlab <- xnames[[term]]
-                                        # Fix ylab for linear terms:
+    ## Fix ylab for linear terms:
     ylab <- if(length(xlab) == 1 && term == xlab) paste(
                                       "partial for", term) else term
     TT <- list(x = x, y = fits[, term], se.y = if(is.null(se.fits)
@@ -1558,6 +1663,90 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
   if(any(a))
     attr(x, "NAs") <- seq(along = x)[a]
   x
+}
+"s.wam" <-
+function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
+	se = TRUE, ...)
+{
+	if(is.data.frame(smooth.frame)) {
+		first <- TRUE
+		# first call to wam; set up some things
+		#on first entry, smooth.frame is a data frame with elements the terms to be
+		#smoothed in which
+		data <- smooth.frame[, names(which), drop = FALSE]
+		smooth.frame <- gam.match(data)
+		dx <- as.integer(dim(x))
+		smooth.frame$n <- dx[1]
+		smooth.frame$p <- dx[2]
+		oldClass(data) <- NULL
+		smooth.frame$spar <- unlist(lapply(data, attr, "spar"))
+		smooth.frame$df <- unlist(lapply(data, attr, "df"))
+	}
+	else first <- FALSE
+	storage.mode(tol) <- "double"
+	storage.mode(maxit) <- "integer"
+	which <- unlist(which)
+	storage.mode(which) <- "integer"
+	storage.mode(y) <- "double"
+	storage.mode(w) <- "double"
+	p <- smooth.frame$p
+	n <- smooth.frame$n
+	fit <- .Fortran("bakfit",
+		x,
+		npetc = as.integer(c(n, p, length(which), se, 0, maxit, 0)),
+
+			y = y,
+		w = w,
+		which,
+		spar = as.double(smooth.frame$spar),
+		df = as.double(smooth.frame$df),
+		as.integer(smooth.frame$o),
+		as.integer(smooth.frame$nef),
+		etal = double(n),
+		s = s,
+		eta = double(n),
+		beta = double(p),
+		var = s,
+		tol,
+		qr = x,
+		qraux = double(p),
+		qpivot = as.integer(1:p),
+                effects=double(n),        
+		double((10 + 2 * 4 + 5) * (max(smooth.frame$nef) + 2) + 15 *
+			n + 15 + length(which)),
+                        PACKAGE="gam")
+	nit <- fit$npetc[5]
+	qrank <- fit$npetc[7]
+	if((nit == maxit) & maxit > 1)
+		warning(paste("s.wam convergence not obtained in ", maxit,
+			" iterations"))
+	if(first) {
+		smooth.frame$spar <- fit$spar
+		first <- FALSE
+	}
+	names(fit$df) <- dimnames(s)[[2]]
+	names(fit$beta) <- labels(x)[[2]]
+        qrx <- structure(list(qr = fit$qr,qraux = fit$qraux,
+                     rank = qrank, pivot = fit$qpivot,tol=1e-7),class="qr")
+        effects<-fit$effects    #qr.qty(qrx,fit$y)
+        r1 <- seq(len = qrx$rank)
+        dn <- colnames(x)
+        if (is.null(dn)) 
+          dn <- paste("x", 1:p, sep = "")
+        names(effects) <- c(dn[qrx$pivot[r1]], rep.int("", n - qrx$rank))
+
+ 	rl <- list(coefficients = fit$beta, residuals = fit$y - fit$eta, 
+                   fitted.values = fit$eta,
+                   effects=effects, weights=w, rank=qrank,
+                   assign=attr(x,"assign"),
+                   qr=qrx,
+                   smooth = fit$s,
+                   nl.df = fit$df - 1,
+                   )
+	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0.)
+	if(se)
+		rl <- c(rl, list(var = fit$var))
+	c(list(smooth.frame = smooth.frame), rl)
 }
 "step.gam" <-
   function(object, scope, scale, direction = c("both", "backward", "forward"),
