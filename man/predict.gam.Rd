@@ -92,4 +92,4 @@ predict(gam.object, gam.newdata, type="terms")
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}
-\keywords{smooth}
+\keyword{smooth}

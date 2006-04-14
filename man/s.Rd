@@ -85,5 +85,5 @@ y ~ Age + s(log(Start), df=5)
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}
-\keywords{smooth}
+\keyword{smooth}
 

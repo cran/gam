@@ -107,5 +107,5 @@ y ~ lo(Age, 0.5) # the argument name for span is not needed.
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}
-\keywords{smooth}
+\keyword{smooth}
 

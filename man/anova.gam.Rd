@@ -63,5 +63,5 @@ anova(gam.object, gam.object2, test="Chisq")
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}
-\keywords{smooth}
+\keyword{smooth}
 

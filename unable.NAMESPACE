@@ -1,0 +1,4 @@
+useDynLib(gam)
+
+export(gam,lo,s,plot.gam,predict.gam,step.gam,anova.gam,gam.control)
+

@@ -252,7 +252,7 @@ fit<-gam.fit(x=X,y=Y,smooth.frame=mf,weights=weights,start=start,
 
 "gam.control" <-
 function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
-	maxit = 30, bf.maxit = 30, trace = FALSE)
+	maxit = 30, bf.maxit = 30, trace = FALSE, ...)
 {
 	if(epsilon <= 0) {
 		warning("the value of epsilon supplied is zero or negative; the default value of 1e-7 was used instead"
@@ -277,6 +277,147 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
 	list(epsilon = epsilon, maxit = maxit, bf.epsilon = bf.epsilon, 
 		bf.maxit = bf.maxit, trace = as.logical(trace)[1])
 }
+"gam.exact" <-
+  function(gam.obj)
+### -----------------------------------------------------------------------------------
+### gam.exact is a method for the gam class.
+###  
+### Computes the asymptotically exact variance-covariance matrix for the linear
+### terms in the model (except for the intercept).
+###
+### Note: Use of lo in the model formula is not allowed.  
+###
+### Author: Aidan McDermott (AMcD)
+### Date:   Mar 5, 2003
+###
+###         Mar 28, 2003
+###         Fixed single linear term models -- thanks to Tim Ramsay
+###         April 17, 2006
+###         Modified to work in R by Trevor Hastie
+###
+### See:
+### 
+### [1] Issues in Semiparametric Regression: A Case Study of Time Series
+###     Models in Air Pollution and Mortality,
+###     Dominici F., McDermott A., Hastie T.J.,
+###     Technical Report, Department of Biostatistics, Johns Hopkins University,
+###     Baltimore, MD, USA. 
+###  
+### -----------------------------------------------------------------------------------
+  {
+
+    if ( is.na(match("gam",class(gam.obj))) ) {
+      stop("not a gam object")
+    }
+    
+    nl.df    <- gam.obj$nl.df
+    terms    <- terms(gam.obj)
+    at.terms <- attributes(terms)
+
+    coef <- coef(gam.obj)
+    
+    w   <- gam.obj$weights
+    mu  <- gam.obj$fitted.values
+    eta <- gam.obj$additive.predictors
+    y   <- as.matrix(gam.obj$y)
+
+    family   <- family(gam.obj)
+    mu.eta.val <- family$mu.eta(eta)
+    z <- eta + (y - mu)/mu.eta.val
+
+    
+### Don't want lo in gam formula.
+    if ( length((at.terms$specials)$lo) > 0 ) {
+      stop("lo found in gam formula.")
+    }
+
+    X   <- model.matrix(gam.obj)
+    Y   <- as.matrix(gam.obj$y)
+
+### only take terms that survived the original gam call
+    names.coef <- names(coef)
+    has.intercept <- match("(Intercept)",names.coef)
+    if ( !is.na(has.intercept) ) names.coef <- names.coef[-has.intercept]
+    X   <- X[,names.coef]
+
+    tnames <- dimnames(X)[[2]]
+    form   <- "y~"
+    special.list <- c()
+### Replace the df with the actual df returned by gam.
+### Rewrite fromula to match names in X
+    for ( k in 1:length(tnames) ) {
+      if ( substring(tnames[k],1,2) == "s(" ) {
+        s.call     <- match.call(s,parse(text=tnames[k]))
+        this.name  <- as.name(paste("x",k,sep=""))
+
+        which      <- match(tnames[k],names(nl.df))
+        if ( is.na(which) ) stop(paste("can't find df for term",tnames[k]))
+        this.df    <- nl.df[which]+1
+
+        form <- paste(form,
+                      "+s(",this.name,",df =",this.df,")")
+        special.list <- c(special.list,k)
+      }
+      else form <- paste(form,"+x",k,sep="")
+    }
+
+    mydat <- data.frame(cbind(Y,X))
+    names(mydat) <- c("y",paste("x",1:ncol(X),sep=""))
+
+    XX <- X
+    mydat[,"w"] <- w
+
+    Control <- gam.obj$call$control
+    if ( is.null(Control) ) {
+      call      <- gam.obj$call
+      call[[1]] <- as.name("gam.control")
+      Control   <- eval(call,sys.parent())
+    }
+
+    for ( k in 1:length(tnames) ) {
+      if ( substring(tnames[k],1,2) != "s(" ) {
+        this.var <- paste("x",k,sep="")
+        upd.form <- update(as.formula(form),paste(this.var,"~. -",this.var))
+
+        XX[,k] <- gam(formula=upd.form,data=mydat,family=gaussian,weight=w,
+                      control=eval(Control))$fitted
+      }
+    }
+
+### Need to test we get some data
+    if ( length(X) == 0 ) stop("nothing to do")
+    
+    X   <- X[,-special.list,drop=FALSE]
+    sx  <- XX[,-special.list,drop=FALSE]
+    swx <- w*sx
+    
+    if ( length(X) == 0 ) stop("no linear terms in the model -- nothing to do")
+    
+    A <- t(X) %*% ( w * X ) - t(X) %*% ( w * sx )
+    B <- t(X*w) - t(swx)
+    H <- solve(A) %*% B
+
+    beta    <- H %*% z
+    varbeta <- (H * (1/w)) %*% t(H) * as.vector(summary(gam.obj)$dispersion)
+    se      <- sqrt(diag(varbeta))
+
+    coef <- cbind(summary.glm(gam.obj)$coef,NA,NA)
+    tab <- cbind(beta,se,beta/se)
+    coef[dimnames(tab)[[1]],c(5,6)] <- tab[,c(2,3)]
+
+    dimnames(coef) <- list(dimnames(coef)[[1]],
+                           c(dimnames(coef)[[2]][1:4],
+                             "A-exact SE","A-exact t")) 
+
+    out.object <- list(coefficients=coef,covariance=varbeta)
+    if (version$major < 5 ) class(out.object) <- c("gamex")
+    else {
+      oldClass(out.object) <- c("gamex")
+    }
+    
+    return(out.object)
+  }
+
 ### Coded by Trevor Hastie 7/13/2004
 ### Tries to mimic change of structures seen in glm and glm.fit
 
@@ -759,6 +900,11 @@ UseMethod("gplot")
 function(x, y, se.y = NULL, xlab = "", ylab = "", residuals = NULL, rugplot = FALSE,
 	scale = 0, se = FALSE, fit = TRUE, ...)
 switch(data.class(x)[1],
+       AsIs = { class(x)<-NULL
+                gplot.default(x , y = y, se.y = se.y, xlab = xlab,
+		ylab = ylab, residuals = residuals, rugplot = rugplot, scale = 
+		scale, se = se, fit = fit, ...)
+              },
 	logical = gplot.factor(x = factor(x), y = y, se.y = se.y, xlab = xlab,
 		ylab = ylab, residuals = residuals, rugplot = rugplot, scale = 
 		scale, se = se, fit = fit, ...),
@@ -772,6 +918,7 @@ switch(data.class(x)[1],
 			ylab, "\" has class \"", paste(class(x), collapse = 
 			"\", \""), "\"; no gplot() methods available", sep = ""
 			)))
+ 
 "gplot.factor" <-
 function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale = 
 	0, se = FALSE, xlim = NULL, ylim = NULL, fit = TRUE, ...)
@@ -823,7 +970,7 @@ function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale
 	plot(ux, uy, ylim = ylim, xlim = xlim, xlab = "", type = "n", ylab = 
 		ylab, xaxt = "n", ...)
 	mtext(xlab, 1, 2)
-	axis(side = 3, at = ux - delta, labels = Levels, srt = 45, ticks = FALSE,
+	axis(side = 3, at = ux - delta, labels = Levels, srt = 45, tick = FALSE,
 		adj = 0)
 	if(fit)
 		segments(leftx + delta, uy, rightx - delta, uy)
@@ -893,6 +1040,12 @@ function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale
 	if(length(x) != length(y))
 		stop("x and y do not have the same length; possibly a consequence of an na.action"
 			)
+### Here we check if its a simple linear term; if so, we include a point at the mean of x
+        if(se &&  !is.null(se.y) && ylab==paste("partial for",xlab)){
+          x=c(x,mean(x))
+          y=c(y,0)
+          se.y=c(se.y,0)
+                  }
 	ux <- unique(sort(x))
 	o <- match(ux, x)
 	uy <- y[o]
@@ -1228,14 +1381,14 @@ pred
 }
 "plot.gam" <-
   function(x,  residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, ask = FALSE,
-            ...)
+terms=labels.gam(x), ...)
 {
   
   if(!is.null(x$na.action))
     x$na.action <- NULL
   preplot.object <- x$preplot
   if(is.null(preplot.object))
-    preplot.object <- preplot.gam(x)
+    preplot.object <- preplot.gam(x,terms=terms)
   x$preplot <- preplot.object
   Residuals <- resid(x)
   if(!is.null(residuals)) {
@@ -1589,6 +1742,13 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
   cat("Residual Deviance:", format(round(x$deviance, digits)), "\n")
   invisible(x)
 }
+"print.gamex" <-
+  function(x,...)
+  {
+    print(x$coefficients)
+    invisible()
+  }
+
 "print.summary.gam" <-
   function(x,  digits = max(3, getOption("digits") - 3), quote = TRUE, prefix = "", ...)
 {
@@ -1649,7 +1809,7 @@ function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, f
                scall, "\n"))
   if(!is.null(levels(x))) {
     if(inherits(x, "ordered"))
-      x <- codes(x)
+      x <- as.numeric(x)
     else stop("unordered factors cannot be used as smoothing variables"
               )
   }

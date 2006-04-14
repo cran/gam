@@ -15,7 +15,11 @@ An object of class \code{gam} or any of it's inheritants.
 defines the range of models examined in the step-wise search. It is a list of formulas, with each formula corresponding to a term in the model. Each of these formulas specifies a "regimen" of candidate forms in which the particular term may enter the model. For example, a term formula might be 
 ~1+ Income + log(Income) + s(Income)
 This means that \code{Income} could either appear not at all,  linearly, linearly in its logarithm, or as a smooth function estimated nonparametrically. A \code{1} in the formula allows the additional option of leaving the term out of the model entirely. 
-Every term in the model is described by such a term formula, and the final model is built up by selecting a component from each formula. 
+Every term in the model is described by such a term formula, and the
+final model is built up by selecting a component from each
+formula. Since in R the formulas \code{~x} is equivalent to \code{~1+x},
+to force the term \code{x} to be in the model, use a scope element
+\code{~ -1 + x}.
 
 
 The supplied model \code{object} is used as the starting model, and hence there is the requirement that one term from each of the term formulas be present in \code{formula(object)}. This also implies that any terms in \code{formula(object)} not contained in any of the term formulas will be 
@@ -80,5 +84,5 @@ step.object <-step.gam(gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}
-\keywords{smooth}
+\keyword{smooth}
 

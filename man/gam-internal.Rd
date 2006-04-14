@@ -29,6 +29,7 @@
 \alias{newdata.predict.gam}
 \alias{polylo}
 \alias{print.gam}
+\alias{print.gamex}
 \alias{print.summary.gam}
 \alias{random}
 \alias{s.wam}

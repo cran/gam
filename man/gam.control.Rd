@@ -4,7 +4,7 @@
 \description{Auxiliary function as user interface for 'gam' fitting. Typically
      only used when calling 'gam' or 'gam.fit'.}
 \usage{
-gam.control(epsilon=1e-07, bf.epsilon = 1e-07, maxit=30, bf.maxit = 30, trace=FALSE)
+gam.control(epsilon=1e-07, bf.epsilon = 1e-07, maxit=30, bf.maxit = 30, trace=FALSE,\ldots)
 }
 \arguments{
 \item{epsilon}{
@@ -21,7 +21,9 @@ maximum number of backfitting iterations
 }
 \item{trace}{
 should iteration details be printed while \code{gam} is fitting the model.
-}}
+}
+\item{\ldots}{}
+}
 \value{
 a list is returned, consisting of the five parameters, conveniently packaged up to supply the \code{control} argument to \code{gam}. The values for \code{gam.control} can be supplied directly in a call to \code{gam}; these are then filtered through \code{gam.control} inside \code{gam}.
 }
@@ -38,4 +40,4 @@ a list is returned, consisting of the five parameters, conveniently packaged up 
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}
-\keywords{smooth}
+\keyword{smooth}
