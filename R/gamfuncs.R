@@ -278,7 +278,7 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
 		bf.maxit = bf.maxit, trace = as.logical(trace)[1])
 }
 "gam.exact" <-
-  function(gam.obj)
+function(gam.obj)
 ### -----------------------------------------------------------------------------------
 ### gam.exact is a method for the gam class.
 ###  
@@ -327,9 +327,9 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
 
     
 ### Don't want lo in gam formula.
-    if ( length((at.terms$specials)$lo) > 0 ) {
-      stop("lo found in gam formula.")
-    }
+###    if ( length((at.terms$specials)$lo) > 0 ) {
+###      stop("lo found in gam formula.")
+###    }
 
     X   <- model.matrix(gam.obj)
     Y   <- as.matrix(gam.obj$y)
@@ -339,7 +339,6 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
     has.intercept <- match("(Intercept)",names.coef)
     if ( !is.na(has.intercept) ) names.coef <- names.coef[-has.intercept]
     X   <- X[,names.coef]
-
     tnames <- dimnames(X)[[2]]
     form   <- "y~"
     special.list <- c()
@@ -358,9 +357,21 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
                       "+s(",this.name,",df =",this.df,")")
         special.list <- c(special.list,k)
       }
+      else if ( substring(tnames[k],1,3) == "lo(" ) {
+        lname <- length(tnames[k])
+        if ( substring(tnames[k],lname,lname) == "1" ) tnames[k] <- substring(tnames[k],1,(lname-1))
+        if ( substring(tnames[k],lname,lname) == ")" ) {
+        lo.call    <- match.call(lo,parse(text=tnames[k]))
+        this.name  <- as.name(paste("x",k,sep=""))
+
+        lo.call[[2]] <- this.name
+        lo.call <- deparse(lo.call)
+        form <- paste(form,"+",lo.call)
+      }
+        special.list <- c(special.list,k)
+      }
       else form <- paste(form,"+x",k,sep="")
     }
-
     mydat <- data.frame(cbind(Y,X))
     names(mydat) <- c("y",paste("x",1:ncol(X),sep=""))
 
@@ -375,7 +386,7 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
     }
 
     for ( k in 1:length(tnames) ) {
-      if ( substring(tnames[k],1,2) != "s(" ) {
+      if ( substring(tnames[k],1,2) != "s("  & substring(tnames[k],1,3) != "lo(" ) {
         this.var <- paste("x",k,sep="")
         upd.form <- update(as.formula(form),paste(this.var,"~. -",this.var))
 
@@ -401,19 +412,16 @@ function(epsilon = 9.9999999999999995e-08, bf.epsilon = 9.9999999999999995e-08,
     varbeta <- (H * (1/w)) %*% t(H) * as.vector(summary(gam.obj)$dispersion)
     se      <- sqrt(diag(varbeta))
 
-    coef <- cbind(summary.glm(gam.obj)$coef,NA,NA)
-    tab <- cbind(beta,se,beta/se)
-    coef[dimnames(tab)[[1]],c(5,6)] <- tab[,c(2,3)]
+    coef <- cbind(summary.glm(gam.obj)$coef,NA,NA,NA)
+    tab <- cbind(beta,se,beta/se,2*(1-pnorm(beta/se)))
+    coef[dimnames(tab)[[1]],c(5,6,7)] <- tab[,c(2,3,4)]
 
     dimnames(coef) <- list(dimnames(coef)[[1]],
                            c(dimnames(coef)[[2]][1:4],
-                             "A-exact SE","A-exact t")) 
+                             "A-exact SE","A-exact Z","A-exact P")) 
 
     out.object <- list(coefficients=coef,covariance=varbeta)
-    if (version$major < 5 ) class(out.object) <- c("gamex")
-    else {
-      oldClass(out.object) <- c("gamex")
-    }
+    class(out.object) <- c("gamex")
     
     return(out.object)
   }

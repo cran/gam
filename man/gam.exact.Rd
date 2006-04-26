@@ -12,7 +12,6 @@ gam.exact(gam.obj)
 }
 \details{
  Only standard errors for the linear terms are produced.
-Models with lo calls in their formulas are not allowed.
 There is a print method for the gamex class. 
 }
 \value{
@@ -25,7 +24,7 @@ There is a print method for the gamex class.
 	   \url{http://www-stat.stanford.edu/~hastie/Papers/dominiciR2.pdf}
 	 }
 	 \author{Aidan McDermott, Department of Biostatistics, Johns
-	   Hopkins University.
+	   Hopkins University. See \url{http://ihapss.biostat.jhsph.edu/software/gam.exact/gam.exact.htm}
 	   Modified by Trevor Hastie for R}
 	 \examples{
 set.seed(31)
