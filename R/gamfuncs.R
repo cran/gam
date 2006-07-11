@@ -142,7 +142,7 @@ anova.glmlist(object, test = test)
   df
 }
 "as.data.frame.lo.smooth" <-
-function(x, row.names = NULL, optional = FALSE)
+function(x, row.names = NULL, optional = FALSE,...)
 {
 	d <- dim(x)
 	nrows <- d[[1.]]
@@ -1253,7 +1253,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
                    assign=attr(x,"assign"),
                    qr=qrx,
                    smooth = fit$s,
-                   nl.df = fit$df,
+                   nl.df = fit$df
                    )
 	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0.)
 	if(se)
@@ -1893,7 +1893,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
                    assign=attr(x,"assign"),
                    qr=qrx,
                    smooth = fit$s,
-                   nl.df = fit$df - 1,
+                   nl.df = fit$df - 1
                    )
 	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0.)
 	if(se)
