@@ -426,24 +426,23 @@ function(gam.obj)
     return(out.object)
   }
 
-### Coded by Trevor Hastie 7/13/2004
-### Tries to mimic change of structures seen in glm and glm.fit
-
-gam.fit <-
-  function (x, y, smooth.frame, weights = rep(1, nobs), start = NULL,
-            etastart = NULL, mustart = NULL, offset = rep(0, nobs),
-            family = gaussian(), control = gam.control())
+"gam.fit" <-
+  function (x, y, smooth.frame, weights = rep(1, nobs), start = NULL, 
+            etastart = NULL, mustart = NULL, offset = rep(0, nobs), family = gaussian(), 
+            control = gam.control()) 
 {
-  ynames <- if(is.matrix(y)) dimnames(y)[[1]] else names(y)
-  xnames<-dimnames(x)[[2]]
+  ynames <- if (is.matrix(y)) 
+    dimnames(y)[[1]]
+  else names(y)
+  xnames <- dimnames(x)[[2]]
   nobs <- NROW(y)
-  nvars<-ncol(x)
+  nvars <- ncol(x)
   maxit <- control$maxit
   bf.maxit <- control$bf.maxit
   epsilon <- control$epsilon
   bf.epsilon <- control$bf.epsilon
   trace <- control$trace
-  digits <-  - log10(epsilon) + 1
+  digits <- -log10(epsilon) + 1
   if (is.null(weights)) 
     weights <- rep.int(1, nobs)
   if (is.null(offset)) 
@@ -461,7 +460,6 @@ gam.fit <-
   validmu <- family$validmu
   if (is.null(validmu)) 
     validmu <- function(mu) TRUE
- 
   eval(family$initialize)
   if (is.null(mustart)) {
     eval(family$initialize)
@@ -471,51 +469,49 @@ gam.fit <-
     eval(family$initialize)
     mustart <- mukeep
   }
- 
   eta <- if (!is.null(etastart)) 
     etastart
   else if (!is.null(start)) 
     if (length(start) != nvars) 
-      stop("Length of start should equal ", nvars, 
-           " and correspond to initial coefs for ", deparse(xnames))
+      stop("Length of start should equal ", nvars, " and correspond to initial coefs for ", 
+           deparse(xnames))
     else {
       coefold <- start
-      offset + as.vector(if (NCOL(x) == 1)x * start else x %*% start)
+      offset + as.vector(if (NCOL(x) == 1) 
+                         x * start
+      else x %*% start)
     }
   else family$linkfun(mustart)
   mu <- linkinv(eta)
   if (!(validmu(mu) && valideta(eta))) 
     stop("Can't find valid starting values: please specify some")
-
-
-  new.dev <- sum(dev.resids(y,mu,weights))
-  a <- attributes(attr(smooth.frame,"terms"))
+  new.dev <- sum(dev.resids(y, mu, weights))
+  a <- attributes(attr(smooth.frame, "terms"))
   smoothers <- a$specials
-###convert variable pointers to term pointers
-  if(length(smoothers) > 0) {
+  if (length(smoothers) > 0) {
     smoothers <- smoothers[sapply(smoothers, length) > 0]
-    for(i in seq(along = smoothers)) {
+    for (i in seq(along = smoothers)) {
       tt <- smoothers[[i]]
-      ff <- apply(a$factors[tt,  , drop = FALSE], 2, any)
-      smoothers[[i]] <- if(any(ff)) seq(along = ff)[a$order ==
-                                          1 & ff] else NULL
+      ff <- apply(a$factors[tt, , drop = FALSE], 2, any)
+      smoothers[[i]] <- if (any(ff)) 
+        seq(along = ff)[a$order == 1 & ff]
+      else NULL
     }
   }
-  if(length(smoothers) > 0) {
-###some backfitting terms	
+  if (length(smoothers) > 0) {
     smooth.labels <- a$term.labels[unlist(smoothers)]
     assignx <- attr(x, "assign")
-### the assign attribute of a model matrix is different from the S92 version
-    assignx<-assign.list(assignx,a$term.labels)
+    assignx <- assign.list(assignx, a$term.labels)
     which <- assignx[smooth.labels]
-###now figure out which backfitter to use
-    if(length(smoothers) > 1) bf <- "all.wam" else {
+    if (length(smoothers) > 1) 
+      bf <- "all.wam"
+    else {
       sbf <- match(names(smoothers), gam.wlist, FALSE)
-      bf <- if(sbf) paste(gam.wlist[sbf], "wam", sep = ".")
+      bf <- if (sbf) 
+        paste(gam.wlist[sbf], "wam", sep = ".")
       else "all.wam"
     }
-    bf.call <- parse(text = paste(bf, 
-                       "(x, z, wz, fit$smooth, which, fit$smooth.frame,bf.maxit,bf.epsilon, trace)",
+    bf.call <- parse(text = paste(bf, "(x, z, wz, fit$smooth, which, fit$smooth.frame,bf.maxit,bf.epsilon, trace)", 
                        sep = ""))[[1]]
     s <- matrix(0, length(y), length(which))
     dimnames(s) <- list(names(y), names(which))
@@ -527,10 +523,9 @@ gam.fit <-
     bf <- "lm.wfit"
   }
   old.dev <- 10 * new.dev + 10
-
-  for(iter in 1:maxit){
-    good <- weights>0
-    varmu<-variance(mu)
+  for (iter in 1:maxit) {
+    good <- weights > 0
+    varmu <- variance(mu)
     if (any(is.na(varmu[good]))) 
       stop("NAs in V(mu)")
     if (any(varmu[good] == 0)) 
@@ -538,37 +533,30 @@ gam.fit <-
     mu.eta.val <- mu.eta(eta)
     if (any(is.na(mu.eta.val[good]))) 
       stop("NAs in d(mu)/d(eta)")
-    ## drop observations for which w will be zero
     good <- (weights > 0) & (mu.eta.val != 0)
-
-    ## Here we do it slightly differently from glm.fit, because our wam functions
-    ## handle zero weights
-    z<-eta-offset
-    z[good] <- z[good] +  (y - mu)[good]/mu.eta.val[good]
-    wz<-weights
+    z <- eta - offset
+    z[good] <- z[good] + (y - mu)[good]/mu.eta.val[good]
+    wz <- weights
     wz[!good] <- 0
-    wz[good] <- wz[good]*mu.eta.val[good]^2/varmu[good] 
-    ## backfitting call
+    wz[good] <- wz[good] * mu.eta.val[good]^2/varmu[good]
     fit <- eval(bf.call)
     eta <- fit$fitted.values + offset
     mu <- linkinv(eta)
     old.dev <- new.dev
-    new.dev <- sum(dev.resids(y,mu,weights))
-    if(trace)
-      cat("GAM ", bf, " loop ", iter, ": deviance = ",
-            format(round(new.dev, digits)), " \n",
-            sep = "")
-    if(is.na(new.dev)) {
+    new.dev <- sum(dev.resids(y, mu, weights))
+    if (trace) 
+      cat("GAM ", bf, " loop ", iter, ": deviance = ", 
+          format(round(new.dev, digits)), " \n", sep = "")
+    if (is.na(new.dev)) {
       one.more <- FALSE
-      warning("iterations terminated prematurely because of singularities"
-              )
+      warning("iterations terminated prematurely because of singularities")
     }
-    else one.more <- abs(old.dev - new.dev)/(old.dev + 0.1) > epsilon
-    if(!one.more)break
+    else one.more <- abs(old.dev - new.dev)/(old.dev + 0.1) > 
+      epsilon
+    if (!one.more) 
+      break
   }
-  ## If X matrix was not full rank then columns were pivoted,
-  ## hence we need to re-label the names
-  fitqr<-fit$qr
+  fitqr <- fit$qr
   xxnames <- xnames[fitqr$pivot]
   nr <- min(sum(good), nvars)
   if (nr < nvars) {
@@ -582,37 +570,33 @@ gam.fit <-
   names(fit$residuals) <- ynames
   names(mu) <- ynames
   names(eta) <- ynames
-  fit$additive.predictors<-eta
-  fit$fitted.values<-mu
- ## for compatibility with lm, which has a full-length weights vector
+  fit$additive.predictors <- eta
+  fit$fitted.values <- mu
   names(fit$weights) <- ynames
-   names(fit$effects) <- c( xxnames[seq(len=fitqr$rank)],
-                           rep.int("", sum(good) - fitqr$rank)
-                          )
-  if(length(fit$smooth)>0) fit$smooth.frame<-smooth.frame[smooth.labels]
-    ## calculate null deviance -- corrected in gam() if offset and intercept
-    wtdmu <-
-	if (a$intercept) sum(weights * y)/sum(weights) else linkinv(offset)
-    nulldev <- sum(dev.resids(y, wtdmu, weights))
-    ## calculate df
-    n.ok <- nobs - sum(weights==0)
-    nulldf <- n.ok - as.integer(a$intercept)
-    rank <- n.ok-fit$df.residual
-    ## calculate AIC
-    aic.model <-
-	aic(y, n, mu, weights, new.dev) + 2*rank
-  if(!is.null(fit$smooth)) {
+  names(fit$effects) <- c(xxnames[seq(len = fitqr$rank)], rep.int("", 
+                                        sum(good) - fitqr$rank))
+  if (length(fit$smooth) > 0) 
+    fit$smooth.frame <- smooth.frame[smooth.labels]
+  wtdmu <- if (a$intercept) 
+    sum(weights * y)/sum(weights)
+  else linkinv(offset)
+  nulldev <- sum(dev.resids(y, wtdmu, weights))
+  n.ok <- nobs - sum(weights == 0)
+  nulldf <- n.ok - as.integer(a$intercept)
+  rank <- n.ok - fit$df.residual
+  aic.model <- aic(y, n, mu, weights, new.dev) + 2 * rank
+  if (!is.null(fit$smooth)) {
     nonzeroWt <- (wz > 0)
-    nl.chisq <-if((family$family != "gaussian") || all(nonzeroWt))
-      gam.nlchisq(fit$qr, fit$residuals, wz,fit$smooth)
-    else gam.nlchisq(fit$qr, fit$resid[nonzeroWt],
-                     wz[nonzeroWt], fit$smooth[nonzeroWt,  , drop = FALSE])
+    nl.chisq <-  gam.nlchisq(fit$qr, fit$residuals, wz, fit$smooth)
   }
   else nl.chisq <- NULL
- fit<-c(fit,list(R=Rmat,rank=fitqr$rank,family=family,deviance=new.dev,aic=aic.model,null.deviance=nulldev,iter=iter,prior.weights=weights,y=y,
-                 df.null=nulldf,nl.chisq=nl.chisq))
+  fit <- c(fit, list(R = Rmat, rank = fitqr$rank, family = family, 
+                     deviance = new.dev, aic = aic.model, null.deviance = nulldev, 
+                     iter = iter, prior.weights = weights, y = y, df.null = nulldf, 
+                     nl.chisq = nl.chisq))
   fit
 }
+
 "gamlist" <-
 function(...)
 {
