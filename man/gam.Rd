@@ -141,7 +141,7 @@ that have methods for \code{gam} objects are \code{step} and
 The following components must be included in a legitimate `gam' object.
 The residuals, fitted values,  coefficients and effects should be extracted
 by the generic functions of the same name, rather than
-by the \code{$} operator. 
+by the \code{"$"} operator. 
 The \code{family} function returns the entire family object used in the fitting, and \code{deviance} can be used to extract the deviance of the fit. 
 
 \item{coefficients}{

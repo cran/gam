@@ -1,4 +1,4 @@
-"polylo" <-
+polylo <-
   function (x, degree = 1, monomial = FALSE) 
 {
   if (degree >= 4) 
@@ -7,12 +7,12 @@
   dn <- dimnames(x)
   dd <- dim(x)
   np <- dd[2]
-  ad<-rep(1,ncol(x))
+  ad <- rep(1, ncol(x))
   if (np == 1) 
     monomial <- TRUE
   if (degree > 1) {
     if (monomial) {
-      ad<-seq(degree)
+      ad <- seq(degree)
       px <- x
       cc <- sapply(split(paste(diag(np)), rep(seq(np), 
                                               rep(np, np))), paste, collapse = "")
@@ -23,13 +23,12 @@
         cc <- c(cc, sapply(split(paste(diag(np) * i), 
                                  rep(seq(np), rep(np, np))), paste, collapse = ""))
       }
-      
     }
     else {
       matarray <- array(x, c(dd, degree))
       for (i in 2:degree) matarray[, , i] <- x^i
       matarray <- aperm(matarray, c(1, 3, 2))
-      x <- matarray[, , np,drop=FALSE]
+      x <- matarray[, , np, drop=TRUE]
       ad0 <- seq(degree)
       ad <- ad0
       ncol.mat0 <- degree
@@ -41,13 +40,12 @@
         index <- rep(seq(ncol.x), rep(ncol.mat0, ncol.x))
         newad <- ad0[index0] + ad[index]
         retain <- newad <= degree
-        mat0 <- matarray[, , ii,drop=FALSE]
-        browser()
+        mat0 <- matarray[, , ii, drop = TRUE]
         if (any(retain)) 
-          newmat <- mat0[, index0[retain],, drop = FALSE] * 
-            x[, index[retain], ,drop = FALSE]
+          newmat <- mat0[, index0[retain]] * 
+            x[, index[retain]]
         else newmat <- NULL
-        ddn <- paste(d0[index0[retain]], cc[index[retain]], 
+       ddn <- paste(d0[index0[retain]], cc[index[retain]], 
                      sep = "")
         zeros <- paste(rep(0, nchar(cc[1])), collapse = "")
         cc <- paste(0, cc, sep = "")
@@ -63,6 +61,6 @@
     else dn <- list(NULL, cc)
     dimnames(x) <- dn
   }
-  attr(x,"degree")<-ad
+  attr(x, "degree") <- ad
   x
 }

@@ -1,6 +1,6 @@
 useDynLib(gam)
 import(stats)
-export(all.wam,anova.gamlist,as.anova,as.data.frame.lo.smooth,assign.list,deviance.default,deviance.glm,deviance.lm,gam,gam.control,gam.exact,gam.fit,gamlist,gam.lo,gam.match,gam.nlchisq,gam.random,gam.s,gam.scope,gam.slist,gam.sp,gam.wlist,gplot,gplot.default,gplot.factor,gplot.list,gplot.matrix,gplot.numeric,lo,lo.wam,na.gam.replace,newdata.predict.gam,polylo,predict.gam,random,s,s.wam,ylim.scale,step.gam,summary.gam)
+export(all.wam,anova.gamlist,as.anova,as.data.frame.lo.smooth,assign.list,deviance.default,deviance.glm,deviance.lm,gam,gam.control,gam.exact,gam.fit,gamlist,gam.lo,gam.match,gam.nlchisq,gam.random,gam.s,gam.scope,gam.slist,gam.sp,gam.wlist,gplot,gplot.default,gplot.factor,gplot.list,gplot.matrix,gplot.numeric,lo,lo.wam,na.gam.replace,newdata.predict.gam,plot.gam,polylo,predict.gam,random,s,s.wam,ylim.scale,step.gam,summary.gam)
 S3method("[",smooth)
 S3method(labels,gam)
 S3method(plot,gam)
