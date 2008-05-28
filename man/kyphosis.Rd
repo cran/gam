@@ -6,7 +6,6 @@
 Data on the results of a spinal operation "laminectomy" on children, to
 correct for a condition called "kyphosis"; see Hastie and
 Tibshirani (1990) for details}
-}
 \usage{
 data(kyphosis)
 }
@@ -18,7 +17,6 @@ data(kyphosis)
     \item{Number}{of vertebra involved in the operation,a numeric vector}
     \item{Start}{level of the operation, a numeric vector}
   }
-}
 }
 \source{
   Hastie, T. and Tibshirani, R. (1990)

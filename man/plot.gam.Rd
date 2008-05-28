@@ -8,8 +8,8 @@
   objects as well. It focuses on terms (main-effects), and produces a
   suitable plot for terms of different types}
 \usage{
-plot.gam(x, residuals, rugplot, se, scale, ask = FALSE,terms,\dots)
-preplot.gam(object, newdata, terms,\dots)
+\method{plot}{gam}(x, residuals, rugplot, se, scale, ask = FALSE,terms,\dots)
+\method{preplot}{gam}(object, newdata, terms,\dots)
 }
 \arguments{
 \item{x}{

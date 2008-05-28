@@ -3,7 +3,8 @@
 \title{Stepwise model builder for GAM}
 \description{Builds a GAM model in a step-wise fashion. For each "term"
   there is an ordered list of alternatives, and the function traverses
-  these in a greedy fashion}
+  these in a greedy fashion. Note: this is NOT a method for \code{step},
+which used to be a generic, so must be invoked with the full name.}
 \usage{
 step.gam(object, scope, scale, direction, trace = TRUE, keep, steps, \ldots)
 }
@@ -17,10 +18,7 @@ defines the range of models examined in the step-wise search. It is a list of fo
 This means that \code{Income} could either appear not at all,  linearly, linearly in its logarithm, or as a smooth function estimated nonparametrically. A \code{1} in the formula allows the additional option of leaving the term out of the model entirely. 
 Every term in the model is described by such a term formula, and the
 final model is built up by selecting a component from each
-formula. Since in R the formulas \code{~x} is equivalent to \code{~1+x},
-to force the term \code{x} to be in the model, use a scope element
-\code{~ -1 + x}.
-
+formula.
 
 The supplied model \code{object} is used as the starting model, and hence there is the requirement that one term from each of the term formulas be present in \code{formula(object)}. This also implies that any terms in \code{formula(object)} not contained in any of the term formulas will be 
 to be present in every model considered.
