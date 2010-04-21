@@ -47,7 +47,7 @@ fit<-gam.fit(x=X,y=Y,smooth.frame=mf,weights=weights,start=start,
 ### If both an offset and intercept are present, iterations are needed to
 ### compute the Null deviance; these are done here
 ###
-  if(any(offset) && attr(mt, "intercept")>0) {
+  if(length(offset) && attr(mt, "intercept")>0) {
     fit$null.dev <- glm.fit(x = X[, "(Intercept)", drop = FALSE], 
                y = Y, weights = weights, offset = offset, family = family, 
                control = control, intercept = TRUE)$deviance

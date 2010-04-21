@@ -22,7 +22,7 @@ maximum number of backfitting iterations
 \item{trace}{
 should iteration details be printed while \code{gam} is fitting the model.
 }
-\item{\ldots}{}
+\item{\ldots}{Placemark for additional arguments}
 }
 \value{
 a list is returned, consisting of the five parameters, conveniently packaged up to supply the \code{control} argument to \code{gam}. The values for \code{gam.control} can be supplied directly in a call to \code{gam}; these are then filtered through \code{gam.control} inside \code{gam}.

@@ -34,7 +34,8 @@ if \code{TRUE}, \code{plot.gam()} operates in interactive mode.
 \item{newdata}{if supplied to \code{preplot.gam}, the preplot object is
   based on them rather than the original.}
 \item{terms}{subsets of the terms can be selected}
-\item{\dots}{}
+\item{\dots}{Additonal plotting arguments, not all of which will work
+  (like xlim)}
 }
 \value{
 a plot is produced for each of the terms in the object \code{x}. The function currently knows how to plot all main-effect functions of one or two predictors. So in particular, interactions are not plotted. An appropriate `x-y' is produced to display each of the terms, adorned with residuals, standard-error curves, and a rugplot, depending on the choice of options. The form of the plot is different, depending on whether the `x'-value for each plot is numeric, a factor, or a matrix.

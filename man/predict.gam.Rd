@@ -30,7 +30,7 @@ if \code{type="terms"}, the \code{terms=} argument can be used to specify which 
 }
 \item{na.action}{ function determining what should be done with missing values
   in 'newdata'.  The default is to predict 'NA'.}
-\item{\dots}{}
+\item{\dots}{Placemark for additional arguments to predict}
 }
 \value{
 a vector or matrix of predictions, or a list consisting of the predictions and their standard errors if \code{se.fit = TRUE}. 
