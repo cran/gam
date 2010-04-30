@@ -50,7 +50,7 @@ fit<-gam.fit(x=X,y=Y,smooth.frame=mf,weights=weights,start=start,
   if(length(offset) && attr(mt, "intercept")>0) {
     fit$null.dev <- glm.fit(x = X[, "(Intercept)", drop = FALSE], 
                y = Y, weights = weights, offset = offset, family = family, 
-               control = control, intercept = TRUE)$deviance
+               control = control[c("epsilon","maxit","trace")], intercept = TRUE)$deviance
   }
     if(model) fit$model <- mf
     fit$na.action <- attr(mf, "na.action")
