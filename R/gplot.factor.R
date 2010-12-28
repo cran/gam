@@ -38,7 +38,7 @@ function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale
 	}
 	ylim <- ylim.scale(ylim, scale)
 	Levels <- levels(x)
-	if(!all(nn)) {
+	if(!all(nn>0)) {
 		keep <- nn > 0
 		ux <- ux[keep]
 		delta <- delta[keep]
