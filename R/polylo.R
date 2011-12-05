@@ -8,7 +8,10 @@ polylo <-
   dd <- dim(x)
   np <- dd[2]
   ad <- rep(1, ncol(x))
-  x=scale(x)#this makes sense mainly for 2 or more columns so the spherical bandwidth is sensible
+### Used to have a x=scale(x)
+### That messed up predictions on new data
+### So we remove it
+###  x=scale(x)
   if (np == 1) 
     monomial <- TRUE
   if (degree > 1) {

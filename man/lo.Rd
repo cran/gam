@@ -12,8 +12,12 @@ gam.lo(x, y, w, span, degree, ncols, xeval)
 \item{...}{
 the unspecified \code{\dots}  can be a comma-separated list of numeric vectors, numeric matrix, or expressions that evaluate to either of these. If it is a list of vectors, they must all have the same length.}
 \item{span}{
-the number of observations in a neighborhood. This is the smoothing parameter for a \code{loess} fit.}
-\item{degree}{the degree of local polynomial to be fit; currently restricted to be \code{1} or \code{2}.}
+the number of observations in a neighborhood. This is the smoothing
+parameter for a \code{loess} fit. If specified, the full argument name
+\code{span} must be written.}
+\item{degree}{the degree of local polynomial to be fit; currently
+  restricted to be \code{1} or \code{2}. If specified, the full argument name
+\code{degree} must be written.}
 \item{x}{for \code{gam.lo}, the appropriate basis of polynomials
   generated from the arguments to \code{lo}. These are also the
   variables that receive linear coefficients in the GAM fit.}
@@ -47,6 +51,11 @@ model) or \code{lo.wam} (currently not implemented). Local-linear curve
 or surface fits reproduce linear responses, while local-quadratic fits
 reproduce quadratic curves or surfaces. These parts of the \code{loess}
 fit are computed exactly together with the other parametric linear parts
+
+When two or more smoothing variables are given, the user should make
+sure they are in a commensurable scale; \code{lo()} does no
+normalization. This can make a difference, since \code{lo()} uses a
+spherical (isotropic) neighborhood  when establishing the nearest neighbors.
 
 
 Note that \code{lo} itself does no smoothing; it simply sets things up
@@ -99,10 +108,10 @@ matrix of predictions.
   London: Chapman and Hall.
 }
 \examples{
-y ~ Age + lo(Start, span=.5)
-     # fit Start using a loess smooth with a span of 0.5.
+y ~ Age + lo(Start)
+     # fit Start using a loess smooth with a (default) span of 0.5.
 y ~ lo(Age) + lo(Start, Number) 
-y ~ lo(Age, 0.5) # the argument name for span is not needed.
+y ~ lo(Age, span=0.3) # the argument name span cannot be abbreviated.
 }
 \keyword{models}
 \keyword{regression}

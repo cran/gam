@@ -298,7 +298,7 @@ c     compute neighborhood weights
     8    continue
       end if
       if(dabs(w(idamax(nf,w,1))).eq.0)then
-         call ehg184('at ',q,dd,1)
+         call ehg184('at ',q(1),dd,1)
          call ehg184('radius ',rho,1,1)
          if(.not..false.)then
             call ehg182(121)
@@ -386,7 +386,7 @@ c     singular value decomposition
       if(sigma(k).le.tol)then
          sing=sing+1
          if(sing.eq.1)then
-            call ehg184('pseudoinverse used at',q,d,1)
+            call ehg184('pseudoinverse used at',q(1),d,1)
             call ehg184('neighborhood radius',dsqrt(rho),1,1)
             call ehg184('reciprocal condition number ',rcond,1,1)
          else
@@ -511,7 +511,7 @@ c Var
 
       external ehg176
       double precision ehg176
-
+      double precision ourz(1)
 c     coef, d, deg, del
       data c / .2971620d0,.3802660d0,.5886043d0,.4263766d0,.3346498d0,
      +.6271053d0,.5241198d0,.3484836d0,.6687687d0,.6338795d0,.4076457d0,
@@ -532,7 +532,8 @@ c     coef, d, deg, del
      +rl,1,1)
       if(z .lt. 0) call ehg184('Chernobyl! trL>n',trl,1,1)
       z=min(1.0d0,max(0.0d0,z))
-      c4=dexp(ehg176(z))
+      ourz(1) = z
+      c4=dexp(ehg176(ourz))
       i=1+3*(min(d,4)-1+4*(deg-1))
       if(d.le.4)then
          c1=c(i)
@@ -924,11 +925,11 @@ c     tensor
       do 7 i=d,1,-1
          h=(z(i)-v(ll,i))/(v(ur,i)-v(ll,i))
          if(h.lt.-.001D0)then
-            call ehg184('eval ',z,d,1)
+            call ehg184('eval ',z(1),d,1)
             call ehg184('lowerlimit ',v(ll,1),d,nvmax)
          else
             if(1.001D0.lt.h)then
-               call ehg184('eval ',z,d,1)
+               call ehg184('eval ',z(1),d,1)
                call ehg184('upperlimit ',v(ur,1),d,nvmax)
             end if
          end if

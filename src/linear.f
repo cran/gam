@@ -1,4 +1,4 @@
-C Output from Public domain Ratfor, version 1.0
+C Output from Public domain Ratfor, version 1.01
       subroutine dqrls(x,dx,pivot,qraux,y,dy,beta,res,qt,tol,scrtch,rank
      *)
       integer pivot(1),dx(2),dy(2),rank
@@ -8,7 +8,7 @@ C Output from Public domain Ratfor, version 1.0
       n=dx(1)
       p=dx(2)
       q=dy(2)
-      call dqrdca(x,n,n,p,qraux,pivot,scrtch,rank,tol)
+      call dqrdca(x,n,n,p,qraux,pivot,scrtch,rank,tol(1))
       kn=1
       kp=1
       if(rank.gt.0)then
@@ -28,6 +28,12 @@ C Output from Public domain Ratfor, version 1.0
       double precision qr(1),qra(1),y(1),qy(1),qb(1)
       integer dq(2),job,k,rank
       integer n,kn,kb,j
+      double precision ourqty(1), ourqy(1), ourb(1), ourrsd(1), ourxb(1)
+      ourqty(1) = 0d0
+      ourqy(1) = 0d0
+      ourb(1) = 0d0
+      ourrsd(1) = 0d0
+      ourxb(1) = 0d0
       n = dq(1)
       kn = 1
       kb = 1
@@ -36,8 +42,8 @@ C Output from Public domain Ratfor, version 1.0
 23007 continue
       j=0
 23008 if(.not.(j.lt.k))goto 23010
-      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),qy(kn),0d0,0d0,0d0,0d0,jo
-     *b,info)
+      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),qy(kn),ourqty,ourb,ourrsd
+     *,ourxb,job,info)
       kn = kn +n
 23009 j = j+1
       goto 23008
@@ -46,8 +52,8 @@ C Output from Public domain Ratfor, version 1.0
 23011 continue
       j=0
 23012 if(.not.(j.lt.k))goto 23014
-      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),0d0,qy(kn),0d0,0d0,0d0,jo
-     *b,info)
+      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),ourb,ourrsd,
+     *ourxb,job,info)
       kn = kn +n
 23013 j = j+1
       goto 23012
@@ -56,8 +62,8 @@ C Output from Public domain Ratfor, version 1.0
 23015 continue
       j=0
 23016 if(.not.(j.lt.k))goto 23018
-      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),0d0,qy(kn),qb(kb),0d0,0d0
-     *,job,info)
+      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),qb(kb),ourrs
+     *d,ourxb,job,info)
       kn = kn +n
       kb = kb +rank
 23017 j = j+1
@@ -67,8 +73,8 @@ C Output from Public domain Ratfor, version 1.0
 23019 continue
       j=0
 23020 if(.not.(j.lt.k))goto 23022
-      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),0d0,qy(kn),0d0,qb(kn),0d0
-     *,job,info)
+      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),ourb,qb(kn),
+     *ourxb,job,info)
       kn = kn +n
 23021 j = j+1
       goto 23020
@@ -77,8 +83,8 @@ C Output from Public domain Ratfor, version 1.0
 23023 continue
       j=0
 23024 if(.not.(j.lt.k))goto 23026
-      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),0d0,qy(kn),0d0,0d0,qb(kn)
-     *,job,info)
+      call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),ourb,ourrsd,
+     *qb(kn),job,info)
       kn = kn +n
 23025 j = j+1
       goto 23024
@@ -103,7 +109,7 @@ C Output from Public domain Ratfor, version 1.0
       integer n,p
       n=dx(1)
       p=dx(2)
-      call dqrdca(x,n,n,p,qraux,pivot,scrtch,rank,tol)
+      call dqrdca(x,n,n,p,qraux,pivot,scrtch,rank,tol(1))
       return
       end
       subroutine dqrdca(x,ldx,n,p,qraux,jpvt,work,rank,eps)
@@ -405,7 +411,7 @@ C Output from Public domain Ratfor, version 1.0
 23125 j = j+1
       goto 23124
 23126 continue
-      call dchdc(a,p,p,work,jpvt,job,info)
+      call dchdc(a,p,p,work,jpvt,job,info(1))
       j =2
 23132 if(.not.(j.le.p))goto 23134
       i=1
@@ -2045,23 +2051,37 @@ C Output from Public domain Ratfor, version 1.0
       return
       end
       double precision function dnrm2(n,dx,incx)
-      integer next
+      integer nst
       double precision dx(1),cutlo,cuthi,hitest,sum,xmax,zero,one
       data zero,one/0.0d0,1.0d0/
       data cutlo,cuthi/8.232d-11,1.304d19/
       if(n.le.0)then
       dnrm2 = zero
       else
-      assign 20 to next
+      nst = 20
       sum = zero
       nn = n*incx
       i = 1
 23729 continue
-      goto next,(20,30,40,80)
+      if(nst .eq. 20)then
+      goto 20
+      else
+      if(nst .eq. 30)then
+      goto 30
+      else
+      if(nst .eq. 40)then
+      goto 40
+      else
+      if(nst .eq. 80)then
+      goto 80
+      endif
+      endif
+      endif
+      endif
 20    if(dabs(dx(i)).gt.cutlo)then
       go to 50
       endif
-      assign 30 to next
+      nst = 30
       xmax = zero
 30    if(dx(i).eq.zero)then
       go to 100
@@ -2069,23 +2089,23 @@ C Output from Public domain Ratfor, version 1.0
       if(dabs(dx(i)).gt.cutlo)then
       go to 50
       endif
-      assign 40 to next
+      nst = 40
       go to 70
 40    if(dabs(dx(i)).le.cutlo)then
       go to 80
       endif
       sum = (sum*xmax)*xmax
 50    hitest = cuthi/float(n)
-      do23740 j = i,nn,incx 
+      do23748 j = i,nn,incx 
       if(dabs(dx(j)).ge.hitest)then
       go to 60
       endif
       sum = sum+dx(j)**2
-23740 continue
-23741 continue
+23748 continue
+23749 continue
       goto 23731
 60    i = j
-      assign 80 to next
+      nst = 80
       sum = (sum/dx(i))/dx(i)
 70    xmax = dabs(dx(i))
       go to 90
@@ -2113,30 +2133,30 @@ C Output from Public domain Ratfor, version 1.0
       if(n.gt.0)then
       if(incx.ne.1)then
       nincx = n*incx
-      do23752 i = 1,nincx,incx
+      do23760 i = 1,nincx,incx
       dx(i) = da*dx(i)
-23752 continue
-23753 continue
+23760 continue
+23761 continue
       else
       m = mod(n,5)
       if(m.ne.0)then
-      do23756 i = 1,m
+      do23764 i = 1,m
       dx(i) = da*dx(i)
-23756 continue
-23757 continue
+23764 continue
+23765 continue
       if(n.lt.5)then
       return
       endif
       endif
       mp1 = m+1
-      do23760 i = mp1,n,5 
+      do23768 i = mp1,n,5 
       dx(i) = da*dx(i)
       dx(i+1) = da*dx(i+1)
       dx(i+2) = da*dx(i+2)
       dx(i+3) = da*dx(i+3)
       dx(i+4) = da*dx(i+4)
-23760 continue
-23761 continue
+23768 continue
+23769 continue
       endif
       endif
       return
@@ -2154,29 +2174,29 @@ C Output from Public domain Ratfor, version 1.0
       if(incy.lt.0)then
       iy = (-n+1)*incy+1
       endif
-      do23770 i = 1,n 
+      do23778 i = 1,n 
       dtemp = dx(ix)
       dx(ix) = dy(iy)
       dy(iy) = dtemp
       ix = ix+incx
       iy = iy+incy
-23770 continue
-23771 continue
+23778 continue
+23779 continue
       else
       m = mod(n,3)
       if(m.ne.0)then
-      do23774 i = 1,m 
+      do23782 i = 1,m 
       dtemp = dx(i)
       dx(i) = dy(i)
       dy(i) = dtemp
-23774 continue
-23775 continue
+23782 continue
+23783 continue
       if(n.lt.3)then
       return
       endif
       endif
       mp1 = m+1
-      do23778 i = mp1,n,3 
+      do23786 i = mp1,n,3 
       dtemp = dx(i)
       dx(i) = dy(i)
       dy(i) = dtemp
@@ -2186,8 +2206,8 @@ C Output from Public domain Ratfor, version 1.0
       dtemp = dx(i+2)
       dx(i+2) = dy(i+2)
       dy(i+2) = dtemp
-23778 continue
-23779 continue
+23786 continue
+23787 continue
       endif
       endif
       return
@@ -2197,15 +2217,15 @@ C Output from Public domain Ratfor, version 1.0
       double precision x(ldx,k),tt
       integer i,jj
       if(k.gt.j)then
-      do23782 i = 1,n 
+      do23790 i = 1,n 
       tt = x(i,j)
-      do23784 jj = j+1,k
+      do23792 jj = j+1,k
       x(i,jj-1) = x(i,jj)
-23784 continue
-23785 continue
+23792 continue
+23793 continue
       x(i,k) = tt
-23782 continue
-23783 continue
+23790 continue
+23791 continue
       endif
       return
       end
@@ -2216,16 +2236,16 @@ C Output from Public domain Ratfor, version 1.0
       if(n.gt.0)then
       m = mod(n,7)
       if(m.ne.0)then
-      do23790 i = 1,m
+      do23798 i = 1,m
       dy(i) = dx(i)
-23790 continue
-23791 continue
+23798 continue
+23799 continue
       if(n.lt.7)then
       return
       endif
       endif
       mp1 = m+1
-      do23794 i = mp1,n,7 
+      do23802 i = mp1,n,7 
       dy(i) = dx(i)
       dy(i+1) = dx(i+1)
       dy(i+2) = dx(i+2)
@@ -2233,8 +2253,8 @@ C Output from Public domain Ratfor, version 1.0
       dy(i+4) = dx(i+4)
       dy(i+5) = dx(i+5)
       dy(i+6) = dx(i+6)
-23794 continue
-23795 continue
+23802 continue
+23803 continue
       endif
       return
       end
@@ -2245,16 +2265,16 @@ C Output from Public domain Ratfor, version 1.0
       if(n.gt.0)then
       m = mod(n,7)
       if(m.ne.0)then
-      do23800 i = 1,m
+      do23808 i = 1,m
       dy(i) = dx(i)
-23800 continue
-23801 continue
+23808 continue
+23809 continue
       if(n.lt.7)then
       return
       endif
       endif
       mp1 = m+1
-      do23804 i = mp1,n,7 
+      do23812 i = mp1,n,7 
       dy(i) = dx(i)
       dy(i+1) = dx(i+1)
       dy(i+2) = dx(i+2)
@@ -2262,8 +2282,8 @@ C Output from Public domain Ratfor, version 1.0
       dy(i+4) = dx(i+4)
       dy(i+5) = dx(i+5)
       dy(i+6) = dx(i+6)
-23804 continue
-23805 continue
+23812 continue
+23813 continue
       endif
       return
       end
@@ -2272,12 +2292,12 @@ C Output from Public domain Ratfor, version 1.0
       integer i,incx,incy,ix,iy,n
       if(n.gt.0)then
       if(incx.eq.1.and.incy.eq.1)then
-      do23810 i = 1,n 
+      do23818 i = 1,n 
       dtemp = c*dx(i)+s*dy(i)
       dy(i) = c*dy(i)-s*dx(i)
       dx(i) = dtemp
-23810 continue
-23811 continue
+23818 continue
+23819 continue
       else
       ix = 1
       iy = 1
@@ -2287,14 +2307,14 @@ C Output from Public domain Ratfor, version 1.0
       if(incy.lt.0)then
       iy = (-n+1)*incy+1
       endif
-      do23816 i = 1,n 
+      do23824 i = 1,n 
       dtemp = c*dx(ix)+s*dy(iy)
       dy(iy) = c*dy(iy)-s*dx(ix)
       dx(ix) = dtemp
       ix = ix+incx
       iy = iy+incy
-23816 continue
-23817 continue
+23824 continue
+23825 continue
       endif
       endif
       return
@@ -2369,7 +2389,7 @@ C Output from Public domain Ratfor, version 1.0
       call dcopy(n,y,1,qty,1)
       endif
       if(cqy)then
-      do23846 jj = 1,ju 
+      do23854 jj = 1,ju 
       j = ju-jj+1
       if(qraux(j).ne.0.0d0)then
       temp = x(j,j)
@@ -2378,11 +2398,11 @@ C Output from Public domain Ratfor, version 1.0
       call daxpy(n-j+1,t,x(j,j),1,qy(j),1)
       x(j,j) = temp
       endif
-23846 continue
-23847 continue
+23854 continue
+23855 continue
       endif
       if(cqty)then
-      do23852 j = 1,ju
+      do23860 j = 1,ju
       if(qraux(j).ne.0.0d0)then
       temp = x(j,j)
       x(j,j) = qraux(j)
@@ -2390,8 +2410,8 @@ C Output from Public domain Ratfor, version 1.0
       call daxpy(n-j+1,t,x(j,j),1,qty(j),1)
       x(j,j) = temp
       endif
-23852 continue
-23853 continue
+23860 continue
+23861 continue
       endif
       if(cb)then
       call dcopy(k,qty,1,b,1)
@@ -2404,19 +2424,19 @@ C Output from Public domain Ratfor, version 1.0
       call dcopy(n-k,qty(kp1),1,rsd(kp1),1)
       endif
       if(cxb.and.kp1.le.n)then
-      do23864 i = kp1,n
+      do23872 i = kp1,n
       xb(i) = 0.0d0
-23864 continue
-23865 continue
+23872 continue
+23873 continue
       endif
       if(cr)then
-      do23868 i = 1,k
+      do23876 i = 1,k
       rsd(i) = 0.0d0
-23868 continue
-23869 continue
+23876 continue
+23877 continue
       endif
       if(cb)then
-      do23872 jj = 1,k 
+      do23880 jj = 1,k 
       j = k-jj+1
       if(x(j,j).eq.0.0d0)then
       go to 130
@@ -2426,13 +2446,13 @@ C Output from Public domain Ratfor, version 1.0
       t = -b(j)
       call daxpy(j-1,t,x(1,j),1,b,1)
       endif
-23872 continue
-23873 continue
+23880 continue
+23881 continue
       go to 140
 130   info = j
       endif
 140   if(cr.or.cxb)then
-      do23880 jj = 1,ju 
+      do23888 jj = 1,ju 
       j = ju-jj+1
       if(qraux(j).ne.0.0d0)then
       temp = x(j,j)
@@ -2447,8 +2467,8 @@ C Output from Public domain Ratfor, version 1.0
       endif
       x(j,j) = temp
       endif
-23880 continue
-23881 continue
+23888 continue
+23889 continue
       endif
       endif
       return
@@ -2481,7 +2501,7 @@ C Output from Public domain Ratfor, version 1.0
       nrt = max0(0,min0(p-2,n))
       lu = max0(nct,nrt)
       if(lu.ge.1)then
-      do23896 l = 1,lu 
+      do23904 l = 1,lu 
       lp1 = l+1
       if(l.le.nct)then
       s(l) = dnrm2(n-l+1,x(l,l),1)
@@ -2495,7 +2515,7 @@ C Output from Public domain Ratfor, version 1.0
       s(l) = -s(l)
       endif
       if(p.ge.lp1)then
-      do23906 j = lp1,p 
+      do23914 j = lp1,p 
       if(l.le.nct)then
       if(s(l).ne.0.0d0)then
       t = -ddot(n-l+1,x(l,l),1,x(l,j),1)/x(l,l)
@@ -2503,14 +2523,14 @@ C Output from Public domain Ratfor, version 1.0
       endif
       endif
       e(j) = x(l,j)
-23906 continue
-23907 continue
-      endif
-      if(wantu.and.l.le.nct)then
-      do23914 i = l,n
-      u(i,l) = x(i,l)
 23914 continue
 23915 continue
+      endif
+      if(wantu.and.l.le.nct)then
+      do23922 i = l,n
+      u(i,l) = x(i,l)
+23922 continue
+23923 continue
       endif
       if(l.le.nrt)then
       e(l) = dnrm2(p-l,e(lp1),1)
@@ -2523,28 +2543,28 @@ C Output from Public domain Ratfor, version 1.0
       endif
       e(l) = -e(l)
       if(lp1.le.n.and.e(l).ne.0.0d0)then
-      do23924 i = lp1,n
+      do23932 i = lp1,n
       work(i) = 0.0d0
-23924 continue
-23925 continue
-      do23926 j = lp1,p
-      call daxpy(n-l,e(j),x(lp1,j),1,work(lp1),1)
-23926 continue
-23927 continue
-      do23928 j = lp1,p
-      call daxpy(n-l,-e(j)/e(lp1),work(lp1),1,x(lp1,j),1)
-23928 continue
-23929 continue
-      endif
-      if(wantv)then
-      do23932 i = lp1,p
-      v(i,l) = e(i)
 23932 continue
 23933 continue
+      do23934 j = lp1,p
+      call daxpy(n-l,e(j),x(lp1,j),1,work(lp1),1)
+23934 continue
+23935 continue
+      do23936 j = lp1,p
+      call daxpy(n-l,-e(j)/e(lp1),work(lp1),1,x(lp1,j),1)
+23936 continue
+23937 continue
+      endif
+      if(wantv)then
+      do23940 i = lp1,p
+      v(i,l) = e(i)
+23940 continue
+23941 continue
       endif
       endif
-23896 continue
-23897 continue
+23904 continue
+23905 continue
       endif
       m = min0(p,n+1)
       nctp1 = nct+1
@@ -2561,89 +2581,89 @@ C Output from Public domain Ratfor, version 1.0
       e(m) = 0.0d0
       if(wantu)then
       if(ncu.ge.nctp1)then
-      do23944 j = nctp1,ncu 
-      do23946 i = 1,n
-      u(i,j) = 0.0d0
-23946 continue
-23947 continue
-      u(j,j) = 1.0d0
-23944 continue
-23945 continue
-      endif
-      if(nct.ge.1)then
-      do23950 ll = 1,nct 
-      l = nct-ll+1
-      if(s(l).eq.0.0d0)then
+      do23952 j = nctp1,ncu 
       do23954 i = 1,n
-      u(i,l) = 0.0d0
+      u(i,j) = 0.0d0
 23954 continue
 23955 continue
+      u(j,j) = 1.0d0
+23952 continue
+23953 continue
+      endif
+      if(nct.ge.1)then
+      do23958 ll = 1,nct 
+      l = nct-ll+1
+      if(s(l).eq.0.0d0)then
+      do23962 i = 1,n
+      u(i,l) = 0.0d0
+23962 continue
+23963 continue
       u(l,l) = 1.0d0
       else
       lp1 = l+1
       if(ncu.ge.lp1)then
-      do23958 j = lp1,ncu 
+      do23966 j = lp1,ncu 
       t = -ddot(n-l+1,u(l,l),1,u(l,j),1)/u(l,l)
       call daxpy(n-l+1,t,u(l,l),1,u(l,j),1)
-23958 continue
-23959 continue
+23966 continue
+23967 continue
       endif
       call dscal(n-l+1,-1.0d0,u(l,l),1)
       u(l,l) = 1.0d0+u(l,l)
       lm1 = l-1
       if(lm1.ge.1)then
-      do23962 i = 1,lm1
+      do23970 i = 1,lm1
       u(i,l) = 0.0d0
-23962 continue
-23963 continue
+23970 continue
+23971 continue
       endif
       endif
-23950 continue
-23951 continue
+23958 continue
+23959 continue
       endif
       endif
       if(wantv)then
-      do23966 ll = 1,p 
+      do23974 ll = 1,p 
       l = p-ll+1
       lp1 = l+1
       if(l.le.nrt)then
       if(e(l).ne.0.0d0)then
-      do23972 j = lp1,p 
+      do23980 j = lp1,p 
       t = -ddot(p-l,v(lp1,l),1,v(lp1,j),1)/v(lp1,l)
       call daxpy(p-l,t,v(lp1,l),1,v(lp1,j),1)
-23972 continue
-23973 continue
+23980 continue
+23981 continue
       endif
       endif
-      do23974 i = 1,p
+      do23982 i = 1,p
       v(i,l) = 0.0d0
+23982 continue
+23983 continue
+      v(l,l) = 1.0d0
 23974 continue
 23975 continue
-      v(l,l) = 1.0d0
-23966 continue
-23967 continue
       endif
       mm = m
       iter = 0
-23976 continue
+23984 continue
       if(m.eq.0)then
       return
       endif
       if(iter.ge.maxit)then
-      goto 23978
+      goto 23986
       endif
-      do23983 ll = 1,m 
+      do23991 ll = 1,m 
       l = m-ll
       if(l.eq.0)then
-      goto 23984
+      goto 23992
       endif
       test = dabs(s(l))+dabs(s(l+1))
       ztest = test+dabs(e(l))
       if(ztest.eq.test)then
       go to 150
       endif
-23983 continue
-23984 continue
+23991 continue
+23992 continue
       go to 160
 150   e(l) = 0.0d0
 160   if(l.eq.m-1)then
@@ -2651,10 +2671,10 @@ C Output from Public domain Ratfor, version 1.0
       else
       lp1 = l+1
       mp1 = m+1
-      do23991 lls = lp1,mp1 
+      do23999 lls = lp1,mp1 
       ls = m-lls+lp1
       if(ls.eq.l)then
-      goto 23992
+      goto 24000
       endif
       test = 0.0d0
       if(ls.ne.m)then
@@ -2667,8 +2687,8 @@ C Output from Public domain Ratfor, version 1.0
       if(ztest.eq.test)then
       go to 170
       endif
-23991 continue
-23992 continue
+23999 continue
+24000 continue
       go to 180
 170   s(ls) = 0.0d0
 180   if(ls.eq.l)then
@@ -2683,13 +2703,13 @@ C Output from Public domain Ratfor, version 1.0
       endif
       endif
       l = l+1
-      I24005=(kase)
-      goto 24005
-24007 continue
+      I24013=(kase)
+      goto 24013
+24015 continue
       mm1 = m-1
       f = e(m-1)
       e(m-1) = 0.0d0
-      do24008 kk = l,mm1 
+      do24016 kk = l,mm1 
       k = mm1-kk+l
       t1 = s(k)
       call drotg(t1,f,cs,sn)
@@ -2701,13 +2721,13 @@ C Output from Public domain Ratfor, version 1.0
       if(wantv)then
       call drot(p,v(1,k),1,v(1,m),1,cs,sn)
       endif
-24008 continue
-24009 continue
-      goto 24006
-24014 continue
+24016 continue
+24017 continue
+      goto 24014
+24022 continue
       f = e(l-1)
       e(l-1) = 0.0d0
-      do24015 k = l,m 
+      do24023 k = l,m 
       t1 = s(k)
       call drotg(t1,f,cs,sn)
       s(k) = t1
@@ -2716,10 +2736,10 @@ C Output from Public domain Ratfor, version 1.0
       if(wantu)then
       call drot(n,u(1,k),1,u(1,l-1),1,cs,sn)
       endif
-24015 continue
-24016 continue
-      goto 24006
-24019 continue
+24023 continue
+24024 continue
+      goto 24014
+24027 continue
       scale = dmax1(dabs(s(m)),dabs(s(m-1)),dabs(e(m-1)),dabs(s(l)),dabs
      *(e(l)))
       sm = s(m)/scale
@@ -2740,7 +2760,7 @@ C Output from Public domain Ratfor, version 1.0
       f = (sl+sm)*(sl-sm)+shift
       g = sl*el
       mm1 = m-1
-      do24024 k = l,mm1 
+      do24032 k = l,mm1 
       call drotg(f,g,cs,sn)
       if(k.ne.l)then
       e(k-1) = f
@@ -2761,21 +2781,21 @@ C Output from Public domain Ratfor, version 1.0
       if(wantu.and.k.lt.n)then
       call drot(n,u(1,k),1,u(1,k+1),1,cs,sn)
       endif
-24024 continue
-24025 continue
+24032 continue
+24033 continue
       e(m-1) = f
       iter = iter+1
-      goto 24006
-24032 continue
+      goto 24014
+24040 continue
       if(s(l).lt.0.0d0)then
       s(l) = -s(l)
       if(wantv)then
       call dscal(p,-1.0d0,v(1,l),1)
       endif
       endif
-24037 if(l.ne.mm)then
+24045 if(l.ne.mm)then
       if(s(l).ge.s(l+1))then
-      goto 24038
+      goto 24046
       endif
       t = s(l)
       s(l) = s(l+1)
@@ -2787,20 +2807,20 @@ C Output from Public domain Ratfor, version 1.0
       call dswap(n,u(1,l),1,u(1,l+1),1)
       endif
       l = l+1
-      goto 24037
+      goto 24045
       endif
-24038 continue
+24046 continue
       iter = 0
       m = m-1
-      goto 24006
-24005 continue
-      if (I24005.eq.1)goto 24007
-      if (I24005.eq.2)goto 24014
-      if (I24005.eq.3)goto 24019
-      if (I24005.eq.4)goto 24032
-24006 continue
-23977 goto 23976
-23978 continue
+      goto 24014
+24013 continue
+      if (I24013.eq.1)goto 24015
+      if (I24013.eq.2)goto 24022
+      if (I24013.eq.3)goto 24027
+      if (I24013.eq.4)goto 24040
+24014 continue
+23985 goto 23984
+23986 continue
       info = m
       return
       end
@@ -2811,24 +2831,24 @@ C Output from Public domain Ratfor, version 1.0
       integer j,l
       info = 0
       j=k
-24045 if(.not.(j.gt.0))goto 24047
+24053 if(.not.(j.gt.0))goto 24055
       if(x(j,j).eq.0.0d0)then
       info = j
-      goto 24047
+      goto 24055
       endif
       l=1
-24050 if(.not.(l.le.q))goto 24052
+24058 if(.not.(l.le.q))goto 24060
       b(j,l) = b(j,l)/x(j,j)
       if(j.ne.1)then
       t = -b(j,l)
       call daxpy(j-1,t,x(1,j),1,b(1,l),1)
       endif
-24051 l = l+1
-      goto 24050
-24052 continue
-24046 j = j-1
-      goto 24045
-24047 continue
+24059 l = l+1
+      goto 24058
+24060 continue
+24054 j = j-1
+      goto 24053
+24055 continue
       return
       end
       subroutine dtrsl(t,ldt,n,b,job,info)
@@ -2836,12 +2856,12 @@ C Output from Public domain Ratfor, version 1.0
       double precision t(ldt,1),b(1)
       double precision ddot,temp
       integer which,j,jj
-      do24055 info = 1,n
+      do24063 info = 1,n
       if(t(info,info).eq.0.0d0)then
       return
       endif
-24055 continue
-24056 continue
+24063 continue
+24064 continue
       info = 0
       which = 1
       if(mod(job,10).ne.0)then
@@ -2850,57 +2870,57 @@ C Output from Public domain Ratfor, version 1.0
       if(mod(job,100)/10.ne.0)then
       which = which+2
       endif
-      I24063=(which)
-      goto 24063
-24065 continue
+      I24071=(which)
+      goto 24071
+24073 continue
       b(1) = b(1)/t(1,1)
       if(n.ge.2)then
-      do24068 j = 2,n 
+      do24076 j = 2,n 
       temp = -b(j-1)
       call daxpy(n-j+1,temp,t(j,j-1),1,b(j),1)
       b(j) = b(j)/t(j,j)
-24068 continue
-24069 continue
+24076 continue
+24077 continue
       endif
-      goto 24064
-24070 continue
+      goto 24072
+24078 continue
       b(n) = b(n)/t(n,n)
       if(n.ge.2)then
-      do24073 jj = 2,n 
+      do24081 jj = 2,n 
       j = n-jj+1
       temp = -b(j+1)
       call daxpy(j,temp,t(1,j+1),1,b(1),1)
       b(j) = b(j)/t(j,j)
-24073 continue
-24074 continue
+24081 continue
+24082 continue
       endif
-      goto 24064
-24075 continue
+      goto 24072
+24083 continue
       b(n) = b(n)/t(n,n)
       if(n.ge.2)then
-      do24078 jj = 2,n 
+      do24086 jj = 2,n 
       j = n-jj+1
       b(j) = b(j)-ddot(jj-1,t(j+1,j),1,b(j+1),1)
       b(j) = b(j)/t(j,j)
-24078 continue
-24079 continue
+24086 continue
+24087 continue
       endif
-      goto 24064
-24080 continue
+      goto 24072
+24088 continue
       b(1) = b(1)/t(1,1)
       if(n.ge.2)then
-      do24083 j = 2,n 
+      do24091 j = 2,n 
       b(j) = b(j)-ddot(j-1,t(1,j),1,b(1),1)
       b(j) = b(j)/t(j,j)
-24083 continue
-24084 continue
+24091 continue
+24092 continue
       endif
-      goto 24064
-24063 continue
-      if (I24063.eq.1)goto 24065
-      if (I24063.eq.2)goto 24070
-      if (I24063.eq.3)goto 24075
-      if (I24063.eq.4)goto 24080
-24064 continue
+      goto 24072
+24071 continue
+      if (I24071.eq.1)goto 24073
+      if (I24071.eq.2)goto 24078
+      if (I24071.eq.3)goto 24083
+      if (I24071.eq.4)goto 24088
+24072 continue
       return
       end
