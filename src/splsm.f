@@ -43,8 +43,8 @@ C Output from Public domain Ratfor, version 1.0
       end
       subroutine splsm(x,y,w,n,match,nef,spar,dof,smo,s0,cov,ifcov,work)
       implicit double precision(a-h,o-z)
-      double precision x(1),y(1),w(1),spar,dof,smo(1),s0,cov(1),work(1)
-      integer n,match(1),nef
+      double precision x(*),y(*),w(*),spar,dof,smo(*),s0,cov(*),work(*)
+      integer n,match(*),nef
       integer ifcov
       call splsm1(x,y,w,n,match,nef,spar,dof,smo,s0,cov,ifcov, work(1), 
      *work(nef+2),work(2*nef+3),work(3*nef+4), work(3*nef+n+10))
@@ -53,8 +53,8 @@ C Output from Public domain Ratfor, version 1.0
       subroutine splsm1(x,y,w,n,match,nef,spar,dof,smo,s0,lev,ifcov, xin
      *,yin,win,knot, work)
       implicit double precision(a-h,o-z)
-      double precision x(1),y(1),w(1),spar,dof,smo(1),s0,lev(1),work(1)
-      integer n,match(1),nef
+      double precision x(*),y(*),w(*),spar,dof,smo(*),s0,lev(*),work(*)
+      integer n,match(*),nef
       integer ifcov
       double precision xin(nef+1),yin(nef+1),win(nef+1),knot(nef+6)
       integer nk,ldnk,ld4,k
@@ -82,14 +82,14 @@ C Output from Public domain Ratfor, version 1.0
      *,yin,win,knot, coef,sout,levout,xwy, hs0,hs1,hs2,hs3, sg0,sg1,sg2,
      *sg3, abd,p1ip,p2ip,ld4,ldnk,nk)
       implicit double precision(a-h,o-z)
-      double precision x(1),y(1),w(1),spar,dof,smo(1),s0,lev(1)
-      integer n,match(1),nef
+      double precision x(*),y(*),w(*),spar,dof,smo(*),s0,lev(*)
+      integer n,match(*),nef
       integer nk,ldnk,ld4
       integer ifcov
       double precision xin(nef+1),yin(nef+1),win(nef+1),knot(nk+4)
       double precision coef(nk),sout(nef+1),levout(nef+1),xwy(nk), hs0(n
      *k),hs1(nk),hs2(nk),hs3(nk), sg0(nk),sg1(nk),sg2(nk),sg3(nk), abd(l
-     *d4,nk),p1ip(ld4,nk),p2ip(ldnk,1)
+     *d4,nk),p1ip(ld4,nk),p2ip(ldnk,*)
       integer ispar,icrit,isetup,ier
       double precision lspar,uspar,tol,penalt, sumwin,dofoff,crit,xbar,d
      *sum,xsbar

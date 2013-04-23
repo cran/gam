@@ -3,9 +3,9 @@ C Output from Public domain Ratfor, version 1.0
      *var,dof, qr,qraux,qpivot,effect,iv,v,iwork,work)
       implicit double precision(a-h,o-z)
       integer n,p,q,nit,maxit,qrank
-      integer npetc(7),wddnfl(1),match(1),qpivot(1),iv(1),iwork(1)
-      double precision x(1),y(1),w(1),spatol(1), etal(1),s(1),eta(1),bet
-     *a(1),var(1),dof(1), qr(1),qraux(1),v(1),effect(1),work(1)
+      integer npetc(7),wddnfl(*),match(*),qpivot(*),iv(*),iwork(*)
+      double precision x(*),y(*),w(*),spatol(*), etal(*),s(*),eta(*),bet
+     *a(*),var(*),dof(*), qr(*),qraux(*),v(*),effect(*),work(*)
       n=npetc(1)
       p=npetc(2)
       q=npetc(3)
@@ -25,12 +25,12 @@ C Output from Public domain Ratfor, version 1.0
      *t,effect,z,old,sqwt,sqwti, iv,liv,lv,v,nvmax,iwork,work)
       implicit double precision(a-h,o-z)
       integer n,p,q,which(q),dwhich(q),pwhich(q),degree(q),match(n,q),ne
-     *f(q),nit, maxit,qrank,qpivot(p),iv(1),liv(q),lv(q),nvmax(q),iwork(
+     *f(q),nit, maxit,qrank,qpivot(p),iv(*),liv(q),lv(q),nvmax(q),iwork(
      *q)
       double precision x(n,p),y(n),w(n),span(q),dof(q), etal(n),s(n,q),e
-     *ta(n),beta(p),var(n,q),tol, qr(n,p),qraux(p),v(1),effect(n),work(1
+     *ta(n),beta(p),var(n,q),tol, qr(n,p),qraux(p),v(*),effect(n),work(*
      *)
-      double precision z(1),old(1),dwrss,ratio
+      double precision z(*),old(*),dwrss,ratio
       double precision sqwt(n),sqwti(n)
       logical anyzwt
       double precision deltaf, normf,onedm7

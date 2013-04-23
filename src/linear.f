@@ -1,9 +1,9 @@
-C Output from Public domain Ratfor, version 1.01
+C Output from Public domain Ratfor, version 1.0
       subroutine dqrls(x,dx,pivot,qraux,y,dy,beta,res,qt,tol,scrtch,rank
      *)
-      integer pivot(1),dx(2),dy(2),rank
-      double precision x(1), qraux(1), y(1), beta(1),res(1),qt(1),tol(1)
-     *, scrtch(1)
+      integer pivot(*),dx(2),dy(2),rank
+      double precision x(*), qraux(*), y(*), beta(*),res(*),qt(*),tol(*)
+     *, scrtch(*)
       integer n,p,q,kn,kp,k,info
       n=dx(1)
       p=dx(2)
@@ -25,7 +25,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dqrsl1(qr,dq,qra,rank,y,k,qy,qb,job,info)
-      double precision qr(1),qra(1),y(1),qy(1),qb(1)
+      double precision qr(*),qra(*),y(*),qy(*),qb(*)
       integer dq(2),job,k,rank
       integer n,kn,kb,j
       double precision ourqty(1), ourqy(1), ourb(1), ourrsd(1), ourxb(1)
@@ -104,8 +104,8 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dqr(x,dx,pivot,qraux,tol,scrtch,rank)
-      integer pivot(1),dx(2),rank
-      double precision x(1), qraux(1), tol(1), scrtch(1)
+      integer pivot(*),dx(2),rank
+      double precision x(*), qraux(*), tol(*), scrtch(*)
       integer n,p
       n=dx(1)
       p=dx(2)
@@ -114,8 +114,8 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine dqrdca(x,ldx,n,p,qraux,jpvt,work,rank,eps)
       integer ldx,n,p,rank
-      integer jpvt(1)
-      double precision x(ldx,1),qraux(1),work(1),eps
+      integer jpvt(*)
+      double precision x(ldx,*),qraux(*),work(*),eps
       integer j,jj,jp,l,lup,curpvt
       double precision dnrm2,tt
       double precision ddot,nrmxl,t,ww
@@ -394,8 +394,8 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine chol(a,p,work,jpvt,job,info)
-      integer p,jpvt(1),job,info(1)
-      double precision a(p,1),work(1)
+      integer p,jpvt(*),job,info(*)
+      double precision a(p,*),work(*)
       integer i,j
       j =2
 23124 if(.not.(j.le.p))goto 23126
@@ -426,7 +426,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine crs(x,dmx,matz,w,z,fv1,fv2,ierr)
-      double precision x(1),w(1),z(1),fv1(1),fv2(1)
+      double precision x(*),w(*),z(*),fv1(*),fv2(*)
       integer dmx(2),nx,nv,ierr,matz
       nx=dmx(1)
       nv=dmx(2)
@@ -434,9 +434,9 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dqrls2(x,dx,pivot,qraux,y,dy,beta,res,qt,scrtch,eps)
-      integer pivot(1),dx(2),dy(2)
-      double precision x(1), qraux(1), y(1), beta(1),res(1),qt(1), scrtc
-     *h(1),eps
+      integer pivot(*),dx(2),dy(2)
+      double precision x(*), qraux(*), y(*), beta(*),res(*),qt(*), scrtc
+     *h(*),eps
       integer n,p,q,kn,kp,k,info,rank
       n=dx(1)
       p=dx(2)
@@ -456,7 +456,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dsvdc1(x,dmx,job,work,e,s,u,v,info)
-      double precision x(1),work(1),s(1),e(1),u(1),v(1)
+      double precision x(*),work(*),s(*),e(*),u(*),v(*)
       integer dmx(2),nx,nv,job,info
       nx=dmx(1)
       nv=dmx(2)
@@ -1783,7 +1783,7 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine dmatp(x,dx,y,dy,z)
       integer dx(2),dy(2)
-      double precision x(1), y(1),z(1),ddot
+      double precision x(*), y(*),z(*),ddot
       integer n,p,q,i,j
       n=dx(1)
       p=dx(2)
@@ -1805,7 +1805,7 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine dmatpt(x,dx,y,dy,z)
       integer dx(2),dy(2)
-      double precision x(1), y(1),z(1),ddot
+      double precision x(*), y(*),z(*),ddot
       integer n,p,q,i,j,ii
       n=dx(1)
       p=dx(2)
@@ -1829,9 +1829,9 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine matpm(x,dx,mmx,mx,y,dy,mmy,my,z)
       integer dx(2),dy(2)
-      integer mmx(1), mmy(1)
-      integer mx(1), my(1)
-      double precision x(1), y(1),z(1),ddot
+      integer mmx(*), mmy(*)
+      integer mx(*), my(*)
+      double precision x(*), y(*),z(*),ddot
       integer n,p,q,i,j
       n=dx(1)
       p=dx(2)
@@ -1857,9 +1857,9 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine matptm(x,dx,mmx,mx,y,dy,mmy,my,z)
       integer dx(2),dy(2)
-      integer mmx(1), mmy(1)
-      integer mx(1), my(1)
-      double precision x(1), y(1),z(1),ddot
+      integer mmx(*), mmy(*)
+      integer mx(*), my(*)
+      double precision x(*), y(*),z(*),ddot
       integer n,p,q,i,j
       call colmis(mmx,dx(1),dx(2),mx)
       call colmis(mmy,dy(1),dy(2),my)
@@ -1888,7 +1888,7 @@ C Output from Public domain Ratfor, version 1.01
       subroutine rowmis(m,n,p,vec)
       integer n,p
       integer m(n,p)
-      integer vec(1)
+      integer vec(*)
       do23659 i = 1,n 
       vec(i)=0
       do23661 j = 1,p 
@@ -1904,7 +1904,7 @@ C Output from Public domain Ratfor, version 1.01
       subroutine colmis(m,n,p,vec)
       integer n,p
       integer m(n,p)
-      integer vec(1)
+      integer vec(*)
       do23665 j = 1,p 
       vec(j)=0
       do23667 i = 1,n 
@@ -1918,7 +1918,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine daxpy(n,da,dx,incx,dy,incy)
-      double precision dx(1),dy(1),da
+      double precision dx(*),dy(*),da
       integer i,incx,incy,m,mp1,n
       if(n.gt.0)then
       if(da.ne.0.0d0)then
@@ -1962,7 +1962,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dcopy(n,dx,incx,dy,incy)
-      double precision dx(1),dy(1)
+      double precision dx(*),dy(*)
       integer i,incx,incy,ix,iy,m,mp1,n
       if(n.gt.0)then
       if(incx.ne.1.or.incy.ne.1)then
@@ -2007,7 +2007,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       double precision function ddot(n,dx,incx,dy,incy)
-      double precision dx(1),dy(1),dtemp
+      double precision dx(*),dy(*),dtemp
       integer i,incx,incy,ix,iy,m,mp1,n
       ddot = 0.0d0
       dtemp = 0.0d0
@@ -2052,7 +2052,7 @@ C Output from Public domain Ratfor, version 1.01
       end
       double precision function dnrm2(n,dx,incx)
       integer nst
-      double precision dx(1),cutlo,cuthi,hitest,sum,xmax,zero,one
+      double precision dx(*),cutlo,cuthi,hitest,sum,xmax,zero,one
       data zero,one/0.0d0,1.0d0/
       data cutlo,cuthi/8.232d-11,1.304d19/
       if(n.le.0)then
@@ -2128,7 +2128,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dscal(n,da,dx,incx)
-      double precision da,dx(1)
+      double precision da,dx(*)
       integer i,incx,m,mp1,n,nincx
       if(n.gt.0)then
       if(incx.ne.1)then
@@ -2162,7 +2162,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dswap(n,dx,incx,dy,incy)
-      double precision dx(1),dy(1),dtemp
+      double precision dx(*),dy(*),dtemp
       integer i,incx,incy,ix,iy,m,mp1,n
       if(n.gt.0)then
       if(incx.ne.1.or.incy.ne.1)then
@@ -2230,8 +2230,8 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine rtod(dx,dy,n)
-      real dx(1)
-      double precision dy(1)
+      real dx(*)
+      double precision dy(*)
       integer i,m,mp1,n
       if(n.gt.0)then
       m = mod(n,7)
@@ -2259,8 +2259,8 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine dtor(dx,dy,n)
-      double precision dx(1)
-      real dy(1)
+      double precision dx(*)
+      real dy(*)
       integer i,m,mp1,n
       if(n.gt.0)then
       m = mod(n,7)
@@ -2288,7 +2288,7 @@ C Output from Public domain Ratfor, version 1.01
       return
       end
       subroutine drot(n,dx,incx,dy,incy,c,s)
-      double precision dx(1),dy(1),dtemp,c,s
+      double precision dx(*),dy(*),dtemp,c,s
       integer i,incx,incy,ix,iy,n
       if(n.gt.0)then
       if(incx.eq.1.and.incy.eq.1)then
@@ -2349,8 +2349,8 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine dqrsl(x,ldx,n,k,qraux,y,qy,qty,b,rsd,xb,job,info)
       integer ldx,n,k,job,info
-      double precision x(ldx,1),qraux(1),y(1),qy(1),qty(1),b(1),rsd(1),x
-     *b(1)
+      double precision x(ldx,*),qraux(*),y(*),qy(*),qty(*),b(*),rsd(*),x
+     *b(*)
       integer i,j,jj,ju,kp1
       double precision ddot,t,temp
       logical cb,cqy,cqty,cr,cxb
@@ -2475,7 +2475,7 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine dsvdc(x,ldx,n,p,s,e,u,ldu,v,ldv,work,job,info)
       integer ldx,n,p,ldu,ldv,job,info
-      double precision x(ldx,1),s(1),e(1),u(ldu,1),v(ldv,1),work(1)
+      double precision x(ldx,*),s(*),e(*),u(ldu,*),v(ldv,*),work(*)
       integer i,iter,j,jobu,k,kase,kk,l,ll,lls,lm1,lp1,ls,lu,m,maxit,mm,
      *mm1,mp1,nct,nctp1,ncu,nrt,nrtp1
       double precision ddot,t
@@ -2853,7 +2853,7 @@ C Output from Public domain Ratfor, version 1.01
       end
       subroutine dtrsl(t,ldt,n,b,job,info)
       integer ldt,n,job,info
-      double precision t(ldt,1),b(1)
+      double precision t(ldt,*),b(*)
       double precision ddot,temp
       integer which,j,jj
       do24063 info = 1,n

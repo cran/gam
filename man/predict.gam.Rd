@@ -4,7 +4,7 @@
 \description{Obtains predictions and optionally estimates standard errors of
      those predictions from a fitted generalized additive model object.}
 \usage{
-predict.gam(object, newdata, type, dispersion, se.fit = FALSE,na.action, terms,\dots)
+\method{predict}{gam}(object, newdata, type, dispersion, se.fit = FALSE,na.action, terms,\dots)
 }
 \arguments{
 \item{object}{

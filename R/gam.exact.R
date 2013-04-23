@@ -111,7 +111,7 @@ function(gam.obj)
         this.var <- paste("x",k,sep="")
         upd.form <- update(as.formula(form),paste(this.var,"~. -",this.var))
 
-        XX[,k] <- gam(formula=upd.form,data=mydat,family=gaussian,weight=w,
+        XX[,k] <- gam(formula=upd.form,data=mydat,family=gaussian,weights=w,
                       control=eval(Control))$fitted
       }
     }

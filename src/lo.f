@@ -1,9 +1,9 @@
 C Output from Public domain Ratfor, version 1.0
       subroutine lo0(x,y,w,n,d,p,nvmax,span,degree,match,nef,dof,s,var, 
      *beta,iv,liv,lv,v,iwork,work)
-      integer n,d,p,nvmax,degree,match(1),nef,liv,lv,iv(liv),iwork(1)
+      integer n,d,p,nvmax,degree,match(*),nef,liv,lv,iv(liv),iwork(*)
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),v(lv),work(
-     *1)
+     **)
       double precision beta(p+1)
       integer qrank
       call lo1(x,y,w,n,d,p,nvmax,span,degree,match,nef,0,dof,s,var,beta,
@@ -15,11 +15,11 @@ C Output from Public domain Ratfor, version 1.0
       subroutine lo1(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,v
      *ar,beta, xin,win,sqwin,sqwini,xqr,qrank,qpivot,qraux, iv,liv,lv,v,
      * work)
-      integer n,d,p,nvmax,degree,match(1),nef,nit,qrank,qpivot(p+1)
+      integer n,d,p,nvmax,degree,match(*),nef,nit,qrank,qpivot(p+1)
       integer iv(liv),liv,lv
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),beta(p+1), 
      *xin(nef,d),win(nef+1),sqwin(nef),sqwini(nef),xqr(nef,p+1), qraux(p
-     *+1),v(lv), work(1)
+     *+1),v(lv), work(*)
       call lo2(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,var,bet
      *a, xin,win,sqwin,sqwini,xqr,qrank,qpivot,qraux, iv,liv,lv,v, work(
      *1),work(nef+2),work(2*nef+3),work(3*nef+4))
@@ -28,11 +28,11 @@ C Output from Public domain Ratfor, version 1.0
       subroutine lo2(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,v
      *ar,beta, xin,win,sqwin,sqwini,xqr,qrank,qpivot,qraux, iv,liv,lv,v,
      * levout,sout,yin,work)
-      integer n,d,p,nvmax,degree,match(1),nef,nit,qrank,qpivot(p+1)
+      integer n,d,p,nvmax,degree,match(*),nef,nit,qrank,qpivot(p+1)
       integer iv(liv),liv,lv
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),beta(p+1), 
      *xin(nef,d),win(nef+1),sqwin(nef),sqwini(nef),xqr(nef,p+1), qraux(p
-     *+1),v(lv), levout(nef+1), sout(nef+1),yin(nef+1),work(1)
+     *+1),v(lv), levout(nef+1), sout(nef+1),yin(nef+1),work(*)
       double precision junk, onedm7
       integer job, info
       logical setlf, ifvar

@@ -30,12 +30,13 @@
                terms = {
                  out <- NextMethod("predict")
                  TT <- dimnames(s <- object$smooth)[[2]]
+                 TT=intersect(terms,TT)##added to protect subsets
                  out$fit[, TT] <- out$fit[,
-                                          TT] + s
+                                          TT] + s[,TT]
                  TS <- out$residual.scale^2
                  out$se.fit[, TT] <- sqrt(out$
                                           se.fit[, TT]^2 + TS *
-                                          object$var)
+                                          object$var[,TT])
                  out
                }
                )
@@ -43,7 +44,8 @@
                   terms = {
                     out <- NextMethod("predict")
                     TT <- dimnames(s <- object$smooth)[[2]]
-                    out[, TT] <- out[, TT] + s
+                    TT=intersect(terms,TT)##added to protect subsets
+                    out[, TT] <- out[, TT] + s[,TT]
                     out
                   }
                   ,

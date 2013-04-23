@@ -4,9 +4,9 @@ C Output from Public domain Ratfor, version 1.0
       implicit double precision(a-h,o-z)
       logical ifvar
       integer npetc(7),iter
-      integer n,p,q,which(1),match(1),nef(1),nit,maxit,qrank,qpivot(1)
-      double precision x(1),y(1),w(1),spar(1),dof(1), etal(1),s(1),eta(1
-     *),beta(1),var(1),tol, qr(1),qraux(1),effect(1),work(1)
+      integer n,p,q,which(*),match(*),nef(*),nit,maxit,qrank,qpivot(*)
+      double precision x(*),y(*),w(*),spar(*),dof(*), etal(*),s(*),eta(*
+     *),beta(*),var(*),tol, qr(*),qraux(*),effect(*),work(*)
       n=npetc(1)
       p=npetc(2)
       q=npetc(3)
@@ -33,8 +33,8 @@ C Output from Public domain Ratfor, version 1.0
       logical ifvar
       integer n,p,q,which(q),match(n,q),nef(q),nit,maxit,qrank,qpivot(p)
       double precision x(n,p),y(n),w(n),spar(q),dof(q), etal(n),s(n,q),e
-     *ta(n),beta(p),var(n,q),tol, qr(n,p),qraux(p),effect(n),work(1)
-      double precision z(1),old(1),dwrss,ratio
+     *ta(n),beta(p),var(n,q),tol, qr(n,p),qraux(p),effect(n),work(*)
+      double precision z(*),old(*),dwrss,ratio
       double precision sqwt(n),sqwti(n)
       logical anyzwt
       double precision deltaf, normf,onedm7
