@@ -1,6 +1,7 @@
 "summary.gam" <-
    function (object, dispersion = NULL, ...) 
 {
+  anova.lm <- getS3method("anova", "lm")
   paod=anova.lm(object,...)
   attr(paod,"heading")="Anova for Parametric Effects"
 

@@ -1,10 +1,10 @@
 c95bed4e0f0a9c7ce468d8b0c3b86c99 *ChangeLog
-3b3051d46d5cf4f05e25710d208e68a6 *DESCRIPTION
+fcc9f03b2aab1a5c90ae3d4439c059b6 *DESCRIPTION
 af77f82fb0aa5e383808c5f36aa47066 *INDEX
 79c3de2f467638359b6523bce15d127e *NAMESPACE
 3f56ee7eddd13ec792f7c2150b1e1eca *R/all.wam.R
-8cc1439da83368b103fe32e3f659d7c2 *R/anova.gam.R
-650f5fcfc4615d93f8743f2a93e0204b *R/anova.gamlist.R
+81e9b54a2bfe88cb19390c5edc0458dd *R/anova.gam.R
+1c6ad753c650b8a285a3f2acff721480 *R/anova.gamlist.R
 c67ddb150e807c4a0ef77acf132c1021 *R/as.anova.R
 996bcecc62a9687cb77863e45830a000 *R/as.data.frame.lo.smooth.R
 69d4bccf3afc7a1a9fd2b5d8b2f60fec *R/assign.list.R
@@ -51,7 +51,7 @@ c318b1f9d34fda3e660a9af01b86c830 *R/random.R
 596d38e0f6ec11d3921b0ee8bd3590a4 *R/s.wam.R
 79eaf99c6a30f60cdb8d32ad76f24970 *R/step.gam.R
 9c1302d138d07b10f17c27765bd87955 *R/subset.smooth.R
-8f2f390526bda6e2c9049d602f348a7e *R/summary.gam.R
+ed4bf1ea99f4e8e888a4d075c85df6f0 *R/summary.gam.R
 5cc7658080bc925bb5fc11172d78fb41 *R/ylim.scale.R
 ba66638e3de17b868b4d98dffe95009d *data/gam.data.RData
 83529cbff37939aff8d96d32d6458f12 *data/gam.newdata.RData

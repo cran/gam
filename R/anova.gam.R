@@ -4,7 +4,8 @@
   test=match.arg(test)
   margs <- function(...)
     nargs()
-  if(margs(...))
+  if(margs(...)) {
+    anova.glmlist <- getS3method("anova", "glmlist")
     anova.glmlist(list(object, ...), test = test)
-  else summary.gam(object)$anova
+  } else summary.gam(object)$anova
 }
