@@ -113,7 +113,7 @@ C Output from Public domain Ratfor, version 1.0
       ier=1
       penalt=1d0
       lspar= -1.5
-      uspar= 1.5
+      uspar= 2.0
       tol=1d-4
       eps=2d-8
       maxit=200

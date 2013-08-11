@@ -1,0 +1,8 @@
+2013-08-02   Trevor Hastie <hastie@stanford.edu> version 1.09
+	* improved step.gam significantly (it works now for eg, the spam data); added parallel option
+	* man/step.gam  updated
+	* R/scope.gam added; an aid for creating a scope object
+	* man/scope.gam  added
+	* R/summary.gam split up the anova to two anovas - one for the parametric, and one for nonparametric
+###	Note that this starts from gam 1.09
+	

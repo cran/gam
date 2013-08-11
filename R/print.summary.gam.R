@@ -29,5 +29,10 @@
     cat(naprint(x$na.action), "\n")
   cat("\nNumber of Local Scoring Iterations:", format(trunc(x$iter)),
       "\n")
-  print(x$anova)
+  aod=x$parametric.anova
+  cat("\n")
+  if(!is.null(aod)) print(aod)
+  aod=x$anova
+  cat("\n")
+  if(!is.null(aod)) print(aod)
 }

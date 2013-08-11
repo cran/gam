@@ -23,10 +23,10 @@ See \code{\link{anova}} for the general behavior of this function
 and for the interpretation of `test'.
 
 
-When called with a single `gam' object, a special anova table for `gam'
+When called with a single `gam' object, a special pair of anova tables for `gam'
 models is returned. This gives a breakdown of the degrees of freedom for
 all the terms in the model, separating the projection part and
-nonparametric part of each. For example, a term specified by `s()' is
+nonparametric part of each, and returned as a list of two anova objects. For example, a term specified by `s()' is
 broken down into a single degree of freedom for its linear component,
 and the remainder for the nonparametric component. In addition, a type
 of score test is performed for each of the nonparametric terms. The

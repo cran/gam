@@ -128,7 +128,7 @@ C     df matching
 	    crit = 0d0
 	    do 32 i=1,n
  32	       crit = crit+lev(i)
-	    crit = 3 + (dofoff-crit)**2
+	    crit = 3d0 + (dofoff-crit)**2
 	 endif
 	 return
       endif

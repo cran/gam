@@ -14,7 +14,6 @@
 \alias{gam.match}
 \alias{gam.nlchisq}
 \alias{gam.random}
-\alias{gam.scope}
 \alias{gam.slist}
 \alias{gam.sp}
 \alias{gam.wlist}

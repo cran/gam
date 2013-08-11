@@ -57,7 +57,10 @@
                                               x))
       mode(Mcall) <- "call"
       Mcall$data <- Call$data
-      xvars <- eval(xvars, eval(Mcall))
+        env <- environment(Terms)##added 7/28/13
+        if (is.null(env)) ##
+            env <- parent.frame()##
+      xvars <- eval(xvars, eval(Mcall,env))
     }
     else {
       ecall <- substitute(eval(expression(xvars)))

@@ -1,17 +1,20 @@
-`step.gam` <-
-function (object, scope, scale, direction = c("both", "backward", 
-                                    "forward"), trace = TRUE, keep = NULL, steps = 1000, ...) 
+step.gam <-
+  function (object, scope, scale, direction = c("both", "backward", 
+                                    "forward"), trace = TRUE, keep = NULL, steps = 1000, parallel=FALSE,...) 
 {
-scope.char <-
-  function(formula) {
-    formula=update(formula,~-1+.)
+ trace=as.numeric(trace)
+ get.visit <- function(trial, visited){
+    match(paste(trial,collapse=""),apply(visited,2,paste,collapse=""),FALSE)
+  }
+  scope.char <- function(formula) {
+    formula = update(formula, ~-1 + .)
     tt <- terms(formula)
     tl <- attr(tt, "term.labels")
     if (attr(tt, "intercept")) 
       c("1", tl)
     else tl
   }
-re.arrange <- function(keep) {
+  re.arrange <- function(keep) {
     namr <- names(k1 <- keep[[1]])
     namc <- names(keep)
     nc <- length(keep)
@@ -56,6 +59,7 @@ re.arrange <- function(keep) {
     chfrom <- sapply(models, "[[", "from")
     chfrom[chfrom == "1"] <- ""
     chto <- sapply(models, "[[", "to")
+    chto[1]="<start>"
     chto[chto == "1"] <- ""
     dev <- sapply(models, "[[", "deviance")
     df <- sapply(models, "[[", "df.resid")
@@ -66,10 +70,15 @@ re.arrange <- function(keep) {
                  "\nInitial Model:", deparse(as.vector(formula(object))), 
                  "\nFinal Model:", deparse(as.vector(formula(fit))), 
                  paste("\nScale: ", format(scale), "\n", sep = ""))
-    aod <- data.frame(From = chfrom, To = chto, Df = ddf, 
-                      Deviance = ddev, "Resid. Df" = df, "Resid. Dev" = dev, 
+#    rowns=paste(chfrom,chto,sep=" -> ")
+#    rowns[1]="<start>"
+#    rowns=paste(seq(rowns)-1,rowns,sep=": ")
+    aod <- data.frame(From=chfrom,To=chto, Df = ddf, 
+                      Deviance = ddev, `Resid. Df` = df, `Resid. Dev` = dev, 
                       AIC = AIC, check.names = FALSE)
-    fit$anova <- as.anova(aod, heading)
+     aod <- as.anova(aod, heading)
+     class(aod)=c("stepanova","data.frame")
+     fit$anova=aod
     fit
   }
   direction <- match.arg(direction)
@@ -86,18 +95,11 @@ re.arrange <- function(keep) {
   Call <- object$call
   term.lengths <- sapply(scope, length)
   n.items <- length(items)
-  visited <- array(FALSE, term.lengths)
-  visited[array(items, c(1, n.items))] <- TRUE
-  if (!is.null(keep)) {
-    keep.list <- vector("list", length(visited))
-    nv <- 1
-  }
-  models <- vector("list", length(visited))
-  nm <- 2
+  visited <- matrix(items)
   form.vector <- character(n.items)
   for (i in seq(n.items)) form.vector[i] <- scope[[i]][items[i]]
   form <- deparse(object$formula)
-  if (trace) 
+  if (trace>0) 
     cat("Start: ", form)
   fit <- object
   n <- length(fit$fitted)
@@ -108,99 +110,88 @@ re.arrange <- function(keep) {
   else if (scale == 0) 
     scale <- deviance.lm(fit)/fit$df.resid
   bAIC <- fit$aic
-  if (trace) 
+  if (trace>0) 
     cat("; AIC=", format(round(bAIC, 4)), "\n")
-  models[[1]] <- list(deviance = deviance(fit), df.resid = fit$df.resid, 
+  models <- list(
+                 list(deviance = deviance(fit), df.resid = fit$df.resid, 
                       AIC = bAIC, from = "", to = "")
-  if (!is.null(keep)) {
-    keep.list[[nv]] <- keep(fit, bAIC)
-    nv <- nv + 1
-  }
+                 )
+  if (!is.null(keep))   {
+    keep.list <- list(keep(fit,...))
+    keep.it=TRUE}
+  else keep.it=FALSE
   AIC <- bAIC + 1
+  stepnum=0
   while (bAIC < AIC & steps > 0) {
     steps <- steps - 1
+    stepnum=stepnum+1
     AIC <- bAIC
-    bitems <- items
-    bfit <- fit
+    form.list=NULL
+###First some prelimenaries to see what formulas to try
     for (i in seq(n.items)) {
       if (backward) {
         trial <- items
         trial[i] <- trial[i] - 1
-        if (trial[i] > 0 && !visited[array(trial, c(1, 
-                                                    n.items))]) {
-          visited[array(trial, c(1, n.items))] <- TRUE
+        if (trial[i] > 0 && !get.visit(trial,visited)) {
+          visited<-cbind(visited,trial)
           tform.vector <- form.vector
           tform.vector[i] <- scope[[i]][trial[i]]
-          form <- paste(form.y, paste(tform.vector, collapse = " + "))
-          if (trace) 
-            cat("Trial: ", form)
-          tfit <- update(object, eval(parse(text = form)), 
-                         trace = FALSE, ...)
-          tAIC <- tfit$aic
-          if (!is.null(keep)) {
-            keep.list[[nv]] <- keep(tfit, tAIC)
-            nv <- nv + 1
-          }
-          if (tAIC < bAIC) {
-            bAIC <- tAIC
-            bitems <- trial
-            bfit <- tfit
-            bform.vector <- tform.vector
-            bfrom <- form.vector[i]
-            bto <- tform.vector[i]
-          }
-          if (trace) 
-            cat("; AIC=", format(round(tAIC, 4)), "\n")
+          form.list=c(form.list,list(list(trial=trial, form.vector=tform.vector, which=i)))
         }
       }
       if (forward) {
         trial <- items
         trial[i] <- trial[i] + 1
-        if (trial[i] <= term.lengths[i] && !visited[array(trial, 
-                   c(1, n.items))]) {
-          visited[array(trial, c(1, n.items))] <- TRUE
+        if (trial[i] <= term.lengths[i] && !get.visit(trial,visited)){
+          visited<-cbind(visited,trial)
           tform.vector <- form.vector
           tform.vector[i] <- scope[[i]][trial[i]]
-          form <- paste(form.y, paste(tform.vector, collapse = " + "))
-          if (trace) 
-            cat("Trial: ", form)
-          tfit <- update(object, eval(parse(text = form)), 
-                         trace = FALSE, ...)
-          tAIC <- tfit$aic
-          if (!is.null(keep)) {
-            keep.list[[nv]] <- keep(tfit, tAIC)
-            nv <- nv + 1
-          }
-          if (tAIC < bAIC) {
-            bAIC <- tAIC
-            bitems <- trial
-            bfit <- tfit
-            bform.vector <- tform.vector
-            bfrom <- form.vector[i]
-            bto <- tform.vector[i]
-          }
-          if (trace) 
-            cat("; AIC=", format(round(tAIC, 4)), "\n")
+          form.list=c(form.list,list(list(trial=trial, form.vector=tform.vector, which=i)))
         }
       }
     }
+    if(is.null(form.list))break
+### Now we are ready for the expensive loop
+### Parallel is set up
+if(parallel&&require(foreach)){
+#   step.list=foreach(i=1:length(form.list),.inorder=FALSE,.packages="gam",.verbose=trace>1)%dopar%
+   step.list=foreach(i=1:length(form.list),.inorder=FALSE,.verbose=trace>1)%dopar%
+    {
+      tform=paste(form.y, paste(form.list[[i]]$form.vector, collapse = " + "))
+      update(object, eval(parse(text = tform)),trace = FALSE, ...)
+    }
+  }
+### No parallel    
+    else {
+    step.list=as.list(sequence(length(form.list)))
+    for(i in 1:length(form.list)){
+      tform=paste(form.y, paste(form.list[[i]]$form.vector, collapse = " + "))
+      step.list[[i]]=update(object, eval(parse(text = tform)),trace = FALSE, ...)
+      if(trace>1)cat("Trial: ", tform,"; AIC=", format(round(step.list[[i]]$aic, 4)), "\n")
+    }
+}      
+### end expensive loop
+    taic.vec=sapply(step.list,"[[","aic")
+    if(keep.it)  keep.list=c(keep.list, lapply(step.list,keep,...))
+    bAIC=min(taic.vec)
     if (bAIC >= AIC | steps == 0) {
-      if (!is.null(keep)) 
-        fit$keep <- re.arrange(keep.list[seq(nv - 1)])
-      return(make.step(models[seq(nm - 1)], fit, scale, 
-                       object))
+      if (keep.it) fit$keep <- re.arrange(keep.list)
+      return(make.step(models, fit, scale, object))
     }
     else {
-      if (trace) 
-        cat("Step : ", deparse(bfit$formula), "; AIC=", 
-            format(round(bAIC, 4)), "\n\n")
-      items <- bitems
-      models[[nm]] <- list(deviance = deviance(bfit), df.resid = bfit$df.resid, 
-                           AIC = bAIC, from = bfrom, to = bto)
-      nm <- nm + 1
-      fit <- bfit
-      form.vector <- bform.vector
+      o1=order(taic.vec)[1]
+      fit=step.list[[o1]]
+      form.list=form.list[[o1]]
+      bwhich=form.list$which
+      bfrom=form.vector[bwhich]
+      form.vector=form.list$form.vector #this is the new one
+      bto=form.vector[bwhich]
+      if (trace>0) 
+        cat(paste("Step:",stepnum,sep=""), deparse(fit$formula), "; AIC=", 
+            format(round(bAIC, 4)), "\n")
+      items <- form.list$trial
+      models <- c(models,list(list(deviance = deviance(fit), df.resid = fit$df.resid, 
+                           AIC = bAIC, from = bfrom, to = bto)))
     }
   }
 }
-

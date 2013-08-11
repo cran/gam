@@ -219,7 +219,9 @@ others involving the numerical fit.  See \code{lm.object}.
 with
   the same name in the R library \code{mgcv}, which uses only smoothing
   splines with a focus on automatic smoothing parameter selection via
-  GCV.
+  GCV. Some of the functions in package \code{gam} will not work if
+  package \code{mgcv} is loaded (and detaching it is not enough; you
+    will need to restart the session).
 
  }
 \references{

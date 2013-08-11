@@ -6,7 +6,7 @@
   these in a greedy fashion. Note: this is NOT a method for \code{step},
 which used to be a generic, so must be invoked with the full name.}
 \usage{
-step.gam(object, scope, scale, direction, trace = TRUE, keep, steps, \ldots)
+step.gam(object, scope, scale, direction, trace, keep, steps, parallel, \ldots)
 }
 \arguments{
 \item{object}{
@@ -14,14 +14,21 @@ An object of class \code{gam} or any of it's inheritants.
 }
 \item{scope}{
 defines the range of models examined in the step-wise search. It is a list of formulas, with each formula corresponding to a term in the model. Each of these formulas specifies a "regimen" of candidate forms in which the particular term may enter the model. For example, a term formula might be 
-~1+ Income + log(Income) + s(Income)
+\code{~1+ Income + log(Income) + s(Income)}.
 This means that \code{Income} could either appear not at all,  linearly, linearly in its logarithm, or as a smooth function estimated nonparametrically. A \code{1} in the formula allows the additional option of leaving the term out of the model entirely. 
 Every term in the model is described by such a term formula, and the
 final model is built up by selecting a component from each
 formula.
 
-The supplied model \code{object} is used as the starting model, and hence there is the requirement that one term from each of the term formulas be present in \code{formula(object)}. This also implies that any terms in \code{formula(object)} not contained in any of the term formulas will be 
+As an alternative more convenient for big models, each list can have
+instead of a formula a
+character vector corresponding to the candidates for that term. Thus we
+could have \code{c("1","x","s(x,df=5")} rather than \code{~1+x+s(x,df=5)}.
+
+The supplied model \code{object} is used as the starting model, and hence there is the requirement that one term from each of the term formulas be present in \code{formula(object)}. This also implies that any terms in \code{formula(object)} \emph{not} contained in any of the term formulas will be forced
 to be present in every model considered.
+The function \code{gam.scope} is helpful for generating the scope
+argument for a large model.
 }
 \item{scale}{
 an optional argument used in the definition of the AIC statistic used to evaluate models for selection. By default, the scaled Chi-squared statistic for the initial model is used, but if forward selection is to be performed, this is not necessarily a sound choice. 
@@ -30,15 +37,27 @@ an optional argument used in the definition of the AIC statistic used to evaluat
 The mode of step-wise search, can be one of \code{"both"}, \code{"backward"}, or \code{"forward"}, with a default of \code{"both"}. If \code{scope} is missing, the default for \code{direction} is "backward". 
 }
 \item{trace}{
-If \code{TRUE}, information is printed during the running of \code{step.gam()}. This is an encouraging choice in general, since \code{step.gam()} can take some time to compute either for large models or when called with an an extensive \code{scope=} argument. A simple one line model summary is printed for each model visited in the search, and the selected model is noted at each step.
+If \code{TRUE} (the default), information is printed during the running
+of \code{step.gam()}. This is an encouraging choice in general, since
+\code{step.gam()} can take some time to compute either for large models
+or when called with an an extensive \code{scope=} argument. A simple one
+line model summary is printed for each model selected. This argument can
+also be given as the binary \code{0} or \code{1}. A value \code{trace=2}
+gives a more verbose trace.
 }
 \item{keep}{
-A filter function whose input is a fitted \code{gam} object and the associated "AIC" statistic, and whose output is arbitrary. Typically \code{keep()} will select a subset of the components of the object and return them. The default is not to keep anything.
+A filter function whose input is a fitted \code{gam} object, and
+anything else passed via \dots, and whose output is arbitrary. Typically \code{keep()} will select a subset of the components of the object and return them. The default is not to keep anything.
 }
 \item{steps}{
 The maximum number of steps to be considered. The default is 1000 (essentially as
 many as required). It is typically used to stop the process early.
 }
+\item{parallel}{If \code{TRUE}, use parallel \code{foreach} to fit each
+  trial run.
+      Must register parallel before hand, such as \code{doMC} or others.
+    See the example below.}
+
 \item{\dots}{Additional arguments to be passed on to \code{keep}}
 }
 \value{
@@ -57,7 +76,7 @@ in terms of the AIC statistic is selected and defines the step.
 The entire process is repeated until either the maximum number of steps has been used, or until the AIC criterion can not be decreased by any of the eligible steps.
 }
 \seealso{
-\code{\link{step}},\code{\link{glm}}, \code{\link{gam}}, \code{\link{drop1}}, \code{\link{add1}}, \code{\link{anova.gam}}
+\code{\link{gam.scope}},\code{\link{step}},\code{\link{glm}}, \code{\link{gam}}, \code{\link{drop1}}, \code{\link{add1}}, \code{\link{anova.gam}}
 }
 \author{
   Written by Trevor Hastie, following closely the design in the
@@ -78,6 +97,13 @@ The entire process is repeated until either the maximum number of steps has been
 data(gam.data)
 gam.object <- gam(y~x+z, data=gam.data)
 step.object <-step.gam(gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)))
+\dontrun{
+# Parallel
+require(doMC)
+registerDoMC(cores=2)
+step.gam(gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)),parallel=TRUE)
+}
+
 }
 \keyword{models}
 \keyword{regression}
