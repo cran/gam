@@ -2,14 +2,11 @@
 \title{Service functions and as yet undocumented functions for the gam library}
 \alias{.First.lib}
 \alias{[.smooth}
-\alias{all.wam}
+\alias{general.wam}
 \alias{anova.gamlist}
 \alias{as.anova}
 \alias{as.data.frame.lo.smooth}
 \alias{assign.list}
-\alias{deviance.default}
-\alias{deviance.glm}
-\alias{deviance.lm}
 \alias{gamlist}
 \alias{gam.match}
 \alias{gam.nlchisq}

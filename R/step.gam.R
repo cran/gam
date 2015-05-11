@@ -6,7 +6,11 @@ step.gam <-
  get.visit <- function(trial, visited){
     match(paste(trial,collapse=""),apply(visited,2,paste,collapse=""),FALSE)
   }
-  scope.char <- function(formula) {
+deviancelm <-
+function(object, ...)
+if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
+		residuals^2)
+ scope.char <- function(formula) {
     formula = update(formula, ~-1 + .)
     tt <- terms(formula)
     tl <- attr(tt, "term.labels")
@@ -105,10 +109,10 @@ step.gam <-
   n <- length(fit$fitted)
   if (missing(scale)) {
     famname <- family$family["name"]
-    scale <- switch(famname, Poisson = 1, Binomial = 1, deviance.lm(fit)/fit$df.resid)
+    scale <- switch(famname, Poisson = 1, Binomial = 1, deviancelm(fit)/fit$df.resid)
   }
   else if (scale == 0) 
-    scale <- deviance.lm(fit)/fit$df.resid
+    scale <- deviancelm(fit)/fit$df.resid
   bAIC <- fit$aic
   if (trace>0) 
     cat("; AIC=", format(round(bAIC, 4)), "\n")
@@ -153,7 +157,8 @@ step.gam <-
     if(is.null(form.list))break
 ### Now we are ready for the expensive loop
 ### Parallel is set up
-if(parallel&&require(foreach)){
+#if(parallel&&require(foreach)){
+if(parallel){
 #   step.list=foreach(i=1:length(form.list),.inorder=FALSE,.packages="gam",.verbose=trace>1)%dopar%
    step.list=foreach(i=1:length(form.list),.inorder=FALSE,.verbose=trace>1)%dopar%
     {

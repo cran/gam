@@ -34,7 +34,7 @@ argument for a large model.
 an optional argument used in the definition of the AIC statistic used to evaluate models for selection. By default, the scaled Chi-squared statistic for the initial model is used, but if forward selection is to be performed, this is not necessarily a sound choice. 
 }
 \item{direction}{
-The mode of step-wise search, can be one of \code{"both"}, \code{"backward"}, or \code{"forward"}, with a default of \code{"both"}. If \code{scope} is missing, the default for \code{direction} is "backward". 
+The mode of step-wise search, can be one of \code{"both"}, \code{"backward"}, or \code{"forward"}, with a default of \code{"both"}. If \code{scope} is missing, the default for \code{direction} is "both". 
 }
 \item{trace}{
 If \code{TRUE} (the default), information is printed during the running

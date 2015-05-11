@@ -14,11 +14,19 @@
         stop("x must be bivariate")
       duplicated(x[, 1] + (1i) * x[, 2])
     }
-  interp.loaded<-require("akima")
-  if(!interp.loaded)stop("You need to install and load the package 'akima' from the R contributed libraries")
+
+
+#  interp.loaded<-require("akima")
+  interp.loaded<-TRUE
+#  if(!interp.loaded)
   xname <- dimnames(x)[[2]]
   dups <- bivar.dup(x)
-  xyz <- interp(x[!dups, 1], x[!dups, 2], y[!dups])
+  if (requireNamespace("akima", quietly = TRUE)) {
+    xyz <- akima::interp(x[!dups, 1], x[!dups, 2], y[!dups])
+   } else {
+    stop("You need to install the package 'akima' from the R contributed libraries to use this plotting method for bivariate functions")
+   }
+
   zmin <- min(xyz$z[!is.na(xyz$z)])
   z <- ifelse(is.na(xyz$z), zmin, xyz$z)
   scale2 <- diff(range(z))

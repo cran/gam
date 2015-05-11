@@ -46,7 +46,7 @@ practice.
 
 The matrix is endowed with a number of attributes; the matrix itself is
 used in the construction of the model matrix, while the attributes are
-needed for the backfitting algorithms \code{all.wam} (weighted additive
+needed for the backfitting algorithms \code{general.wam} (weighted additive
 model) or \code{lo.wam} (currently not implemented). Local-linear curve
 or surface fits reproduce linear responses, while local-quadratic fits
 reproduce quadratic curves or surfaces. These parts of the \code{loess}
@@ -65,7 +65,7 @@ of the model.
 One important attribute is named \code{call}. For example, \code{lo(x)}
 has a call component
 \code{gam.lo(data[["lo(x)"]], z, w, span = 0.5, degree = 1, ncols = 1)}.
-This is an expression that gets evaluated repeatedly in \code{all.wam}
+This is an expression that gets evaluated repeatedly in \code{general.wam}
 (the backfitting algorithm).
 
 \code{gam.lo} returns an object with components

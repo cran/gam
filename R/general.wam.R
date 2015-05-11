@@ -1,4 +1,4 @@
-"all.wam" <-
+"general.wam" <-
   function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
            se = TRUE, ...)
 {
@@ -73,7 +73,7 @@
                                                         RATIO, ndig)), "\n")
   }
   if((nit == maxit) & maxit > 1.)
-    warning(paste("all.wam convergence not obtained in ", maxit,
+    warning(paste("general.wam convergence not obtained in ", maxit,
                   " iterations"))
   names(df) <- names.calls
   if(trace)

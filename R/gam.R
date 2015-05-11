@@ -1,7 +1,7 @@
 "gam" <-
   function(formula, family = gaussian, data, 
            weights, subset, na.action, start = NULL, etastart, mustart, control = gam.control(...),
-           model = FALSE, method="glm.fit", x = FALSE, y = TRUE, ...)
+           model = TRUE, method="glm.fit", x = FALSE, y = TRUE, ...)
 {
   call <- match.call()
   if (is.character(family)) 

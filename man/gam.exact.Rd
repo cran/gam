@@ -23,10 +23,11 @@ There is a print method for the gamex class.
            \emph{JASA}, December 2004, 99(468), 938-948. See
 	   \url{http://www-stat.stanford.edu/~hastie/Papers/dominiciR2.pdf}
 	 }
-	 \author{Aidan McDermott, Department of Biostatistics, Johns
-	   Hopkins University. See \url{http://ihapss.biostat.jhsph.edu/software/gam.exact/gam.exact.htm}
+\author{Aidan McDermott, Department of Biostatistics, Johns
+	   Hopkins University. See \url{http://www.ihapss.jhsph.edu/software/gam.exact/gam.exact.htm}
 	   Modified by Trevor Hastie for R}
-	 \examples{
+	 
+\examples{
 set.seed(31)
 n     <- 200
 x     <- rnorm(n)

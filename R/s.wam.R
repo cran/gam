@@ -25,6 +25,9 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 	storage.mode(w) <- "double"
 	p <- smooth.frame$p
 	n <- smooth.frame$n
+### Need to do the signif hack on the which columns of x
+  for(ich in which)x[,ich]=signif(x[,ich],6)
+###
  	fit <- .Fortran("bakfit",
 		x,
 		npetc = as.integer(c(n, p, length(which), se, 0, maxit, 0)),

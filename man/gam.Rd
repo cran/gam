@@ -19,7 +19,7 @@
 \usage{
 gam(formula, family = gaussian, data, weights, subset, na.action, 
        start, etastart, mustart, control = gam.control(\ldots),
-model=FALSE, method, x=FALSE, y=TRUE, \dots)
+model=TRUE, method, x=FALSE, y=TRUE, \dots)
 
 gam.fit(x, y, smooth.frame, weights = rep(1,nobs), start = NULL, 
     etastart = NULL, mustart = NULL, offset = rep(0, nobs), family = gaussian(), 
@@ -78,7 +78,9 @@ errors; they will simply produce the usual parametric interaction.}
 }
 
   \item{model}{a logical value indicating whether \emph{model frame}
-    should be included as a component of the returned value.}
+    should be included as a component of the returned value. Needed if
+    \code{gam} is called and predicted from inside a user
+    function. Default is \code{TRUE}.}
 
   \item{method}{the method to be used in fitting the parametric part of
     the model.

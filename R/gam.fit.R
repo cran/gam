@@ -76,12 +76,12 @@
     assignx <- assign.list(assignx, a$term.labels)
     which <- assignx[smooth.labels]
     if (length(smoothers) > 1) 
-      bf <- "all.wam"
+      bf <- "general.wam"
     else {
       sbf <- match(names(smoothers), gam.wlist, FALSE)
       bf <- if (sbf) 
         paste(gam.wlist[sbf], "wam", sep = ".")
-      else "all.wam"
+      else "general.wam"
     }
     bf.call <- parse(text = paste(bf, "(x, z, wz, fit$smooth, which, fit$smooth.frame,bf.maxit,bf.epsilon, trace)", 
                        sep = ""))[[1]]

@@ -33,7 +33,7 @@ can be used as smoothing parameter, with values typically in
 \code{s} returns the vector \code{x}, endowed with a number of
 attributes. The vector itself is used in the construction of the model
 matrix, while the attributes are needed for the backfitting algorithms
-\code{all.wam} (weighted additive model) or \code{s.wam} (currently not
+\code{general.wam} (weighted additive model) or \code{s.wam} (currently not
 implemented). Since smoothing splines reproduces linear fits, the linear
 part will be efficiently computed with the other parametric linear parts
 of the model.
@@ -44,7 +44,7 @@ for \code{gam}.
 One important attribute is named \code{call}. For example, \code{s(x)}
 has a call component
 \code{gam.s(data[["s(x)"]], z, w, spar = 1, df = 4)}.
-This is an expression that gets evaluated repeatedly in \code{all.wam}
+This is an expression that gets evaluated repeatedly in \code{general.wam}
 (the backfitting algorithm).
 
 \code{gam.s} returns an object with components
