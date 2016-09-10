@@ -17,9 +17,14 @@ function(x, y, w = rep(1, length(y)), span = 0.5, degree = 1, ncols = p, xeval
 	storage.mode(ncols) <- "integer"
 	o <- gam.match(x)
 	nef <- o$nef
+#	nvmax <- max(200,nef)
 	nvmax <- as.integer(200 + 300 * (1 - 1/log(max(c(nef - 200, 3)))))
-	liv <- as.integer(50 + (2^ncols + 4) * nvmax + 2 * nef)
-	lv <- as.integer(50 + (3 * ncols + 3) * nvmax + nef + (ifelse(degree ==
+#	liv <- as.integer(50 + (2^ncols + 4) * nvmax + 2 * nef)
+#	lv <- as.integer(50 + (3 * ncols + 3) * nvmax + nef + (ifelse(degree ==
+#		2, ((ncols + 2) * (ncols + 1))/2, ncols + 1) + 2) * (nef * span +
+#		1))
+	liv <- as.integer(100 + (2^ncols + 4) * nvmax + 2 * nef)
+	lv <- as.integer(100 + (3 * ncols + 3) * nvmax + nef + (ifelse(degree ==
 		2, ((ncols + 2) * (ncols + 1))/2, ncols + 1) + 2) * (nef * span +
 		1))
 	fit <- .Fortran("lo0",

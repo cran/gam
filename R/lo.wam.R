@@ -15,38 +15,44 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 		span <- sapply(atts, "[[", "span")
 		degree <- sapply(atts, "[[", "degree")
 		nvars <- sapply(atts, "[[", "ncols")
-		ndim <- sapply(atts, "[[", "dim")[2.,  ]
-		npetc <- as.integer(c(dx, length(which), 0., maxit, 0.))
+		ndim <- sapply(atts, "[[", "dim")[2,  ]
+		npetc <- as.integer(c(dx, length(which), 0, maxit, 0))
 		nef <- smooth.frame$nef
-		nvmax <- 200. + 300. * (1. - 1./log(apply(cbind(nef - 200.,
-			3.), 1., max)))
-		nspar <- (nef * span + 1.)
-		liv <- 50. + (2.^nvars + 4.) * nvmax + 2. * nef
-		lv <- 50. + (3. * nvars + 3.) * nvmax + nef + (ifelse(degree ==
-			2., ((nvars + 2.) * (nvars + 1.))/2., nvars + 1.) +
-			2.) * nspar
+		nvmax <- 200 + 300 * (1 - 1/log(apply(cbind(nef - 200,
+			3), 1, max)))
+#		nvmax <- pmax(200,nef)
+		nspar <- (nef * span + 1)
+#		liv <- 50 + (2^nvars + 4) * nvmax + 2 * nef
+#		lv <- 50 + (3 * nvars + 3) * nvmax + nef + (ifelse(degree ==
+#			2, ((nvars + 2) * (nvars + 1))/2, nvars + 1) +
+#			2) * nspar
+		liv <- 100 + (2^nvars + 4) * nvmax + 2 * nef
+		lv <- 100 + (3 * nvars + 3) * nvmax + nef + (ifelse(degree ==
+			2, ((nvars + 2) * (nvars + 1))/2, nvars + 1) +
+			2) * nspar
 		LL <- nspar * nvmax
 		liv <- liv + LL
-		lv <- lv + (nvars + 1.) * LL
-		which <- sapply(which, "[", 1.)
-		wddnfl <- cbind(unlist(which), nvars, ndim, degree, nef, liv,
-			lv, nvmax)
+		lv <- lv + (nvars + 1) * LL
+		which <- sapply(which, "[", 1)
+		wddnfl <- cbind(unlist(which), nvars, ndim, degree, nef, liv=ceiling(liv),
+			lv=ceiling(lv), nvmax=ceiling(nvmax))
 		storage.mode(wddnfl) <- "integer"
 		spatol <- as.double(c(span, tol))
-		nwork <- 9. * dx[1.] + sum(nef * (nvars + ndim + 4.) + 5. +
-			3. * ndim)
-		liv <- sum(liv)
-		lv <- sum(lv)
-		smooth.frame <- c(smooth.frame, list(npetc = npetc, wddnfl = 
+		nwork <- 9 * dx[1] + sum(nef * (nvars + ndim + 4) + 5 +
+                                         3 * ndim)
+                ###I put in a factor 2 here because I dont know what else to do to solved this seg fault
+		liv <- as.integer(2*ceiling(sum(liv)))
+		lv <- as.integer(2*ceiling(sum(lv)))
+		smooth.frame <- c(smooth.frame, list(npetc = npetc, wddnfl =
 			wddnfl, spatol = spatol,niwork=2*sum(nvars), nwork = nwork, liv = liv,
 			lv = lv))
 	}
 	else first <- FALSE
 	storage.mode(y) <- "double"
 	storage.mode(w) <- "double"
-	n <- smooth.frame$npetc[1.]
-	p <- smooth.frame$npetc[2.]
-	q <- smooth.frame$npetc[3.]
+	n <- smooth.frame$npetc[1]
+	p <- smooth.frame$npetc[2]
+	q <- smooth.frame$npetc[3]
 	fit <- .Fortran("baklo",
 		x,
 		y = y,
@@ -63,7 +69,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 		df = double(q),
 		qr = x,
 		qraux = double(p),
-		qpivot = as.integer(1.:p),
+		qpivot = as.integer(1:p),
                 effects=double(n),
 		integer(smooth.frame$liv),
 		double(smooth.frame$lv),
@@ -71,9 +77,9 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 		double(smooth.frame$nwork),
                         PACKAGE="gam")
 
-	nit <- fit$npetc[4.]
-	qrank <- fit$npetc[6.]
-	if((nit == maxit) & maxit > 1.)
+	nit <- fit$npetc[4]
+	qrank <- fit$npetc[6]
+	if((nit == maxit) & maxit > 1)
 		warning(paste("lo.wam convergence not obtained in ", maxit,
 			" iterations"))
 	names(fit$df) <- dimnames(s)[[2]]
@@ -83,10 +89,10 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
         effects<-fit$effects
         r1 <- seq(len = qrx$rank)
         dn <- colnames(x)
-        if (is.null(dn)) 
+        if (is.null(dn))
           dn <- paste("x", 1:p, sep = "")
         names(effects) <- c(dn[qrx$pivot[r1]], rep.int("", n - qrx$rank))
-	rl <- list(coefficients = fit$beta, residuals = fit$y - fit$eta, 
+	rl <- list(coefficients = fit$beta, residuals = fit$y - fit$eta,
                    fitted.values = fit$eta,
                    effects=effects, weights=w, rank=qrank,
                    assign=attr(x,"assign"),
@@ -94,7 +100,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
                    smooth = fit$s,
                    nl.df = fit$df
                    )
-	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0.)
+	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0)
 	if(se)
 		rl <- c(rl, list(var = fit$var))
 	c(list(smooth.frame = smooth.frame), rl)

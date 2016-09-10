@@ -10,13 +10,13 @@ function(x, ..., drop = FALSE)
 	y <- x[..., drop = drop]
 	if(!is.null(nas <- ats$NAs)) {
 		if(is.null(d <- dim(x)))
-			d <- c(length(x), 1.)
-		navec <- array(logical(d[1.]), d)
+			d <- c(length(x), 1)
+		navec <- array(logical(d[1]), d)
 		navec[nas,  ] <- TRUE
 		navec <- navec[...]
-		nas <- if(is.null(dim(navec))) navec else navec[, 1.]
+		nas <- if(is.null(dim(navec))) navec else navec[, 1]
 		nas <- seq(nas)[nas]
-		ats$NAs <- nas
+		if(length(nas))ats$NAs <- nas else ats$NAs=NULL
 	}
 	attributes(y) <- c(attributes(y), ats)
 	oldClass(y) <- cl

@@ -12,7 +12,7 @@ gam.exact(gam.obj)
 }
 \details{
  Only standard errors for the linear terms are produced.
-There is a print method for the gamex class. 
+There is a print method for the gamex class.
 }
 \value{
  A list (of class gamex) containing a table of coefficients and a variance
@@ -24,9 +24,8 @@ There is a print method for the gamex class.
 	   \url{http://www-stat.stanford.edu/~hastie/Papers/dominiciR2.pdf}
 	 }
 \author{Aidan McDermott, Department of Biostatistics, Johns
-	   Hopkins University. See \url{http://www.ihapss.jhsph.edu/software/gam.exact/gam.exact.htm}
-	   Modified by Trevor Hastie for R}
-	 
+	   Hopkins University. Modified by Trevor Hastie for R}
+
 \examples{
 set.seed(31)
 n     <- 200

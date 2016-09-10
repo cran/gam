@@ -17,13 +17,13 @@
   and smoothing splines.
   }
 \usage{
-gam(formula, family = gaussian, data, weights, subset, na.action, 
+gam(formula, family = gaussian, data, weights, subset, na.action,
        start, etastart, mustart, control = gam.control(\ldots),
 model=TRUE, method, x=FALSE, y=TRUE, \dots)
 
-gam.fit(x, y, smooth.frame, weights = rep(1,nobs), start = NULL, 
-    etastart = NULL, mustart = NULL, offset = rep(0, nobs), family = gaussian(), 
-    control = gam.control()) 
+gam.fit(x, y, smooth.frame, weights = rep(1,nobs), start = NULL,
+    etastart = NULL, mustart = NULL, offset = rep(0, nobs), family = gaussian(),
+    control = gam.control())
 }
 \arguments{
 
@@ -42,7 +42,7 @@ errors; they will simply produce the usual parametric interaction.}
     naming a family function, a family function or the result of a call
     to a family function.  (See \code{\link{family}} for details of
     family functions.)}
-  
+
   \item{data}{an optional data frame containing the variables
     in the model.  If not found in \code{data}, the variables are taken
     from \code{environment(formula)}, typically the environment from
@@ -124,7 +124,7 @@ methods. See the documentation for these methods for further information.
 In addition, the object \code{gam.wlist} (currently set to
 \code{c("s","lo")}) lists the smoothers for which efficient backfitters
 are provided. These are invoked if all the smoothing methods are of one
-kind (either all \code{"lo"} or all \code{"s"}). 
+kind (either all \code{"lo"} or all \code{"s"}).
 }
 \value{
 \code{gam} returns an object of class \code{gam}, which inherits from
@@ -143,8 +143,8 @@ that have methods for \code{gam} objects are \code{step} and
 The following components must be included in a legitimate `gam' object.
 The residuals, fitted values,  coefficients and effects should be extracted
 by the generic functions of the same name, rather than
-by the \code{"$"} operator. 
-The \code{family} function returns the entire family object used in the fitting, and \code{deviance} can be used to extract the deviance of the fit. 
+by the \code{"$"} operator.
+The \code{family} function returns the entire family object used in the fitting, and \code{deviance} can be used to extract the deviance of the fit.
 
 \item{coefficients}{
 the coefficients of the parametric part of the \code{additive.predictors}, which multiply  the
@@ -165,7 +165,7 @@ the fitted mean values, obtained by transforming  the component \code{additive.p
 }
 \item{smooth, nl.df, nl.chisq, var}{
 these four characterize the nonparametric aspect of the fit.
-\code{smooth} is a matrix of smooth terms, with a column corresponding to each smooth term in the model; if no smooth terms are in the \code{gam} model, all these components will be missing. 
+\code{smooth} is a matrix of smooth terms, with a column corresponding to each smooth term in the model; if no smooth terms are in the \code{gam} model, all these components will be missing.
 Each column corresponds to the strictly  nonparametric part of the term, while the parametric part is obtained from the model matrix.
 \code{nl.df} is a vector giving the approximate degrees of freedom for each column of \code{smooth}. For smoothing splines specified by \code{s(x)}, the approximate \code{df} will be the trace of the implicit smoother matrix minus 2.
 \code{nl.chisq} is a vector containing a type of score test for the removal of each of the columns of \code{smooth}.
@@ -175,7 +175,7 @@ Each column corresponds to the strictly  nonparametric part of the term, while t
   corresponding to the smooth terms, and has the ingredients needed for
   making predictions from a \code{gam} object}
 \item{residuals}{
-the  residuals from the final weighted additive fit; also known as 
+the  residuals from the final weighted additive fit; also known as
 residuals, these are typically not interpretable without rescaling by the weights.
 }
 \item{deviance}{
@@ -187,8 +187,8 @@ the residual sum of squares. Where sensible, the constant is chosen so that a
     \code{deviance}. The null model will include the offset, and an
     intercept if there is one in the model}
 \item{iter}{
-the number of local scoring 
-iterations used to compute the estimates. 
+the number of local scoring
+iterations used to compute the estimates.
 }
 \item{family}{
 a three-element character vector giving the name of the family, the link, and the variance function; mainly for printing purposes.
@@ -215,7 +215,7 @@ others involving the numerical fit.  See \code{lm.object}.
   "Generalized Additive Models" chapter (Hastie, 1992) in Chambers and
   Hastie (1992), and the philosophy in Hastie and Tibshirani (1991).
   This version of \code{gam} is adapted from the S
-  version to match the \code{glm} and \code{lm} functions in R. 
+  version to match the \code{glm} and \code{lm} functions in R.
 
   Note that this version of \code{gam} is different from the function
 with

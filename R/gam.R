@@ -1,55 +1,64 @@
 "gam" <-
-  function(formula, family = gaussian, data, 
+  function(formula, family = gaussian, data,
            weights, subset, na.action, start = NULL, etastart, mustart, control = gam.control(...),
            model = TRUE, method="glm.fit", x = FALSE, y = TRUE, ...)
 {
   call <- match.call()
-  if (is.character(family)) 
+  if (is.character(family))
     family <- get(family, mode = "function", envir = parent.frame())
-  if (is.function(family)) 
+  if (is.function(family))
     family <- family()
   if (is.null(family$family)) {
     print(family)
     stop("`family' not recognized")
   }
-  if (missing(data)) 
+  if (missing(data))
     data <- environment(formula)
   mf <- match.call(expand.dots = FALSE)
-  m <- match(c("formula", "data", "subset", "weights", "na.action", 
-               "etastart", "mustart", "offset"), names(mf), 0)
-  mf <- mf[c(1, m)]
+  ## m <- match(c("formula", "data", "subset", "weights", "na.action",
+  ##              "etastart", "mustart", "offset"), names(mf), 0L)
+ m <- match(c("formula", "data", "subset", "weights",
+              "etastart", "mustart", "offset"), names(mf), 0L)
+  mf <- mf[c(1L, m)]
+  mf$na.action=quote(na.pass)## need to do this because model frame is not subsetting properly
   mf$drop.unused.levels <- TRUE
-  mf[[1]] <- as.name("model.frame")
+  mf[[1L]] <- quote(stats::model.frame)
   mt <- if(missing(data)) terms(formula, gam.slist) else terms(formula,gam.slist,data = data)
-  mf$formula<-mt                                                          
+  mf$formula<-mt
   mf <- eval(mf, parent.frame())
-   switch(method, model.frame = return(mf), glm.fit = 1, glm.fit.null = 1, 
+  if(missing(na.action)){
+      naa=getOption("na.action","na.fail")
+      na.action=get(naa)
+      }
+  mf=na.action(mf)###because this was not done properly before
+  mt=attributes(mf)[["terms"]]# the predvars are added here, while not before
+    switch(method, model.frame = return(mf), glm.fit = 1, glm.fit.null = 1,
          stop("invalid `method': ", method))
 
 
   Y <- model.response(mf, "any")
-  X <- if (!is.empty.model(mt)) 
+  X <- if (!is.empty.model(mt))
     model.matrix(mt, mf, contrasts)
   else matrix(, NROW(Y), 0)
   weights <- model.weights(mf)
   offset <- model.offset(mf)
-  if (!is.null(weights) && any(weights < 0)) 
+  if (!is.null(weights) && any(weights < 0))
     stop("Negative wts not allowed")
-  if (!is.null(offset) && length(offset) != NROW(Y)) 
-    stop("Number of offsets is ", length(offset), ", should equal ", 
+  if (!is.null(offset) && length(offset) != NROW(Y))
+    stop("Number of offsets is ", length(offset), ", should equal ",
          NROW(Y), " (number of observations)")
   mustart <- model.extract(mf, "mustart")
   etastart <- model.extract(mf, "etastart")
 fit<-gam.fit(x=X,y=Y,smooth.frame=mf,weights=weights,start=start,
              etastart=etastart,mustart=mustart,
              offset=offset,family=family,control=control)
-  
+
 ### If both an offset and intercept are present, iterations are needed to
 ### compute the Null deviance; these are done here
 ###
   if(length(offset) && attr(mt, "intercept")>0) {
-    fit$null.dev <- glm.fit(x = X[, "(Intercept)", drop = FALSE], 
-               y = Y, weights = weights, offset = offset, family = family, 
+    fit$null.dev <- glm.fit(x = X[, "(Intercept)", drop = FALSE],
+               y = Y, weights = weights, offset = offset, family = family,
                control = control[c("epsilon","maxit","trace")], intercept = TRUE)$deviance
   }
     if(model) fit$model <- mf

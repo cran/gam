@@ -648,7 +648,7 @@ void F77_SUB(ehg182)(int *i)
 
 {
 
-    char *msg, msg2[50];
+    char *msg, msg2[100];
 
 #define MSG(_m_)	msg = _m_ ; break ;
 
