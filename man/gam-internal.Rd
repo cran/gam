@@ -10,10 +10,7 @@
 \alias{gamlist}
 \alias{gam.match}
 \alias{gam.nlchisq}
-\alias{gam.random}
-\alias{gam.slist}
 \alias{gam.sp}
-\alias{gam.wlist}
 \alias{gplot}
 \alias{gplot.default}
 \alias{gplot.factor}
@@ -27,7 +24,6 @@
 \alias{print.gam}
 \alias{print.gamex}
 \alias{print.summary.gam}
-\alias{random}
 \alias{s.wam}
 \alias{ylim.scale}
 \description{Internal gam functions}

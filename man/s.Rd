@@ -18,7 +18,8 @@ parameter. The real smoothing parameter (\code{spar} below) is found
 such that \code{df=tr(S)-1}, where \code{S} is the implicit smoother
 matrix. Values for \code{df} should be greater than \code{1}, with
 \code{df=1} implying a linear fit. If both \code{df} and \code{spar} are
-supplied, the former takes precedence.}
+supplied, the former takes precedence. Note that \code{df} is not
+necessarily an integer.}
 \item{spar}{
 can be used as smoothing parameter, with values typically in
 \code{(0,1]}. See \code{\link{smooth.spline}} for more details.}
@@ -29,12 +30,12 @@ can be used as smoothing parameter, with values typically in
   prediction at \code{xeval}.}
 }
 \value{
-  
+
 \code{s} returns the vector \code{x}, endowed with a number of
 attributes. The vector itself is used in the construction of the model
 matrix, while the attributes are needed for the backfitting algorithms
-\code{general.wam} (weighted additive model) or \code{s.wam} (currently not
-implemented). Since smoothing splines reproduces linear fits, the linear
+\code{general.wam} (weighted additive model) or \code{s.wam}.
+Since smoothing splines reproduces linear fits, the linear
 part will be efficiently computed with the other parametric linear parts
 of the model.
 
@@ -75,13 +76,17 @@ vector of predictions.
   Hastie, T. and Tibshirani, R. (1990)
   \emph{Generalized Additive Models.}
   London: Chapman and Hall.
+
+  Cantoni, E. and hastie, T. (2002)
+  Degrees-of-freedom tests for smoothing splines,
+  \emph{Biometrika} 89(2), 251-263
 }
 \examples{
-# fit Start using a smoothing spline with 4 df.
-y ~ Age + s(Start, 4)
-# fit log(Start) using a smoothing spline with 5 df.
-y ~ Age + s(log(Start), df=5)
-}
+     # fit Start using a smoothing spline with 4 df.
+     y ~ Age + s(Start, 4)
+     # fit log(Start) using a smoothing spline with 5 df.
+     y ~ Age + s(log(Start), df=5)
+ }
 \keyword{models}
 \keyword{regression}
 \keyword{nonparametric}

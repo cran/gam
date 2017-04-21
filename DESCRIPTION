@@ -1,8 +1,8 @@
 Package: gam
 Type: Package
 Title: Generalized Additive Models
-Date: 2016-09-09
-Version: 1.14
+Date: 2017-04-20
+Version: 1.14-3
 Author: Trevor Hastie
 Description: Functions for fitting and working with generalized
 		additive models, as described in chapter 7 of "Statistical Models in
@@ -13,6 +13,6 @@ Depends: stats, splines, foreach
 Suggests: akima
 License: GPL-2
 NeedsCompilation: yes
-Packaged: 2016-09-10 01:16:06 UTC; hastie
+Packaged: 2017-04-21 01:11:03 UTC; hastie
 Repository: CRAN
-Date/Publication: 2016-09-10 18:02:23
+Date/Publication: 2017-04-21 06:11:52 UTC

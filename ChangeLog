@@ -1,3 +1,7 @@
+2017-04-12   Trevor Hastie <hastie@stanford.edu> version 1.14-2
+	* changed the mechanism for users to add thir own smoother. New
+	function gam.smoothers() allows one to add to the list
+	* added documentation for random() smoother, and added an argument
 2016-09-09   Trevor Hastie <hastie@stanford.edu> version 1.14
 	* fixed bug in gam when NAs are in data (model.frame does not
 	behave as stated, so I had to make a work around)

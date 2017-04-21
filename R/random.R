@@ -1,13 +1,13 @@
 "random" <-
-  function(xvar, df = NULL, sigma = 0.)
+    function (f, df = NULL, lambda = 0, intercept = TRUE)
 {
-  scall <- deparse(sys.call())
-  if(!inherits(xvar, "factor"))
-    stop("random() expects a factor or category as its first argument"
-         )
-  xvar <- C(xvar, rep(0., length(levels(xvar))), 1.)
-  attr(xvar, "call") <- substitute(gam.random(data[[scall]], z, w, df = 
-                                              df, sigma))
-  oldClass(xvar) <- c("smooth", oldClass(xvar))
-  xvar
+    scall <- deparse(sys.call())
+    if (!inherits(f, "factor"))
+        stop("random() expects a factor or category as its first argument")
+    newf=rep(0,length(f))
+    attr(newf,"values")=f
+    attr(newf, "call") <- substitute(gam.random2(data[[scall]], z,
+                                             w, df = df, lambda = lambda, intercept = intercept))
+    oldClass(newf) <- "smooth"
+    newf
 }

@@ -23,6 +23,7 @@
   mf$na.action=quote(na.pass)## need to do this because model frame is not subsetting properly
   mf$drop.unused.levels <- TRUE
   mf[[1L]] <- quote(stats::model.frame)
+  gam.slist <- gam.smoothers()$slist
   mt <- if(missing(data)) terms(formula, gam.slist) else terms(formula,gam.slist,data = data)
   mf$formula<-mt
   mf <- eval(mf, parent.frame())

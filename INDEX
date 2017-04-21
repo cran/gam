@@ -1,6 +1,7 @@
 gam		Fit a generalized additive model
 lo		local regression wrapper to be used in a gam formula
 s		smoothing spline wrapper to be used in a gam formula
+random		random effects wrapper
 plot.gam	an interactive plotting function for gams
 predict.gam	make predictions from a gam object
 step.gam	stepwise model search with gam
