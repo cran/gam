@@ -12,6 +12,53 @@
 #endif
 
 #define FDEF(name)  {#name, (DL_FUNC) &F77_SUB(name), sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
+void F77_SUB(lo0)(
+		  double *x,
+		  double *y,
+		  double *z,
+		  int *n,
+		  int *d,
+		  int *p,
+		  int *nvmax,
+		  double *span,
+		  int *degree,
+		  int *match,
+		  int *nef,
+		  double *dof,
+		  double *s,
+		  double *var,
+		  double *beta,
+		  int *iv,
+		  int *liv,
+		  int *lv,
+		  double *v,
+		  int *iwork,
+		  double *work
+		  );
+
+static R_NativePrimitiveArgType lo0_t[] = {
+  REALSXP,
+  REALSXP,
+  REALSXP,
+  INTSXP,
+  INTSXP,
+  INTSXP,
+  INTSXP,
+  REALSXP,
+  INTSXP,
+  INTSXP,
+  INTSXP,
+  REALSXP,
+  REALSXP,
+  REALSXP,
+  REALSXP,
+  INTSXP,
+  INTSXP,
+  INTSXP,
+  REALSXP,
+  INTSXP,
+  REALSXP
+};
 void F77_SUB(lowese)(
 		     int *iv,
 		     int *liv,
@@ -188,6 +235,7 @@ static R_NativePrimitiveArgType bakfit_t[] = {
 };
 
 static R_FortranMethodDef fMethods[] = {
+  FDEF(lo0) ,
   FDEF(lowese) ,
   FDEF(sknotl) ,
   FDEF(splsm) ,
