@@ -71,7 +71,7 @@ fit<-gam.fit(x=X,y=Y,smooth.frame=mf,weights=weights,start=start,
 		       offset = offset, control = control, method = method,
 		       contrasts = attr(X, "contrasts"),
                        xlevels = .getXlevels(mt, mf)))
-    class(fit) <- c("gam","glm", "lm")
+    class(fit) <- c("Gam","glm", "lm")
   if(!is.null(fit$df.residual) && !(fit$df.residual > 0))
     warning("Residual degrees of freedom are negative or zero.  This occurs when the sum of the parametric and nonparametric degrees of freedom exceeds the number of observations.  The model is probably too complex for the amount of data available."
             )

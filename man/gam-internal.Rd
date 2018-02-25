@@ -3,11 +3,11 @@
 \alias{.First.lib}
 \alias{[.smooth}
 \alias{general.wam}
-\alias{anova.gamlist}
+\alias{anova.Gamlist}
 \alias{as.anova}
 \alias{as.data.frame.lo.smooth}
 \alias{assign.list}
-\alias{gamlist}
+\alias{Gamlist}
 \alias{gam.match}
 \alias{gam.nlchisq}
 \alias{gam.sp}
@@ -17,13 +17,13 @@
 \alias{gplot.list}
 \alias{gplot.matrix}
 \alias{gplot.numeric}
-\alias{labels.gam}
+\alias{labels.Gam}
 \alias{lo.wam}
-\alias{newdata.predict.gam}
+\alias{newdata.predict.Gam}
 \alias{polylo}
-\alias{print.gam}
-\alias{print.gamex}
-\alias{print.summary.gam}
+\alias{print.Gam}
+\alias{print.Gamex}
+\alias{print.summary.Gam}
 \alias{s.wam}
 \alias{ylim.scale}
 \description{Internal gam functions}

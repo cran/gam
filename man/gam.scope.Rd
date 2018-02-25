@@ -1,10 +1,10 @@
 \name{gam.scope}
 \alias{gam.scope}
 \title{
-Generate a scope for step.gam
+Generate a scope for step.Gam
 }
 \description{Given a data.frame as an argument, generate a scope list
-  for use in step.gam, each element of which gives the candidates for
+  for use in step.Gam, each element of which gives the candidates for
   that term.
 }
 \usage{
@@ -12,7 +12,7 @@ gam.scope(frame, response=1, smoother = "s", arg = NULL, form = TRUE)
 }
 \arguments{
   \item{frame}{
-a data.frame to be used in \code{step.gam}. Apart from the response
+a data.frame to be used in \code{step.Gam}. Apart from the response
 column, all other columns will be used.
 }
 \item{response}{
@@ -40,7 +40,7 @@ With form=FALSE, we would get the character vector \code{c("1","x","s(x,df=4)","
 }
 \value{
 a scope list is returned, with either a formula or a character vector
-for each term, whcih describes the candidates for that term in the gam.  
+for each term, which describes the candidates for that term in the Gam.  
 }
 \references{
   Hastie, T. J. (1991)
@@ -55,7 +55,7 @@ for each term, whcih describes the candidates for that term in the gam.
   This version of \code{gam.scope} is adapted from the S
   version.
 }
-\seealso{\code{\link{step.gam}}
+\seealso{\code{\link{step.Gam}}
 }
 \examples{
 data(gam.data)

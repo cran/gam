@@ -1,7 +1,7 @@
-"gamlist" <-
+"Gamlist" <-
 function(...)
 {
 	gl <- list(...)
-	oldClass(gl) <- c("gamlist", "glmlist")
+	oldClass(gl) <- c("Gamlist", "glmlist")
 	gl
 }

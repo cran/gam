@@ -1,16 +1,16 @@
-\name{step.gam}
-\alias{step.gam}
+\name{step.Gam}
+\alias{step.Gam}
 \title{Stepwise model builder for GAM}
 \description{Builds a GAM model in a step-wise fashion. For each "term"
   there is an ordered list of alternatives, and the function traverses
   these in a greedy fashion. Note: this is NOT a method for \code{step},
 which used to be a generic, so must be invoked with the full name.}
 \usage{
-step.gam(object, scope, scale, direction, trace, keep, steps, parallel, \ldots)
+step.Gam(object, scope, scale, direction, trace, keep, steps, parallel, \ldots)
 }
 \arguments{
 \item{object}{
-An object of class \code{gam} or any of it's inheritants.
+An object of class \code{Gam} or any of it's inheritants.
 }
 \item{scope}{
 defines the range of models examined in the step-wise search. It is a list of formulas, with each formula corresponding to a term in the model. Each of these formulas specifies a "regimen" of candidate forms in which the particular term may enter the model. For example, a term formula might be 
@@ -38,15 +38,15 @@ The mode of step-wise search, can be one of \code{"both"}, \code{"backward"}, or
 }
 \item{trace}{
 If \code{TRUE} (the default), information is printed during the running
-of \code{step.gam()}. This is an encouraging choice in general, since
-\code{step.gam()} can take some time to compute either for large models
+of \code{step.Gam()}. This is an encouraging choice in general, since
+\code{step.Gam()} can take some time to compute either for large models
 or when called with an an extensive \code{scope=} argument. A simple one
 line model summary is printed for each model selected. This argument can
 also be given as the binary \code{0} or \code{1}. A value \code{trace=2}
 gives a more verbose trace.
 }
 \item{keep}{
-A filter function whose input is a fitted \code{gam} object, and
+A filter function whose input is a fitted \code{Gam} object, and
 anything else passed via \dots, and whose output is arbitrary. Typically \code{keep()} will select a subset of the components of the object and return them. The default is not to keep anything.
 }
 \item{steps}{
@@ -76,7 +76,7 @@ in terms of the AIC statistic is selected and defines the step.
 The entire process is repeated until either the maximum number of steps has been used, or until the AIC criterion can not be decreased by any of the eligible steps.
 }
 \seealso{
-\code{\link{gam.scope}},\code{\link{step}},\code{\link{glm}}, \code{\link{gam}}, \code{\link{drop1}}, \code{\link{add1}}, \code{\link{anova.gam}}
+\code{\link{gam.scope}},\code{\link{step}},\code{\link{glm}}, \code{\link{gam}}, \code{\link{drop1}}, \code{\link{add1}}, \code{\link{anova.Gam}}
 }
 \author{
   Written by Trevor Hastie, following closely the design in the
@@ -95,13 +95,13 @@ The entire process is repeated until either the maximum number of steps has been
 }
 \examples{
 data(gam.data)
-gam.object <- gam(y~x+z, data=gam.data)
-step.object <-step.gam(gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)))
+Gam.object <- gam(y~x+z, data=gam.data)
+step.object <-step.Gam(Gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)))
 \dontrun{
 # Parallel
 require(doMC)
 registerDoMC(cores=2)
-step.gam(gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)),parallel=TRUE)
+step.Gam(Gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)),parallel=TRUE)
 }
 
 }

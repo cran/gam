@@ -1,16 +1,16 @@
-\name{anova.gam}
-\alias{anova.gam}
-\alias{summary.gam}
+\name{anova.Gam}
+\alias{anova.Gam}
+\alias{summary.Gam}
 \title{Analysis of Deviance for a Generalized Additive Model}
 \description{Produces an ANODEV table for a set of GAM models, or else a
 summary for a single GAM model}
 \usage{
-\method{anova}{gam}(object, \dots, test)
-\method{summary}{gam}(object, dispersion=NULL,\dots)
+\method{anova}{Gam}(object, \dots, test)
+\method{summary}{Gam}(object, dispersion=NULL,\dots)
 }
 \arguments{
-  \item{object}{a fitted gam}
-  \item{\dots}{other fitted gams for \code{anova}}
+  \item{object}{a fitted Gam}
+  \item{\dots}{other fitted Gams for \code{anova}}
   \item{test}{a character string specifying the test statistic to be used.
           Can be one of '"F"', '"Chisq"' or '"Cp"', with partial
           matching allowed, or 'NULL' for no test.}
@@ -18,12 +18,12 @@ summary for a single GAM model}
 	  standard errors}
 	}
 \details{
-These are  methods for the functions \code{anova} or \code{summary} for objects inheriting from class `gam'.
+These are  methods for the functions \code{anova} or \code{summary} for objects inheriting from class `Gam'.
 See \code{\link{anova}} for the general behavior of this function
 and for the interpretation of `test'.
 
 
-When called with a single `gam' object, a special pair of anova tables for `gam'
+When called with a single `Gam' object, a special pair of anova tables for `Gam'
 models is returned. This gives a breakdown of the degrees of freedom for
 all the terms in the model, separating the projection part and
 nonparametric part of each, and returned as a list of two anova objects. For example, a term specified by `s()' is
@@ -55,10 +55,10 @@ and simulataneously for all terms.  }
 
 \examples{
 data(gam.data)
-gam.object <- gam(y~s(x,6)+z,data=gam.data)
-anova(gam.object)
-gam.object2 <- update(gam.object, ~.-z)
-anova(gam.object, gam.object2, test="Chisq")
+Gam.object <- gam(y~s(x,6)+z,data=gam.data)
+anova(Gam.object)
+Gam.object2 <- update(Gam.object, ~.-z)
+anova(Gam.object, Gam.object2, test="Chisq")
 }
 \keyword{models}
 \keyword{regression}

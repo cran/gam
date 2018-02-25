@@ -1,3 +1,7 @@
+2018-02-06   Trevor Hastie <hastie@stanford.edu> version 1.15
+	* major change class "gam" to "Gam" to avoid conflict with mgcv (grr!)
+2017-06-09   Trevor Hastie <hastie@stanford.edu> version 1.14-5
+	* fixed bug in na.gam.replace()
 2017-04-12   Trevor Hastie <hastie@stanford.edu> version 1.14-2
 	* changed the mechanism for users to add thir own smoother. New
 	function gam.smoothers() allows one to add to the list

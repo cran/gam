@@ -1,9 +1,9 @@
-"newdata.predict.gam" <-
+"newdata.predict.Gam" <-
   function(object, newdata, type = c("link", "response", "terms"), dispersion=NULL, se.fit = FALSE, na.action=na.pass,terms=labels(object), ...)
 {
   out.attrs <- attr(newdata, "out.attrs")
-  is.gam<-inherits(object, "gam") && !is.null(object$smooth)
- if(is.gam) {
+  is.Gam<-inherits(object, "Gam") && !is.null(object$smooth)
+ if(is.Gam) {
    if(se.fit){
      se.fit<-FALSE
      warning("No standard errors (currently) for gam predictions with newdata")
@@ -16,20 +16,20 @@
    ##Build up the smooth.frame for the new data
    tt <- terms(object)
     Terms <- delete.response(tt)
-    smooth.frame <- model.frame(Terms, newdata, na.action = na.action, 
+    smooth.frame <- model.frame(Terms, newdata, na.action = na.action,
                      xlev = object$xlevels)
    nrows<-nrow(smooth.frame)
    old.smooth<-object$smooth
    data<-object$smooth.frame # this was the old smooth frame
    smooth.labels<-names(data)
    n.smooths<-length(smooth.labels)
-   if (!is.null(cl <- attr(Terms, "dataClasses"))) 
+   if (!is.null(cl <- attr(Terms, "dataClasses")))
       .checkMFClasses(cl, smooth.frame)
     out.attrs <- attr(newdata, "out.attrs")
-  
+
 
    w <- object$weights
-   pred.s <- array(0, c(nrows, n.smooths), list(row.names(smooth.frame), 
+   pred.s <- array(0, c(nrows, n.smooths), list(row.names(smooth.frame),
                                                  smooth.labels))
    smooth.wanted <- smooth.labels[match(smooth.labels, terms,
                                          0) > 0]

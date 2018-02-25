@@ -1,14 +1,14 @@
-"plot.preplot.gam" <-
+"plot.preplot.Gam" <-
 function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, fit = TRUE,
 	...)
 {
-	listof <- inherits(x[[1]], "preplot.gam")
+	listof <- inherits(x[[1]], "preplot.Gam")
 	if(listof) {
 		TT <- names(x)
 		scales <- rep(0, length(TT))
 		names(scales) <- TT
 		for(i in TT)
-			scales[i] <- plot.preplot.gam(x[[i]], y = NULL, 
+			scales[i] <- plot.preplot.Gam(x[[i]], y = NULL,
 				residuals, rugplot, se, scale, fit, ...)
 		#			scales[i] <- UseMethod("plot",x[[i]])
 		invisible(scales)

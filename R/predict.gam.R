@@ -1,13 +1,13 @@
-"predict.gam" <-
+"predict.Gam" <-
   function(object, newdata, type = c("link", "response", "terms"), dispersion=NULL, se.fit = FALSE, na.action=na.pass, terms = labels(object),...)
 {
   type <- match.arg(type)
   if(missing(newdata)) {
-    if(inherits(object, "gam") && !is.null(object$smooth)) {
+    if(inherits(object, "Gam") && !is.null(object$smooth)) {
       if(se.fit)
         switch(type,
                response = {
-                 out <- predict.gam(object,
+                 out <- predict.Gam(object,
                                     type = "link", se.fit
                                     = TRUE, ...)
                  famob <- family(object)
@@ -54,7 +54,7 @@
                   response = object$fitted)
     }
     else {
-      if(inherits(object, "gam")) {
+      if(inherits(object, "Gam")) {
         if(type == "link" && !se.fit)
           object$additive.predictors
         else NextMethod("predict")
@@ -62,5 +62,5 @@
       else UseMethod("predict")
     }
   }
-  else newdata.predict.gam(object, newdata, type, dispersion,se.fit, na.action, terms, ...)
+  else newdata.predict.Gam(object, newdata, type, dispersion,se.fit, na.action, terms, ...)
 }

@@ -1,4 +1,4 @@
-"anova.gam" <-
+"anova.Gam" <-
   function(object, ..., test = c("Chisq", "F", "Cp"))
 {
   test=match.arg(test)
@@ -6,5 +6,5 @@
     nargs()
   if(margs(...))
     anova(structure(list(object, ...),class="glmlist"), test = test)
-  else summary.gam(object)$anova
+  else summary.Gam(object)$anova
 }

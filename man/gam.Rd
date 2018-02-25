@@ -127,7 +127,7 @@ are provided. These are invoked if all the smoothing methods are of one
 kind (either all \code{"lo"} or all \code{"s"}).
 }
 \value{
-\code{gam} returns an object of class \code{gam}, which inherits from
+\code{gam} returns an object of class \code{Gam}, which inherits from
 both \code{glm} and \code{lm}.
 
 Gam objects can be examined by \code{print}, \code{summary},
@@ -137,10 +137,10 @@ extractor functions \code{predict}, \code{fitted}, \code{residuals},
 using \code{update}. It has all the components of a \code{glm} object,
 with a few more. This also means it can be queried, summarized etc by
 methods for \code{glm} and \code{lm} objects. Other generic functions
-that have methods for \code{gam} objects are \code{step} and
+that have methods for \code{Gam} objects are \code{step} and
 \code{preplot}.
 
-The following components must be included in a legitimate `gam' object.
+The following components must be included in a legitimate `Gam' object.
 The residuals, fitted values,  coefficients and effects should be extracted
 by the generic functions of the same name, rather than
 by the \code{"$"} operator.
@@ -165,7 +165,7 @@ the fitted mean values, obtained by transforming  the component \code{additive.p
 }
 \item{smooth, nl.df, nl.chisq, var}{
 these four characterize the nonparametric aspect of the fit.
-\code{smooth} is a matrix of smooth terms, with a column corresponding to each smooth term in the model; if no smooth terms are in the \code{gam} model, all these components will be missing.
+\code{smooth} is a matrix of smooth terms, with a column corresponding to each smooth term in the model; if no smooth terms are in the \code{Gam} model, all these components will be missing.
 Each column corresponds to the strictly  nonparametric part of the term, while the parametric part is obtained from the model matrix.
 \code{nl.df} is a vector giving the approximate degrees of freedom for each column of \code{smooth}. For smoothing splines specified by \code{s(x)}, the approximate \code{df} will be the trace of the implicit smoother matrix minus 2.
 \code{nl.chisq} is a vector containing a type of score test for the removal of each of the columns of \code{smooth}.
@@ -173,7 +173,7 @@ Each column corresponds to the strictly  nonparametric part of the term, while t
 }
 \item{smooth.frame}{This is essentially a subset of the model frame
   corresponding to the smooth terms, and has the ingredients needed for
-  making predictions from a \code{gam} object}
+  making predictions from a \code{Gam} object}
 \item{residuals}{
 the  residuals from the final weighted additive fit; also known as
 residuals, these are typically not interpretable without rescaling by the weights.
@@ -221,9 +221,8 @@ others involving the numerical fit.  See \code{lm.object}.
 with
   the same name in the R library \code{mgcv}, which uses only smoothing
   splines with a focus on automatic smoothing parameter selection via
-  GCV. Some of the functions in package \code{gam} will not work if
-  package \code{mgcv} is loaded (and detaching it is not enough; you
-    will need to restart the session).
+  GCV. To avoid issues  with S3 method handling when both packages are
+  loaded, the object class in package "gam" is now "Gam".
 
  }
 \references{
@@ -249,11 +248,11 @@ data(airquality)
 gam(Ozone^(1/3) ~ lo(Solar.R) + lo(Wind, Temp), data=airquality, na=na.gam.replace)
 gam(Kyphosis ~ poly(Age,2) + s(Start), data=kyphosis, family=binomial, subset=Number>2)
 data(gam.data)
-gam.object <- gam(y ~ s(x,6) + z,data=gam.data)
-summary(gam.object)
-plot(gam.object,se=TRUE)
+Gam.object <- gam(y ~ s(x,6) + z,data=gam.data)
+summary(Gam.object)
+plot(Gam.object,se=TRUE)
 data(gam.newdata)
-predict(gam.object,type="terms",newdata=gam.newdata)
+predict(Gam.object,type="terms",newdata=gam.newdata)
 }
 
 \keyword{models}

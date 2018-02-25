@@ -1,4 +1,4 @@
-"anova.gamlist" <-
+"anova.Gamlist" <-
 function(object, ..., test = c("none", "Chisq", "F", "Cp")){
   test=match.arg(test)
   class(object)="glmlist"

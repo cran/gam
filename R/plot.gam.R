@@ -1,13 +1,13 @@
-"plot.gam" <-
+"plot.Gam" <-
   function(x,  residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, ask = FALSE,
-terms=labels.gam(x), ...)
+terms=labels.Gam(x), ...)
 {
-  
+
   if(!is.null(x$na.action))
     x$na.action <- NULL
   preplot.object <- x$preplot
   if(is.null(preplot.object))
-    preplot.object <- preplot.gam(x,terms=terms)
+    preplot.object <- preplot.Gam(x,terms=terms)
   x$preplot <- preplot.object
   Residuals <- resid(x)
   if(!is.null(residuals)) {
@@ -18,7 +18,7 @@ terms=labels.gam(x), ...)
     else Residuals <- residuals
   }
   if(!ask) {
-    plot.preplot.gam(preplot.object, residuals = residuals, rugplot
+    plot.preplot.Gam(preplot.object, residuals = residuals, rugplot
                      = rugplot, scale = scale, se = se, fit = TRUE, ...)
     invisible(x)
   }
@@ -26,7 +26,7 @@ terms=labels.gam(x), ...)
     nterms <- names(preplot.object)
     tterms <- substring(nterms, 1, 40)
                                         #truncate long names
-    residualsmenu <- if(!is.null(residuals)) "residuals off" else 
+    residualsmenu <- if(!is.null(residuals)) "residuals off" else
     "residuals on"
     rugmenu <- if(rugplot) "rug off" else "rug on"
     semenu <- if(se) "se off" else "se on"
@@ -37,10 +37,10 @@ terms=labels.gam(x), ...)
     tnames <- character()
     pick <- 1
     while(pick > 0 && pick <= length(tmenu)) {
-      pick <- menu(tmenu, title = 
+      pick <- menu(tmenu, title =
                    "Make a plot selection (or 0 to exit):\n")
       if(pick > 0 && pick <= length(nterms)) {
-        tscale <- plot.preplot.gam(preplot.object[[pick]],
+        tscale <- plot.preplot.Gam(preplot.object[[pick]],
                                    residuals = residuals, rugplot = rugplot, scale
                                    = scale, se = se, fit = TRUE, ...)
         names(tscale) <- nterms[pick]
@@ -50,25 +50,25 @@ terms=labels.gam(x), ...)
       }
       else switch(pick - length(nterms),
                   {
-                    scales <- plot.preplot.gam(
-                                               preplot.object, residuals = 
+                    scales <- plot.preplot.Gam(
+                                               preplot.object, residuals =
                                                residuals, rugplot = rugplot,
-                                               scale = scale, se = se, fit = 
+                                               scale = scale, se = se, fit =
                                                TRUE, ...)
                     print(scales)
                   }
                   ,
                   {
-                    residuals <- if(is.null(residuals)) 
+                    residuals <- if(is.null(residuals))
                       Residuals else NULL
                     residualsmenu <- if(!is.null(residuals)
-                                        ) "residuals off" else 
+                                        ) "residuals off" else
                     "residuals on"
                   }
                   ,
                   {
                     rugplot <- !rugplot
-                    rugmenu <- if(rugplot) "rug off" else 
+                    rugmenu <- if(rugplot) "rug off" else
                     "rug on"
                   }
                   ,
@@ -85,7 +85,7 @@ terms=labels.gam(x), ...)
                   }
                   ,
                   invisible(return(x)))
-      tmenu <- c(paste("plot:", tterms), "plot all terms", 
+      tmenu <- c(paste("plot:", tterms), "plot all terms",
                  residualsmenu, rugmenu, semenu, scalemenu)
     }
     invisible(x)

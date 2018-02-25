@@ -1,6 +1,6 @@
-step.gam <-
-  function (object, scope, scale, direction = c("both", "backward", 
-                                    "forward"), trace = TRUE, keep = NULL, steps = 1000, parallel=FALSE,...) 
+step.Gam <-
+  function (object, scope, scale, direction = c("both", "backward",
+                                    "forward"), trace = TRUE, keep = NULL, steps = 1000, parallel=FALSE,...)
 {
  trace=as.numeric(trace)
  get.visit <- function(trial, visited){
@@ -14,7 +14,7 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
     formula = update(formula, ~-1 + .)
     tt <- terms(formula)
     tl <- attr(tt, "term.labels")
-    if (attr(tt, "intercept")) 
+    if (attr(tt, "intercept"))
       c("1", tl)
     else tl
   }
@@ -23,7 +23,7 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
     namc <- names(keep)
     nc <- length(keep)
     nr <- length(k1)
-    array(unlist(keep, recursive = FALSE), c(nr, nc), list(namr, 
+    array(unlist(keep, recursive = FALSE), c(nr, nc), list(namr,
                          namc))
   }
   untangle.scope <- function(terms, regimens) {
@@ -38,25 +38,25 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
     for (i in seq(nt)) {
       j <- match(regimens[[i]], term.labels, 0)
       if (any(j)) {
-        if (sum(j > 0) > 1) 
-          stop(paste("The elements of a regimen", i, 
-                     "appear more than once in the initial model", 
+        if (sum(j > 0) > 1)
+          stop(paste("The elements of a regimen", i,
+                     "appear more than once in the initial model",
                      sep = " "))
         select[i] <- seq(j)[j > 0]
         term.labels <- term.labels[-sum(j)]
       }
       else {
-        if (!(j <- match("1", regimens[[i]], 0))) 
-          stop(paste("regimen", i, "does not appear in the initial model", 
+        if (!(j <- match("1", regimens[[i]], 0)))
+          stop(paste("regimen", i, "does not appear in the initial model",
                      sep = " "))
         select[i] <- j
       }
     }
-    if (length(term.labels)) 
+    if (length(term.labels))
       term.labels <- paste(term.labels, "+")
-    if (!is.null(a$offset)) 
+    if (!is.null(a$offset))
       term.labels <- paste(off1, term.labels, sep = " + ")
-    return(list(response = paste(response, term.labels, sep = " ~ "), 
+    return(list(response = paste(response, term.labels, sep = " ~ "),
                 select = select))
   }
   make.step <- function(models, fit, scale, object) {
@@ -70,15 +70,15 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
     ddev <- c(NA, diff(dev))
     ddf <- c(NA, diff(df))
     AIC <- sapply(models, "[[", "AIC")
-    heading <- c("Stepwise Model Path \nAnalysis of Deviance Table", 
-                 "\nInitial Model:", deparse(as.vector(formula(object))), 
-                 "\nFinal Model:", deparse(as.vector(formula(fit))), 
+    heading <- c("Stepwise Model Path \nAnalysis of Deviance Table",
+                 "\nInitial Model:", deparse(as.vector(formula(object))),
+                 "\nFinal Model:", deparse(as.vector(formula(fit))),
                  paste("\nScale: ", format(scale), "\n", sep = ""))
 #    rowns=paste(chfrom,chto,sep=" -> ")
 #    rowns[1]="<start>"
 #    rowns=paste(seq(rowns)-1,rowns,sep=": ")
-    aod <- data.frame(From=chfrom,To=chto, Df = ddf, 
-                      Deviance = ddev, `Resid. Df` = df, `Resid. Dev` = dev, 
+    aod <- data.frame(From=chfrom,To=chto, Df = ddf,
+                      Deviance = ddev, `Resid. Df` = df, `Resid. Dev` = dev,
                       AIC = AIC, check.names = FALSE)
      aod <- as.anova(aod, heading)
      class(aod)=c("stepanova","data.frame")
@@ -86,9 +86,9 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
     fit
   }
   direction <- match.arg(direction)
-  if (missing(scope)) 
-    stop("you must supply a scope argument to step.gam(); the gam.scope() function might be useful")
-  if (!is.character(scope[[1]])) 
+  if (missing(scope))
+    stop("you must supply a scope argument to step.Gam(); the gam.scope() function might be useful")
+  if (!is.character(scope[[1]]))
     scope <- lapply(scope, scope.char)
   response <- untangle.scope(object$terms, scope)
   form.y <- response$response
@@ -103,7 +103,7 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
   form.vector <- character(n.items)
   for (i in seq(n.items)) form.vector[i] <- scope[[i]][items[i]]
   form <- deparse(object$formula)
-  if (trace>0) 
+  if (trace>0)
     cat("Start: ", form)
   fit <- object
   n <- length(fit$fitted)
@@ -111,13 +111,13 @@ if(is.null(w <- object$weights)) sum(object$residuals^2) else sum(w * object$
     famname <- family$family["name"]
     scale <- switch(famname, Poisson = 1, Binomial = 1, deviancelm(fit)/fit$df.resid)
   }
-  else if (scale == 0) 
+  else if (scale == 0)
     scale <- deviancelm(fit)/fit$df.resid
   bAIC <- fit$aic
-  if (trace>0) 
+  if (trace>0)
     cat("; AIC=", format(round(bAIC, 4)), "\n")
   models <- list(
-                 list(deviance = deviance(fit), df.resid = fit$df.resid, 
+                 list(deviance = deviance(fit), df.resid = fit$df.resid,
                       AIC = bAIC, from = "", to = "")
                  )
   if (!is.null(keep))   {
@@ -166,7 +166,7 @@ if(parallel){
       update(object, eval(parse(text = tform)),trace = FALSE, ...)
     }
   }
-### No parallel    
+### No parallel
     else {
     step.list=as.list(sequence(length(form.list)))
     for(i in 1:length(form.list)){
@@ -174,7 +174,7 @@ if(parallel){
       step.list[[i]]=update(object, eval(parse(text = tform)),trace = FALSE, ...)
       if(trace>1)cat("Trial: ", tform,"; AIC=", format(round(step.list[[i]]$aic, 4)), "\n")
     }
-}      
+}
 ### end expensive loop
     taic.vec=sapply(step.list,"[[","aic")
     if(keep.it)  keep.list=c(keep.list, lapply(step.list,keep,...))
@@ -191,11 +191,11 @@ if(parallel){
       bfrom=form.vector[bwhich]
       form.vector=form.list$form.vector #this is the new one
       bto=form.vector[bwhich]
-      if (trace>0) 
-        cat(paste("Step:",stepnum,sep=""), deparse(fit$formula), "; AIC=", 
+      if (trace>0)
+        cat(paste("Step:",stepnum,sep=""), deparse(fit$formula), "; AIC=",
             format(round(bAIC, 4)), "\n")
       items <- form.list$trial
-      models <- c(models,list(list(deviance = deviance(fit), df.resid = fit$df.resid, 
+      models <- c(models,list(list(deviance = deviance(fit), df.resid = fit$df.resid,
                            AIC = bAIC, from = bfrom, to = bto)))
     }
   }

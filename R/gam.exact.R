@@ -1,12 +1,12 @@
 "gam.exact" <-
-function(gam.obj)
+function(Gam.obj)
 ### -----------------------------------------------------------------------------------
-### gam.exact is a method for the gam class.
-###  
+### gam.exact is a method for the Gam class.
+###
 ### Computes the asymptotically exact variance-covariance matrix for the linear
 ### terms in the model (except for the intercept).
 ###
-### Note: Use of lo in the model formula is not allowed.  
+### Note: Use of lo in the model formula is not allowed.
 ###
 ### Author: Aidan McDermott (AMcD)
 ### Date:   Mar 5, 2003
@@ -17,43 +17,43 @@ function(gam.obj)
 ###         Modified to work in R by Trevor Hastie
 ###
 ### See:
-### 
+###
 ### [1] Issues in Semiparametric Regression: A Case Study of Time Series
 ###     Models in Air Pollution and Mortality,
 ###     Dominici F., McDermott A., Hastie T.J.,
 ###     Technical Report, Department of Biostatistics, Johns Hopkins University,
-###     Baltimore, MD, USA. 
-###  
+###     Baltimore, MD, USA.
+###
 ### -----------------------------------------------------------------------------------
   {
 
-    if ( is.na(match("gam",class(gam.obj))) ) {
-      stop("not a gam object")
+    if ( is.na(match("Gam",class(Gam.obj))) ) {
+      stop("not a Gam object")
     }
-    
-    nl.df    <- gam.obj$nl.df
-    terms    <- terms(gam.obj)
+
+    nl.df    <- Gam.obj$nl.df
+    terms    <- terms(Gam.obj)
     at.terms <- attributes(terms)
 
-    coef <- coef(gam.obj)
-    
-    w   <- gam.obj$weights
-    mu  <- gam.obj$fitted.values
-    eta <- gam.obj$additive.predictors
-    y   <- as.matrix(gam.obj$y)
+    coef <- coef(Gam.obj)
 
-    family   <- family(gam.obj)
+    w   <- Gam.obj$weights
+    mu  <- Gam.obj$fitted.values
+    eta <- Gam.obj$additive.predictors
+    y   <- as.matrix(Gam.obj$y)
+
+    family   <- family(Gam.obj)
     mu.eta.val <- family$mu.eta(eta)
     z <- eta + (y - mu)/mu.eta.val
 
-    
-### Don't want lo in gam formula.
+
+### Don't want lo in Gam formula.
 ###    if ( length((at.terms$specials)$lo) > 0 ) {
-###      stop("lo found in gam formula.")
+###      stop("lo found in Gam formula.")
 ###    }
 
-    X   <- model.matrix(gam.obj)
-    Y   <- as.matrix(gam.obj$y)
+    X   <- model.matrix(Gam.obj)
+    Y   <- as.matrix(Gam.obj$y)
 
 ### only take terms that survived the original gam call
     names.coef <- names(coef)
@@ -99,9 +99,9 @@ function(gam.obj)
     XX <- X
     mydat[,"w"] <- w
 
-    Control <- gam.obj$call$control
+    Control <- Gam.obj$call$control
     if ( is.null(Control) ) {
-      call      <- gam.obj$call
+      call      <- Gam.obj$call
       call[[1]] <- as.name("gam.control")
       Control   <- eval(call,sys.parent())
     }
@@ -118,32 +118,32 @@ function(gam.obj)
 
 ### Need to test we get some data
     if ( length(X) == 0 ) stop("nothing to do")
-    
+
     X   <- X[,-special.list,drop=FALSE]
     sx  <- XX[,-special.list,drop=FALSE]
     swx <- w*sx
-    
+
     if ( length(X) == 0 ) stop("no linear terms in the model -- nothing to do")
-    
+
     A <- t(X) %*% ( w * X ) - t(X) %*% ( w * sx )
     B <- t(X*w) - t(swx)
     H <- solve(A) %*% B
 
     beta    <- H %*% z
-    varbeta <- (H * (1/w)) %*% t(H) * as.vector(summary(gam.obj)$dispersion)
+    varbeta <- (H * (1/w)) %*% t(H) * as.vector(summary(Gam.obj)$dispersion)
     se      <- sqrt(diag(varbeta))
 
-    coef <- cbind(summary.glm(gam.obj)$coef,NA,NA,NA)
+    coef <- cbind(summary.glm(Gam.obj)$coef,NA,NA,NA)
     tab <- cbind(beta,se,beta/se,2*(1-pnorm(beta/se)))
     coef[dimnames(tab)[[1]],c(5,6,7)] <- tab[,c(2,3,4)]
 
     dimnames(coef) <- list(dimnames(coef)[[1]],
                            c(dimnames(coef)[[2]][1:4],
-                             "A-exact SE","A-exact Z","A-exact P")) 
+                             "A-exact SE","A-exact Z","A-exact P"))
 
     out.object <- list(coefficients=coef,covariance=varbeta)
-    class(out.object) <- c("gamex")
-    
+    class(out.object) <- c("Gamex")
+
     return(out.object)
   }
 

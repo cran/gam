@@ -1,4 +1,4 @@
-"print.summary.gam" <-
+"print.summary.Gam" <-
   function(x,  digits = max(3, getOption("digits") - 3), quote = TRUE, prefix = "", ...)
 {
   cat("\nCall: ")
@@ -16,7 +16,7 @@
     cat("Deviance Residuals:\n")
     print(dresid, digits = digits)
   }
-  cat(paste("\n(Dispersion Parameter for ", names(x$dispersion), 
+  cat(paste("\n(Dispersion Parameter for ", names(x$dispersion),
             " family taken to be ", format(round(x$dispersion, digits)),
             ")\n",sep=""))
   int <- attr(x$terms, "intercept")

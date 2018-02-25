@@ -2,13 +2,16 @@ na.gam.replace <-
     function (frame)
 {
     vars <- names(frame)
-    if (0 < (resp <- attr(attr(frame, "terms"), "response"))) {
-        vars <- vars[-resp]
-        x <- frame[[resp]]
-        pos <- is.na(x)
-        if (any(pos)) {
-            frame <- frame[!pos, , drop = FALSE]
-            warning(paste(sum(pos), "observations omitted due to missing values in the response"))
+    ##See if there is a response
+    if(!is.null(tt <- attr(frame, "terms"))){
+        if (0 < (resp <- attr(tt, "response"))) {
+            vars <- vars[-resp]
+            x <- frame[[resp]]
+            pos <- is.na(x)
+            if (any(pos)) {
+                frame <- frame[!pos, , drop = FALSE]
+                warning(paste(sum(pos), "observations omitted due to missing values in the response"))
+            }
         }
     }
     for (j in vars) {

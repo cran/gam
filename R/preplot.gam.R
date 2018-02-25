@@ -1,7 +1,7 @@
-"preplot.gam" <-
-  function(object, newdata, terms = labels.gam(object),...)
+"preplot.Gam" <-
+  function(object, newdata, terms = labels.Gam(object),...)
 {
-  ## this labels.gam above is because there does not seem to be a label method for glms
+  ## this labels.Gam above is because there does not seem to be a label method for glms
   Terms <- object$terms
   a <- attributes(Terms)
   Call <- object$call
@@ -51,7 +51,7 @@
         stop("need to have names for fitted.values when call has a subset or na.action argument"
              )
       form<-paste("~",unlist(xnames),collapse="+")
-      Mcall <- c(as.name("model.frame"), list(formula = 
+      Mcall <- c(as.name("model.frame"), list(formula =
                                               terms(as.formula(form)),
                                               subset = Rownames, na.action = function(x)
                                               x))
@@ -92,9 +92,9 @@
                                       "partial for", term) else term
     TT <- list(x = x, y = fits[, term], se.y = if(is.null(se.fits)
                                           ) NULL else se.fits[, term], xlab = xlab, ylab = ylab)
-    oldClass(TT) <- "preplot.gam"
+    oldClass(TT) <- "preplot.Gam"
     gamplot[[term]] <- TT
   }
-  oldClass(gamplot) <- "preplot.gam"
+  oldClass(gamplot) <- "preplot.Gam"
   gamplot
 }

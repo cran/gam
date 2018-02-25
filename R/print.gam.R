@@ -1,4 +1,4 @@
-"print.gam" <-
+"print.Gam" <-
   function(x, digits = 5, ...)
 {
   if(!is.null(cl <- x$call)) {
