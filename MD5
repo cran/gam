@@ -1,5 +1,5 @@
 4590965512be079b118c2163a2d0b9df *ChangeLog
-a94ae3893e39afc79e8d3acaf766d064 *DESCRIPTION
+8880c0eece6386c20bd46dcb05b7d71b *DESCRIPTION
 8d7cd795b6467570d4449ab7b6058fd2 *INDEX
 bd1e526f5968efa2a0754c8b914a8b32 *NAMESPACE
 944e9c57dfab2a9bb7a1b5a8f623bb51 *R/anova.gam.R
@@ -42,7 +42,7 @@ ffd8650ea4322c5d319b5d7dbee17be8 *R/predict.gam.R
 4d9858e3b89068610071b8f0e65617b5 *R/print.gamex.R
 6ad823ecd940526c459b48ddf85b27be *R/print.stepanova.R
 48aa615ae5f5ee6469a5432350e1fe2c *R/print.summary.gam.R
-b84b183353abc11fb60f52c948f14b17 *R/random.R
+0057a506c52d7b93e0cb650bc6708172 *R/random.R
 1478722abc4269fede0d572840c0cfbe *R/s.R
 c0ea33636dd8d8e8088a173fd5670d7f *R/s.wam.R
 0c850a7df21399488cadf999a35bcfb2 *R/step.gam.R
