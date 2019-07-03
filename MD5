@@ -1,5 +1,5 @@
 4590965512be079b118c2163a2d0b9df *ChangeLog
-8880c0eece6386c20bd46dcb05b7d71b *DESCRIPTION
+a7dc0cc1da2e0c9222ad43f76d3c4670 *DESCRIPTION
 8d7cd795b6467570d4449ab7b6058fd2 *INDEX
 bd1e526f5968efa2a0754c8b914a8b32 *NAMESPACE
 944e9c57dfab2a9bb7a1b5a8f623bb51 *R/anova.gam.R
@@ -81,9 +81,9 @@ bd6c6aa28618b388edda2c177d6d9a54 *man/s.Rd
 2cf888d1f6a6ca37a7211c7c6ab86c0e *src/bvalue.f
 40c1f6b57d6c3a03a1d972f009c5e5df *src/bvalus.f
 bf5f2d130e9f4ea39fe81367d8ceb35a *src/gam_init.c
-114d8313198201d0f01482982e5e8de7 *src/linear.f
+e24ae2d36712b498d0bbcf49dee4f755 *src/linear.f
 6b4fde12653de078154a99510fed6d64 *src/lo.f
-f063989e94567ac0f957371a2fd6333c *src/loessc.c
+ef05027b6965bba920ba3a3d748b4d6c *src/loessc.c
 425c0bc459b1dee59d08e5cd6c28d89c *src/loessf.f
 6ada085e39fd48968fcd79368c0ccddd *src/modreg.h
 e1c0a8ef61f04b6239ff2ea6874be92d *src/qsbart.f

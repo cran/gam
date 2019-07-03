@@ -40,6 +40,7 @@
 
 #include <string.h>
 
+#define USE_FC_LEN_T
 #include <R.h>
 
 
@@ -92,9 +93,14 @@ void F77_NAME(ehg196)();
 
 void F77_SUB(ehg182)(int *i);
 
+#ifdef FC_LEN_T
+# include <stddef.h>
+void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc, FC_LEN_T c1);
+void F77_SUB(ehg184a)(char *s, int *nc, double *x, int *n, int *inc, FC_LEN_T c1);
+#else
 void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc);
-
 void F77_SUB(ehg184a)(char *s, int *nc, double *x, int *n, int *inc);
+#endif
 
 
 
@@ -740,8 +746,11 @@ warning(msg);
 
 
 
+#ifdef FC_LEN_T
+void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc, FC_LEN_T c1)
+#else
 void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc)
-
+#endif
 {
 
     char mess[4000], num[20];
@@ -768,8 +777,11 @@ void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc)
 
 
 
+#ifdef FC_LEN_T
+void F77_SUB(ehg184a)(char *s, int *nc, double *x, int *n, int *inc, FC_LEN_T c1)
+#else
 void F77_SUB(ehg184a)(char *s, int *nc, double *x, int *n, int *inc)
-
+#endif
 {
 
     char mess[4000], num[30];
