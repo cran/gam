@@ -7,7 +7,7 @@
 ### Note; the lev component of the smooths is the diagonal hat matrix elements
 ### for the NONLINEAR part of the fit.
 ###The smoother can return both the linear and nonlinear parts, although only
-### the nonlinear part is strictly necessary. 
+### the nonlinear part is strictly necessary.
 ###
     oldClass(data) <- NULL
     names.calls <- names(which)
@@ -51,7 +51,7 @@
       fit.call <- eval(smooth.calls[[j]])
       residuals <- as.double(fit.call$residuals)
       if(length(residuals) != n)
-        stop(paste(names.calls[j], 
+        stop(paste(names.calls[j],
                    "returns a vector of the wrong length")
              )
       s[, j] <- z - residuals
@@ -81,6 +81,7 @@
   fit$fitted.values <- y - residuals
   rl <- c(fit, list(smooth = s, nl.df = df))
   rl$df.residual <- rl$df.residual - sum(df)
+  rl$iter=nit
   if(se)
     rl <- c(rl, list(var = var))
   c(list(smooth.frame = smooth.frame), rl)

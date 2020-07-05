@@ -39,7 +39,8 @@
 
   Y <- model.response(mf, "any")
   X <- if (!is.empty.model(mt))
-    model.matrix(mt, mf, contrasts)
+###    model.matrix(mt, mf, contrasts) #not sure why the contrasts argument?
+    model.matrix(mt, mf)
   else matrix(, NROW(Y), 0)
   weights <- model.weights(mf)
   offset <- model.offset(mf)

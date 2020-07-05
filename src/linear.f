@@ -18,7 +18,7 @@ C Output from Public domain Ratfor, version 1.0
      *scrtch,00110,info)
       kn = kn+n
       kp=kp+p
-23003 k=k+1
+      k=k+1
       goto 23002
 23004 continue
       endif
@@ -45,7 +45,7 @@ C Output from Public domain Ratfor, version 1.0
       call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),qy(kn),ourqty,ourb,ourrsd
      *,ourxb,job,info)
       kn = kn +n
-23009 j = j+1
+      j = j+1
       goto 23008
 23010 continue
       goto 23006
@@ -55,7 +55,7 @@ C Output from Public domain Ratfor, version 1.0
       call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),ourb,ourrsd,
      *ourxb,job,info)
       kn = kn +n
-23013 j = j+1
+      j = j+1
       goto 23012
 23014 continue
       goto 23006
@@ -66,7 +66,7 @@ C Output from Public domain Ratfor, version 1.0
      *d,ourxb,job,info)
       kn = kn +n
       kb = kb +rank
-23017 j = j+1
+      j = j+1
       goto 23016
 23018 continue
       goto 23006
@@ -76,7 +76,7 @@ C Output from Public domain Ratfor, version 1.0
       call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),ourb,qb(kn),
      *ourxb,job,info)
       kn = kn +n
-23021 j = j+1
+      j = j+1
       goto 23020
 23022 continue
       goto 23006
@@ -86,7 +86,7 @@ C Output from Public domain Ratfor, version 1.0
       call dqrsl(qr,dq(1),dq(1),rank,qra,y(kn),ourqy,qy(kn),ourb,ourrsd,
      *qb(kn),job,info)
       kn = kn +n
-23025 j = j+1
+      j = j+1
       goto 23024
 23026 continue
       goto 23006
@@ -124,7 +124,7 @@ C Output from Public domain Ratfor, version 1.0
       work(j) = qraux(j)
       work(j+p) = qraux(j)
 23028 continue
-23029 continue
+      continue
       l=1
       lup = min0(n,p)
       curpvt = p
@@ -148,7 +148,7 @@ C Output from Public domain Ratfor, version 1.0
       qraux(jj)=qraux(j)
       work(jj)=work(j)
       work(jj+p) = work(j+p)
-23037 j=j+1
+      j=j+1
       goto 23036
 23038 continue
       jpvt(curpvt)=jp
@@ -184,7 +184,7 @@ C Output from Public domain Ratfor, version 1.0
       work(j) = qraux(j)
       endif
       endif
-23046 j=j+1
+      j=j+1
       goto 23045
 23047 continue
       qraux(l) = x(l,l)
@@ -236,7 +236,7 @@ C Output from Public domain Ratfor, version 1.0
       endif
       endif
 23064 continue
-23065 continue
+      continue
       endif
       jpvt(k) = jpvt(pl)
       jpvt(pl) = k
@@ -244,7 +244,7 @@ C Output from Public domain Ratfor, version 1.0
       pl = pl+1
       endif
 23054 continue
-23055 continue
+      continue
       pu = p
       if(p.ge.pl)then
       do23072 kb = pl,p 
@@ -271,7 +271,7 @@ C Output from Public domain Ratfor, version 1.0
       endif
       endif
 23080 continue
-23081 continue
+      continue
       endif
       jt = jpvt(k)
       jpvt(k) = jpvt(pu)
@@ -280,7 +280,7 @@ C Output from Public domain Ratfor, version 1.0
       pu = pu-1
       endif
 23072 continue
-23073 continue
+      continue
       endif
       endif
       do23086 k = 1,p 
@@ -294,7 +294,7 @@ C Output from Public domain Ratfor, version 1.0
       maxl = l
       endif
 23090 continue
-23091 continue
+      continue
       endif
       if(maxdia.le.0.0d0)then
       go to 10
@@ -330,10 +330,10 @@ C Output from Public domain Ratfor, version 1.0
       temp = -a(k,j)
       call daxpy(j-k,temp,work(kp1),1,a(kp1,j),1)
 23100 continue
-23101 continue
+      continue
       endif
 23086 continue
-23087 continue
+      continue
       return
 10    info = k-1
       return
@@ -346,8 +346,8 @@ C Output from Public domain Ratfor, version 1.0
       b = a-1.0d0
       c = b+b+b
       eps = dabs(c-1.0d0)
-23109 if(.not.(eps.ne.0.0d0))goto 23108
-23110 continue
+      if(.not.(eps.ne.0.0d0))goto 23108
+      continue
       epslon = eps*dabs(x)
       return
       end
@@ -366,7 +366,7 @@ C Output from Public domain Ratfor, version 1.0
       u = 1.0d0+2.0d0*s
       p = u*p
       r = (s/u)**2*r
-23114 goto 23113
+      goto 23113
 23115 continue
       endif
       pythag = p
@@ -405,10 +405,10 @@ C Output from Public domain Ratfor, version 1.0
       info(1) = -1 
       return
       endif
-23128 i = i+1
+      i = i+1
       goto 23127
 23129 continue
-23125 j = j+1
+      j = j+1
       goto 23124
 23126 continue
       call dchdc(a,p,p,work,jpvt,job,info(1))
@@ -417,10 +417,10 @@ C Output from Public domain Ratfor, version 1.0
       i=1
 23135 if(.not.(i.lt.j))goto 23137
       a(j,i) = 0.
-23136 i = i+1
+      i = i+1
       goto 23135
 23137 continue
-23133 j = j+1
+      j = j+1
       goto 23132
 23134 continue
       return
@@ -450,7 +450,7 @@ C Output from Public domain Ratfor, version 1.0
      *tch,00110,info)
       kn = kn+n
       kp=kp+p
-23139 k=k+1
+      k=k+1
       goto 23138
 23140 continue
       return
@@ -482,7 +482,7 @@ C Output from Public domain Ratfor, version 1.0
       endif
       endif
 23147 continue
-23148 continue
+      continue
       go to 10
 23145 j=j-1 
       goto 23144
@@ -498,13 +498,13 @@ C Output from Public domain Ratfor, version 1.0
       a(i,j) = a(i,m)
       a(i,m) = f
 23158 continue
-23159 continue
+      continue
       do23160 i = k,n 
       f = a(j,i)
       a(j,i) = a(m,i)
       a(m,i) = f
 23160 continue
-23161 continue
+      continue
       endif
       I23162=(iexc)
       goto 23162
@@ -525,10 +525,10 @@ C Output from Public domain Ratfor, version 1.0
       endif
       endif
 23170 continue
-23171 continue
+      continue
       go to 30
 23168 continue
-23169 continue
+      continue
       goto 23143
 30    m = k
       iexc = 2
@@ -537,14 +537,14 @@ C Output from Public domain Ratfor, version 1.0
       if (I23162.eq.1)goto 23164
       if (I23162.eq.2)goto 23167
 23163 continue
-23154 goto 23153
+      goto 23153
 23155 continue
-23142 goto 23141
+      goto 23141
 23143 continue
       do23176 i = k,l
       scale(i) = 1.0d0
 23176 continue
-23177 continue
+      continue
 23178 continue
       noconv = .false.
       do23181 i = k,l 
@@ -556,7 +556,7 @@ C Output from Public domain Ratfor, version 1.0
       r = r+dabs(a(i,j))
       endif
 23183 continue
-23184 continue
+      continue
       if(c.ne.0.0d0.and.r.ne.0.0d0)then
       g = r/radix
       f = 1.0d0
@@ -566,14 +566,14 @@ C Output from Public domain Ratfor, version 1.0
       c = c*b2
       goto 23189
       endif
-23190 continue
+      continue
       g = r*radix
 23191 if(c.ge.g)then
       f = f/radix
       c = c/b2
       goto 23191
       endif
-23192 continue
+      continue
       if((c+r)/f.lt.0.95d0*s)then
       g = 1.0d0/f
       scale(i) = scale(i)*f
@@ -581,17 +581,17 @@ C Output from Public domain Ratfor, version 1.0
       do23195 j = k,n
       a(i,j) = a(i,j)*g
 23195 continue
-23196 continue
+      continue
       do23197 j = 1,l
       a(j,i) = a(j,i)*f
 23197 continue
-23198 continue
+      continue
       endif
       endif
 23181 continue
-23182 continue
-23179 if(.not.(.not.noconv))goto 23178
-23180 continue
+      continue
+      if(.not.(.not.noconv))goto 23178
+      continue
 40    low = k
       igh = l
       return
@@ -607,9 +607,9 @@ C Output from Public domain Ratfor, version 1.0
       do23205 j = 1,m
       z(i,j) = z(i,j)*s
 23205 continue
-23206 continue
+      continue
 23203 continue
-23204 continue
+      continue
       endif
       do23207 ii = 1,n 
       i = ii
@@ -617,18 +617,18 @@ C Output from Public domain Ratfor, version 1.0
       if(i.lt.low)then
       i = low-ii
       endif
-      k = scale(i)
+      k = int(scale(i))
       if(k.ne.i)then
       do23215 j = 1,m 
       s = z(i,j)
       z(i,j) = z(k,j)
       z(k,j) = s
 23215 continue
-23216 continue
+      continue
       endif
       endif
 23207 continue
-23208 continue
+      continue
       endif
       return
       end
@@ -650,7 +650,7 @@ C Output from Public domain Ratfor, version 1.0
       i = j
       endif
 23221 continue
-23222 continue
+      continue
       int(m) = i
       if(i.ne.m)then
       do23227 j = mm1,n 
@@ -658,13 +658,13 @@ C Output from Public domain Ratfor, version 1.0
       a(i,j) = a(m,j)
       a(m,j) = y
 23227 continue
-23228 continue
+      continue
       do23229 j = 1,igh 
       y = a(j,i)
       a(j,i) = a(j,m)
       a(j,m) = y
 23229 continue
-23230 continue
+      continue
       endif
       if(x.ne.0.0d0)then
       mp1 = m+1
@@ -676,17 +676,17 @@ C Output from Public domain Ratfor, version 1.0
       do23237 j = m,n
       a(i,j) = a(i,j)-y*a(m,j)
 23237 continue
-23238 continue
+      continue
       do23239 j = 1,igh
       a(j,m) = a(j,m)+y*a(j,i)
 23239 continue
-23240 continue
+      continue
       endif
 23233 continue
-23234 continue
+      continue
       endif
 23219 continue
-23220 continue
+      continue
       endif
       return
       end
@@ -698,10 +698,10 @@ C Output from Public domain Ratfor, version 1.0
       do23243 i = 1,n
       z(i,j) = 0.0d0
 23243 continue
-23244 continue
+      continue
       z(j,j) = 1.0d0
 23241 continue
-23242 continue
+      continue
       kl = igh-low-1
       if(kl.ge.1)then
       mp = igh-1
@@ -710,17 +710,17 @@ C Output from Public domain Ratfor, version 1.0
       do23250 i = mp1,igh
       z(i,mp) = a(i,mp-1)
 23250 continue
-23251 continue
+      continue
       i = int(mp)
       if(i.ne.mp)then
       do23254 j = mp,igh 
       z(mp,j) = z(i,j)
       z(i,j) = 0.0d0
 23254 continue
-23255 continue
+      continue
       z(i,mp) = 1.0d0
       endif
-23248 mp = mp -1
+      mp = mp -1
       goto 23247
 23249 continue
       endif
@@ -738,14 +738,14 @@ C Output from Public domain Ratfor, version 1.0
       do23258 j = k,n
       norm = norm+dabs(h(i,j))
 23258 continue
-23259 continue
+      continue
       k = i
       if(i.lt.low.or.i.gt.igh)then
       wr(i) = h(i,i)
       wi(i) = 0.0d0
       endif
 23256 continue
-23257 continue
+      continue
       en = igh
       t = 0.0d0
       itn = 30*n
@@ -768,7 +768,7 @@ C Output from Public domain Ratfor, version 1.0
       if(tst2.eq.tst1)then
       goto 23272
       endif
-23271 l = l-1
+      l = l-1
       goto 23270
 23272 continue
       x = h(en,en)
@@ -788,7 +788,7 @@ C Output from Public domain Ratfor, version 1.0
       do23285 i = low,en
       h(i,i) = h(i,i)-x
 23285 continue
-23286 continue
+      continue
       s = dabs(h(en,na))+dabs(h(na,enm2))
       x = 0.75d0*s
       y = x
@@ -825,7 +825,7 @@ C Output from Public domain Ratfor, version 1.0
       h(i,i-3) = 0.0d0
       endif
 23293 continue
-23294 continue
+      continue
       do23297 k = m,na 
       notlas = k.ne.na
       if(k.ne.m)then
@@ -863,14 +863,14 @@ C Output from Public domain Ratfor, version 1.0
       h(k,j) = h(k,j)-p*x
       h(k+1,j) = h(k+1,j)-p*y
 23311 continue
-23312 continue
+      continue
       j = min0(en,k+3)
       do23313 i = 1,j 
       p = x*h(i,k)+y*h(i,k+1)
       h(i,k) = h(i,k)-p
       h(i,k+1) = h(i,k+1)-p*q
 23313 continue
-23314 continue
+      continue
       else
       do23315 j = k,n 
       p = h(k,j)+q*h(k+1,j)+r*h(k+2,j)
@@ -878,7 +878,7 @@ C Output from Public domain Ratfor, version 1.0
       h(k+1,j) = h(k+1,j)-p*y
       h(k+2,j) = h(k+2,j)-p*zz
 23315 continue
-23316 continue
+      continue
       j = min0(en,k+3)
       do23317 i = 1,j 
       p = x*h(i,k)+y*h(i,k+1)+zz*h(i,k+2)
@@ -886,11 +886,11 @@ C Output from Public domain Ratfor, version 1.0
       h(i,k+1) = h(i,k+1)-p*q
       h(i,k+2) = h(i,k+2)-p*r
 23317 continue
-23318 continue
+      continue
       endif
 23297 continue
-23298 continue
-23268 goto 23267
+      continue
+      goto 23267
 23269 continue
       p = (y-x)/2.0d0
       q = p*p+w
@@ -934,14 +934,14 @@ C Output from Public domain Ratfor, version 1.0
       do23325 j = k,n
       norm = norm+dabs(h(i,j))
 23325 continue
-23326 continue
+      continue
       k = i
       if(i.lt.low.or.i.gt.igh)then
       wr(i) = h(i,i)
       wi(i) = 0.0d0
       endif
 23323 continue
-23324 continue
+      continue
       en = igh
       t = 0.0d0
       itn = 30*n
@@ -986,7 +986,7 @@ C Output from Public domain Ratfor, version 1.0
       do23353 i = low,en
       h(i,i) = h(i,i)-x
 23353 continue
-23354 continue
+      continue
       s = dabs(h(en,na))+dabs(h(na,enm2))
       x = 0.75d0*s
       y = x
@@ -1023,7 +1023,7 @@ C Output from Public domain Ratfor, version 1.0
       h(i,i-3) = 0.0d0
       endif
 23361 continue
-23362 continue
+      continue
       do23365 k = m,na 
       notlas = k.ne.na
       if(k.ne.m)then
@@ -1061,20 +1061,20 @@ C Output from Public domain Ratfor, version 1.0
       h(k,j) = h(k,j)-p*x
       h(k+1,j) = h(k+1,j)-p*y
 23379 continue
-23380 continue
+      continue
       j = min0(en,k+3)
       do23381 i = 1,j 
       p = x*h(i,k)+y*h(i,k+1)
       h(i,k) = h(i,k)-p
       h(i,k+1) = h(i,k+1)-p*q
 23381 continue
-23382 continue
+      continue
       do23383 i = low,igh 
       p = x*z(i,k)+y*z(i,k+1)
       z(i,k) = z(i,k)-p
       z(i,k+1) = z(i,k+1)-p*q
 23383 continue
-23384 continue
+      continue
       else
       do23385 j = k,n 
       p = h(k,j)+q*h(k+1,j)+r*h(k+2,j)
@@ -1082,7 +1082,7 @@ C Output from Public domain Ratfor, version 1.0
       h(k+1,j) = h(k+1,j)-p*y
       h(k+2,j) = h(k+2,j)-p*zz
 23385 continue
-23386 continue
+      continue
       j = min0(en,k+3)
       do23387 i = 1,j 
       p = x*h(i,k)+y*h(i,k+1)+zz*h(i,k+2)
@@ -1090,18 +1090,18 @@ C Output from Public domain Ratfor, version 1.0
       h(i,k+1) = h(i,k+1)-p*q
       h(i,k+2) = h(i,k+2)-p*r
 23387 continue
-23388 continue
+      continue
       do23389 i = low,igh 
       p = x*z(i,k)+y*z(i,k+1)+zz*z(i,k+2)
       z(i,k) = z(i,k)-p
       z(i,k+1) = z(i,k+1)-p*q
       z(i,k+2) = z(i,k+2)-p*r
 23389 continue
-23390 continue
+      continue
       endif
 23365 continue
-23366 continue
-23335 goto 23334
+      continue
+      goto 23334
 23336 continue
       p = (y-x)/2.0d0
       q = p*p+w
@@ -1135,19 +1135,19 @@ C Output from Public domain Ratfor, version 1.0
       h(na,j) = q*zz+p*h(en,j)
       h(en,j) = q*h(en,j)-p*zz
 23395 continue
-23396 continue
+      continue
       do23397 i = 1,en 
       zz = h(i,na)
       h(i,na) = q*zz+p*h(i,en)
       h(i,en) = q*h(i,en)-p*zz
 23397 continue
-23398 continue
+      continue
       do23399 i = low,igh 
       zz = z(i,na)
       z(i,na) = q*zz+p*z(i,en)
       z(i,en) = q*z(i,en)-p*zz
 23399 continue
-23400 continue
+      continue
       endif
       en = enm2
       goto 23330
@@ -1186,7 +1186,7 @@ C Output from Public domain Ratfor, version 1.0
       ra = ra+h(i,j)*h(j,na)
       sa = sa+h(i,j)*h(j,en)
 23413 continue
-23414 continue
+      continue
       if(wi(i).lt.0.0d0)then
       zz = w
       r = ra
@@ -1206,8 +1206,8 @@ C Output from Public domain Ratfor, version 1.0
 23421 continue
       vr = 0.01d0*vr
       tst2 = tst1+vr
-23422 if(.not.(tst2.le.tst1))goto 23421
-23423 continue
+      if(.not.(tst2.le.tst1))goto 23421
+      continue
       endif
       call cdiv(x*r-zz*ra+q*sa,x*s-zz*sa-q*ra,vr,vi,h(i,na),h(i,en))
       if(dabs(x).le.dabs(zz)+dabs(q))then
@@ -1226,12 +1226,12 @@ C Output from Public domain Ratfor, version 1.0
       h(j,na) = h(j,na)/t
       h(j,en) = h(j,en)/t
 23430 continue
-23431 continue
+      continue
       endif
       endif
       endif
 23411 continue
-23412 continue
+      continue
       endif
       else
       if(q.eq.0)then
@@ -1245,7 +1245,7 @@ C Output from Public domain Ratfor, version 1.0
       do23438 j = m,en
       r = r+h(i,j)*h(j,en)
 23438 continue
-23439 continue
+      continue
       if(wi(i).lt.0.0d0)then
       zz = w
       s = r
@@ -1270,8 +1270,8 @@ C Output from Public domain Ratfor, version 1.0
 23448 continue
       t = 0.01d0*t
       tst2 = norm+t
-23449 if(.not.(tst2.le.tst1))goto 23448
-23450 continue
+      if(.not.(tst2.le.tst1))goto 23448
+      continue
       endif
       h(i,en) = -r/t
       endif
@@ -1283,26 +1283,26 @@ C Output from Public domain Ratfor, version 1.0
       do23455 j = i,en
       h(j,en) = h(j,en)/t
 23455 continue
-23456 continue
+      continue
       endif
       endif
       endif
 23436 continue
-23437 continue
+      continue
       endif
       endif
       endif
 23403 continue
-23404 continue
+      continue
       do23457 i = 1,n
       if(i.lt.low.or.i.gt.igh)then
       do23461 j = i,n
       z(i,j) = h(i,j)
 23461 continue
-23462 continue
+      continue
       endif
 23457 continue
-23458 continue
+      continue
       do23463 jj = low,n 
       j = n+low-jj
       m = min0(j,igh)
@@ -1311,12 +1311,12 @@ C Output from Public domain Ratfor, version 1.0
       do23467 k = low,m
       zz = zz+z(i,k)*h(k,j)
 23467 continue
-23468 continue
+      continue
       z(i,j) = zz
 23465 continue
-23466 continue
+      continue
 23463 continue
-23464 continue
+      continue
       endif
       return
       end
@@ -1358,7 +1358,7 @@ C Output from Public domain Ratfor, version 1.0
       do23475 i = 2,n
       e(i-1) = e(i)
 23475 continue
-23476 continue
+      continue
       f = 0.0d0
       tst1 = 0.0d0
       e(n) = 0.0d0
@@ -1394,7 +1394,7 @@ C Output from Public domain Ratfor, version 1.0
       do23494 i = l2,n
       d(i) = d(i)-h
 23494 continue
-23495 continue
+      continue
       endif
       f = f+h
       p = d(m)
@@ -1421,19 +1421,19 @@ C Output from Public domain Ratfor, version 1.0
       z(k,i+1) = s*z(k,i)+c*h
       z(k,i) = c*z(k,i)-s*h
 23498 continue
-23499 continue
+      continue
 23496 continue
-23497 continue
+      continue
       p = -s*s2*c3*el1*e(l)/dl1
       e(l) = s*p
       d(l) = c*p
       tst2 = tst1+dabs(e(l))
-23488 if(.not.(tst2.le.tst1))goto 23487
-23489 continue
+      if(.not.(tst2.le.tst1))goto 23487
+      continue
       endif
       d(l) = d(l)+f
 23477 continue
-23478 continue
+      continue
       do23500 ii = 2,n 
       i = ii-1
       k = i
@@ -1444,7 +1444,7 @@ C Output from Public domain Ratfor, version 1.0
       p = d(j)
       endif
 23502 continue
-23503 continue
+      continue
       if(k.ne.i)then
       d(k) = d(i)
       d(i) = p
@@ -1453,10 +1453,10 @@ C Output from Public domain Ratfor, version 1.0
       z(j,i) = z(j,k)
       z(j,k) = p
 23508 continue
-23509 continue
+      continue
       endif
 23500 continue
-23501 continue
+      continue
       return
 10    ierr = l
       endif
@@ -1471,7 +1471,7 @@ C Output from Public domain Ratfor, version 1.0
       do23512 i = 2,n
       e2(i-1) = e2(i)
 23512 continue
-23513 continue
+      continue
       f = 0.0d0
       t = 0.0d0
       e2(n) = 0.0d0
@@ -1505,7 +1505,7 @@ C Output from Public domain Ratfor, version 1.0
       do23529 i = l1,n
       d(i) = d(i)-h
 23529 continue
-23530 continue
+      continue
       f = f+h
       g = d(m)
       if(g.eq.0.0d0)then
@@ -1527,7 +1527,7 @@ C Output from Public domain Ratfor, version 1.0
       endif
       h = g*p/r
 23533 continue
-23534 continue
+      continue
       e2(l) = s*g
       d(l) = h
       if(h.eq.0.0d0)then
@@ -1537,7 +1537,7 @@ C Output from Public domain Ratfor, version 1.0
       goto 23526
       endif
       e2(l) = h*e2(l)
-23525 if(.not.(e2(l).eq.0.0d0))goto 23524
+      if(.not.(e2(l).eq.0.0d0))goto 23524
 23526 continue
       endif
       p = d(l)+f
@@ -1549,12 +1549,12 @@ C Output from Public domain Ratfor, version 1.0
       endif
       d(i) = d(i-1)
 23543 continue
-23544 continue
+      continue
       endif
       i = 1
 10    d(i) = p
 23514 continue
-23515 continue
+      continue
       return
 20    ierr = l
       endif
@@ -1568,7 +1568,7 @@ C Output from Public domain Ratfor, version 1.0
       d(i) = a(n,i)
       a(n,i) = a(i,i)
 23547 continue
-23548 continue
+      continue
       do23549 ii = 1,n 
       i = n+1-ii
       l = i-1
@@ -1578,20 +1578,20 @@ C Output from Public domain Ratfor, version 1.0
       do23553 k = 1,l
       scale = scale+dabs(d(k))
 23553 continue
-23554 continue
+      continue
       if(scale.eq.0.0d0)then
       do23557 j = 1,l 
       d(j) = a(l,j)
       a(l,j) = a(i,j)
       a(i,j) = 0.0d0
 23557 continue
-23558 continue
+      continue
       else
       do23559 k = 1,l 
       d(k) = d(k)/scale
       h = h+d(k)*d(k)
 23559 continue
-23560 continue
+      continue
       e2(i) = scale*scale*h
       f = d(l)
       g = -dsign(dsqrt(h),f)
@@ -1602,7 +1602,7 @@ C Output from Public domain Ratfor, version 1.0
       do23563 j = 1,l
       e(j) = 0.0d0
 23563 continue
-23564 continue
+      continue
       do23565 j = 1,l 
       f = d(j)
       g = e(j)+a(j,j)*f
@@ -1612,31 +1612,31 @@ C Output from Public domain Ratfor, version 1.0
       g = g+a(k,j)*d(k)
       e(k) = e(k)+a(k,j)*f
 23569 continue
-23570 continue
+      continue
       endif
       e(j) = g
 23565 continue
-23566 continue
+      continue
       f = 0.0d0
       do23571 j = 1,l 
       e(j) = e(j)/h
       f = f+e(j)*d(j)
 23571 continue
-23572 continue
+      continue
       h = f/(h+h)
       do23573 j = 1,l
       e(j) = e(j)-h*d(j)
 23573 continue
-23574 continue
+      continue
       do23575 j = 1,l 
       f = d(j)
       g = e(j)
       do23577 k = j,l
       a(k,j) = a(k,j)-f*e(k)-g*d(k)
 23577 continue
-23578 continue
+      continue
 23575 continue
-23576 continue
+      continue
       endif
       do23579 j = 1,l 
       f = d(j)
@@ -1644,14 +1644,14 @@ C Output from Public domain Ratfor, version 1.0
       a(l,j) = a(i,j)
       a(i,j) = f*scale
 23579 continue
-23580 continue
+      continue
       goto 23549
       endif
       endif
       e(i) = 0.0d0
       e2(i) = 0.0d0
 23549 continue
-23550 continue
+      continue
       return
       end
       subroutine tred2(nm,n,a,d,e,z)
@@ -1662,10 +1662,10 @@ C Output from Public domain Ratfor, version 1.0
       do23583 j = i,n
       z(j,i) = a(j,i)
 23583 continue
-23584 continue
+      continue
       d(i) = a(n,i)
 23581 continue
-23582 continue
+      continue
       if(n.ne.1)then
       do23587 ii = 2,n 
       i = n+2-ii
@@ -1676,13 +1676,13 @@ C Output from Public domain Ratfor, version 1.0
       do23591 k = 1,l
       scale = scale+dabs(d(k))
 23591 continue
-23592 continue
+      continue
       if(scale.ne.0.0d0)then
       do23595 k = 1,l 
       d(k) = d(k)/scale
       h = h+d(k)*d(k)
 23595 continue
-23596 continue
+      continue
       f = d(l)
       g = -dsign(dsqrt(h),f)
       e(i) = scale*g
@@ -1691,7 +1691,7 @@ C Output from Public domain Ratfor, version 1.0
       do23597 j = 1,l
       e(j) = 0.0d0
 23597 continue
-23598 continue
+      continue
       do23599 j = 1,l 
       f = d(j)
       z(j,i) = f
@@ -1702,33 +1702,33 @@ C Output from Public domain Ratfor, version 1.0
       g = g+z(k,j)*d(k)
       e(k) = e(k)+z(k,j)*f
 23603 continue
-23604 continue
+      continue
       endif
       e(j) = g
 23599 continue
-23600 continue
+      continue
       f = 0.0d0
       do23605 j = 1,l 
       e(j) = e(j)/h
       f = f+e(j)*d(j)
 23605 continue
-23606 continue
+      continue
       hh = f/(h+h)
       do23607 j = 1,l
       e(j) = e(j)-hh*d(j)
 23607 continue
-23608 continue
+      continue
       do23609 j = 1,l 
       f = d(j)
       g = e(j)
       do23611 k = j,l
       z(k,j) = z(k,j)-f*e(k)-g*d(k)
 23611 continue
-23612 continue
+      continue
       d(j) = z(l,j)
       z(i,j) = 0.0d0
 23609 continue
-23610 continue
+      continue
       go to 10
       endif
       endif
@@ -1738,10 +1738,10 @@ C Output from Public domain Ratfor, version 1.0
       z(i,j) = 0.0d0
       z(j,i) = 0.0d0
 23613 continue
-23614 continue
+      continue
 10    d(i) = h
 23587 continue
-23588 continue
+      continue
       do23615 i = 2,n 
       l = i-1
       z(n,l) = z(l,l)
@@ -1751,32 +1751,32 @@ C Output from Public domain Ratfor, version 1.0
       do23619 k = 1,l
       d(k) = z(k,i)/h
 23619 continue
-23620 continue
+      continue
       do23621 j = 1,l 
       g = 0.0d0
       do23623 k = 1,l
       g = g+z(k,i)*z(k,j)
 23623 continue
-23624 continue
+      continue
       do23625 k = 1,l
       z(k,j) = z(k,j)-g*d(k)
 23625 continue
-23626 continue
+      continue
 23621 continue
-23622 continue
+      continue
       endif
       do23627 k = 1,l
       z(k,i) = 0.0d0
 23627 continue
-23628 continue
+      continue
 23615 continue
-23616 continue
+      continue
       endif
       do23629 i = 1,n 
       d(i) = z(n,i)
       z(n,i) = 0.0d0
 23629 continue
-23630 continue
+      continue
       z(n,n) = 1.0d0
       e(1) = 0.0d0
       return
@@ -1798,9 +1798,9 @@ C Output from Public domain Ratfor, version 1.0
       ij = ij + n
       endif
 23633 continue
-23634 continue
+      continue
 23631 continue
-23632 continue
+      continue
       return
       end
       subroutine dmatpt(x,dx,y,dy,z)
@@ -1821,10 +1821,10 @@ C Output from Public domain Ratfor, version 1.0
       ij = ij + p
       endif
 23639 continue
-23640 continue
+      continue
       ii = ii +n
 23637 continue
-23638 continue
+      continue
       return
       end
       subroutine matpm(x,dx,mmx,mx,y,dy,mmy,my,z)
@@ -1850,9 +1850,9 @@ C Output from Public domain Ratfor, version 1.0
       ij = ij + n
       endif
 23645 continue
-23646 continue
+      continue
 23643 continue
-23644 continue
+      continue
       return
       end
       subroutine matptm(x,dx,mmx,mx,y,dy,mmy,my,z)
@@ -1879,10 +1879,10 @@ C Output from Public domain Ratfor, version 1.0
       ij = ij + p
       endif
 23653 continue
-23654 continue
+      continue
       ii = ii +n
 23651 continue
-23652 continue
+      continue
       return
       end
       subroutine rowmis(m,n,p,vec)
@@ -1896,9 +1896,9 @@ C Output from Public domain Ratfor, version 1.0
       vec(i) = 1
       endif
 23661 continue
-23662 continue
+      continue
 23659 continue
-23660 continue
+      continue
       return
       end
       subroutine colmis(m,n,p,vec)
@@ -1912,9 +1912,9 @@ C Output from Public domain Ratfor, version 1.0
       vec(j) = 1
       endif
 23667 continue
-23668 continue
+      continue
 23665 continue
-23666 continue
+      continue
       return
       end
       subroutine dshift(x,ldx,n,j,k)
@@ -1927,10 +1927,10 @@ C Output from Public domain Ratfor, version 1.0
       do23792 jj = j+1,k
       x(i,jj-1) = x(i,jj)
 23792 continue
-23793 continue
+      continue
       x(i,k) = tt
 23790 continue
-23791 continue
+      continue
       endif
       return
       end
@@ -1944,7 +1944,7 @@ C Output from Public domain Ratfor, version 1.0
       do23798 i = 1,m
       dy(i) = dx(i)
 23798 continue
-23799 continue
+      continue
       if(n.lt.7)then
       return
       endif
@@ -1959,7 +1959,7 @@ C Output from Public domain Ratfor, version 1.0
       dy(i+5) = dx(i+5)
       dy(i+6) = dx(i+6)
 23802 continue
-23803 continue
+      continue
       endif
       return
       end
@@ -1971,24 +1971,24 @@ C Output from Public domain Ratfor, version 1.0
       m = mod(n,7)
       if(m.ne.0)then
       do23808 i = 1,m
-      dy(i) = dx(i)
+      dy(i) = real(dx(i))
 23808 continue
-23809 continue
+      continue
       if(n.lt.7)then
       return
       endif
       endif
       mp1 = m+1
       do23812 i = mp1,n,7 
-      dy(i) = dx(i)
-      dy(i+1) = dx(i+1)
-      dy(i+2) = dx(i+2)
-      dy(i+3) = dx(i+3)
-      dy(i+4) = dx(i+4)
-      dy(i+5) = dx(i+5)
-      dy(i+6) = dx(i+6)
+      dy(i) = real(dx(i))
+      dy(i+1) = real(dx(i+1))
+      dy(i+2) = real(dx(i+2))
+      dy(i+3) = real(dx(i+3))
+      dy(i+4) = real(dx(i+4))
+      dy(i+5) = real(dx(i+5))
+      dy(i+6) = real(dx(i+6))
 23812 continue
-23813 continue
+      continue
       endif
       return
       end
@@ -2044,7 +2044,7 @@ C Output from Public domain Ratfor, version 1.0
       x(j,j) = temp
       endif
 23854 continue
-23855 continue
+      continue
       endif
       if(cqty)then
       do23860 j = 1,ju
@@ -2056,7 +2056,7 @@ C Output from Public domain Ratfor, version 1.0
       x(j,j) = temp
       endif
 23860 continue
-23861 continue
+      continue
       endif
       if(cb)then
       call dcopy(k,qty,1,b,1)
@@ -2072,13 +2072,13 @@ C Output from Public domain Ratfor, version 1.0
       do23872 i = kp1,n
       xb(i) = 0.0d0
 23872 continue
-23873 continue
+      continue
       endif
       if(cr)then
       do23876 i = 1,k
       rsd(i) = 0.0d0
 23876 continue
-23877 continue
+      continue
       endif
       if(cb)then
       do23880 jj = 1,k 
@@ -2092,7 +2092,7 @@ C Output from Public domain Ratfor, version 1.0
       call daxpy(j-1,t,x(1,j),1,b,1)
       endif
 23880 continue
-23881 continue
+      continue
       go to 140
 130   info = j
       endif
@@ -2113,7 +2113,7 @@ C Output from Public domain Ratfor, version 1.0
       x(j,j) = temp
       endif
 23888 continue
-23889 continue
+      continue
       endif
       endif
       return
@@ -2169,13 +2169,13 @@ C Output from Public domain Ratfor, version 1.0
       endif
       e(j) = x(l,j)
 23914 continue
-23915 continue
+      continue
       endif
       if(wantu.and.l.le.nct)then
       do23922 i = l,n
       u(i,l) = x(i,l)
 23922 continue
-23923 continue
+      continue
       endif
       if(l.le.nrt)then
       e(l) = dnrm2(p-l,e(lp1),1)
@@ -2191,25 +2191,25 @@ C Output from Public domain Ratfor, version 1.0
       do23932 i = lp1,n
       work(i) = 0.0d0
 23932 continue
-23933 continue
+      continue
       do23934 j = lp1,p
       call daxpy(n-l,e(j),x(lp1,j),1,work(lp1),1)
 23934 continue
-23935 continue
+      continue
       do23936 j = lp1,p
       call daxpy(n-l,-e(j)/e(lp1),work(lp1),1,x(lp1,j),1)
 23936 continue
-23937 continue
+      continue
       endif
       if(wantv)then
       do23940 i = lp1,p
       v(i,l) = e(i)
 23940 continue
-23941 continue
+      continue
       endif
       endif
 23904 continue
-23905 continue
+      continue
       endif
       m = min0(p,n+1)
       nctp1 = nct+1
@@ -2230,10 +2230,10 @@ C Output from Public domain Ratfor, version 1.0
       do23954 i = 1,n
       u(i,j) = 0.0d0
 23954 continue
-23955 continue
+      continue
       u(j,j) = 1.0d0
 23952 continue
-23953 continue
+      continue
       endif
       if(nct.ge.1)then
       do23958 ll = 1,nct 
@@ -2242,7 +2242,7 @@ C Output from Public domain Ratfor, version 1.0
       do23962 i = 1,n
       u(i,l) = 0.0d0
 23962 continue
-23963 continue
+      continue
       u(l,l) = 1.0d0
       else
       lp1 = l+1
@@ -2251,7 +2251,7 @@ C Output from Public domain Ratfor, version 1.0
       t = -ddot(n-l+1,u(l,l),1,u(l,j),1)/u(l,l)
       call daxpy(n-l+1,t,u(l,l),1,u(l,j),1)
 23966 continue
-23967 continue
+      continue
       endif
       call dscal(n-l+1,-1.0d0,u(l,l),1)
       u(l,l) = 1.0d0+u(l,l)
@@ -2260,11 +2260,11 @@ C Output from Public domain Ratfor, version 1.0
       do23970 i = 1,lm1
       u(i,l) = 0.0d0
 23970 continue
-23971 continue
+      continue
       endif
       endif
 23958 continue
-23959 continue
+      continue
       endif
       endif
       if(wantv)then
@@ -2277,16 +2277,16 @@ C Output from Public domain Ratfor, version 1.0
       t = -ddot(p-l,v(lp1,l),1,v(lp1,j),1)/v(lp1,l)
       call daxpy(p-l,t,v(lp1,l),1,v(lp1,j),1)
 23980 continue
-23981 continue
+      continue
       endif
       endif
       do23982 i = 1,p
       v(i,l) = 0.0d0
 23982 continue
-23983 continue
+      continue
       v(l,l) = 1.0d0
 23974 continue
-23975 continue
+      continue
       endif
       mm = m
       iter = 0
@@ -2367,7 +2367,7 @@ C Output from Public domain Ratfor, version 1.0
       call drot(p,v(1,k),1,v(1,m),1,cs,sn)
       endif
 24016 continue
-24017 continue
+      continue
       goto 24014
 24022 continue
       f = e(l-1)
@@ -2382,7 +2382,7 @@ C Output from Public domain Ratfor, version 1.0
       call drot(n,u(1,k),1,u(1,l-1),1,cs,sn)
       endif
 24023 continue
-24024 continue
+      continue
       goto 24014
 24027 continue
       scale = dmax1(dabs(s(m)),dabs(s(m-1)),dabs(e(m-1)),dabs(s(l)),dabs
@@ -2427,7 +2427,7 @@ C Output from Public domain Ratfor, version 1.0
       call drot(n,u(1,k),1,u(1,k+1),1,cs,sn)
       endif
 24032 continue
-24033 continue
+      continue
       e(m-1) = f
       iter = iter+1
       goto 24014
@@ -2464,7 +2464,7 @@ C Output from Public domain Ratfor, version 1.0
       if (I24013.eq.3)goto 24027
       if (I24013.eq.4)goto 24040
 24014 continue
-23985 goto 23984
+      goto 23984
 23986 continue
       info = m
       return
@@ -2488,10 +2488,10 @@ C Output from Public domain Ratfor, version 1.0
       t = -b(j,l)
       call daxpy(j-1,t,x(1,j),1,b(1,l),1)
       endif
-24059 l = l+1
+      l = l+1
       goto 24058
 24060 continue
-24054 j = j-1
+      j = j-1
       goto 24053
 24055 continue
       return
@@ -2506,7 +2506,7 @@ C Output from Public domain Ratfor, version 1.0
       return
       endif
 24063 continue
-24064 continue
+      continue
       info = 0
       which = 1
       if(mod(job,10).ne.0)then
@@ -2525,7 +2525,7 @@ C Output from Public domain Ratfor, version 1.0
       call daxpy(n-j+1,temp,t(j,j-1),1,b(j),1)
       b(j) = b(j)/t(j,j)
 24076 continue
-24077 continue
+      continue
       endif
       goto 24072
 24078 continue
@@ -2537,7 +2537,7 @@ C Output from Public domain Ratfor, version 1.0
       call daxpy(j,temp,t(1,j+1),1,b(1),1)
       b(j) = b(j)/t(j,j)
 24081 continue
-24082 continue
+      continue
       endif
       goto 24072
 24083 continue
@@ -2548,7 +2548,7 @@ C Output from Public domain Ratfor, version 1.0
       b(j) = b(j)-ddot(jj-1,t(j+1,j),1,b(j+1),1)
       b(j) = b(j)/t(j,j)
 24086 continue
-24087 continue
+      continue
       endif
       goto 24072
 24088 continue
@@ -2558,7 +2558,7 @@ C Output from Public domain Ratfor, version 1.0
       b(j) = b(j)-ddot(j-1,t(1,j),1,b(1),1)
       b(j) = b(j)/t(j,j)
 24091 continue
-24092 continue
+      continue
       endif
       goto 24072
 24071 continue

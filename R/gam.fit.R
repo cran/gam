@@ -96,6 +96,7 @@
     bf <- "lm.wfit"
   }
   old.dev <- 10 * new.dev + 10
+  bf.iter=integer(0)
   for (iter in 1:maxit) {
     good <- weights > 0
     varmu <- variance(mu)
@@ -113,6 +114,7 @@
     wz[!good] <- 0
     wz[good] <- wz[good] * mu.eta.val[good]^2/varmu[good]
     fit <- eval(bf.call)
+    bf.iter=c(bf.iter,fit$iter)
     eta <- fit$fitted.values + offset
     mu <- linkinv(eta)
     old.dev <- new.dev
@@ -165,7 +167,7 @@
   else nl.chisq <- NULL
   fit <- c(fit, list(R = Rmat, rank = fitqr$rank, family = family,
                      deviance = new.dev, aic = aic.model, null.deviance = nulldev,
-                     iter = iter, prior.weights = weights, y = y, df.null = nulldf,
+                     iter = iter,bf.iter=bf.iter, prior.weights = weights, y = y, df.null = nulldf,
                      nl.chisq = nl.chisq))
   fit
 }

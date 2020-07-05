@@ -101,6 +101,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
                    nl.df = fit$df
                    )
 	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0)
+        rl$iter=NA
 	if(se)
 		rl <- c(rl, list(var = fit$var))
 	c(list(smooth.frame = smooth.frame), rl)

@@ -53,19 +53,19 @@ C Output from Public domain Ratfor, version 1.0
       anyzwt=.true.
       endif
 23002 continue
-23003 continue
+      continue
       if(qrank.eq.0)then
       do23008 i=1,n
       do23010 j=1,p
       qr(i,j)=x(i,j)*sqwt(i)
 23010 continue
-23011 continue
+      continue
 23008 continue
-23009 continue
+      continue
       do23012 j=1,p
       qpivot(j)=j
 23012 continue
-23013 continue
+      continue
       call dqrdca(qr,n,n,p,qraux,qpivot,work,qrank,onedm7)
       endif
       do23014 i=1,n
@@ -73,11 +73,11 @@ C Output from Public domain Ratfor, version 1.0
       j=1
 23016 if(.not.(j.le.q))goto 23018
       eta(i)=eta(i)+s(i,j)
-23017 j=j+1
+      j=j+1
       goto 23016
 23018 continue
 23014 continue
-23015 continue
+      continue
       nit=0
 23019 if((ratio .gt. tol ).and.(nit .lt. maxit))then
       deltaf=0d0
@@ -86,13 +86,13 @@ C Output from Public domain Ratfor, version 1.0
       z(i)=(y(i)-eta(i))*sqwt(i)
       old(i)=etal(i)
 23021 continue
-23022 continue
+      continue
       call dqrsl(qr,n,n,qrank,qraux,z,work(1),effect(1),beta, work(1),et
      *al,job,info)
       do23023 i=1,n
       etal(i)=etal(i)*sqwti(i)
 23023 continue
-23024 continue
+      continue
       sliv=1
       slv=1
       iw=5*n+1
@@ -105,7 +105,8 @@ C Output from Public domain Ratfor, version 1.0
       old(i)=s(i,k)
       z(i)=y(i)-etal(i)-eta(i)+old(i)
 23028 continue
-23029 continue
+      continue
+C Trevor edited this 06/28/2020      
       call lo1(x(1,j),z,w,n,dj,pj,nvmax(k),span(k),degree(k),match(1,k),
      * nef(k),nit,dof(k),s(1,k),var(1,k),work(iw), work(iw+pj+1),work(iw
      *+nef(k)*dj+pj+1), work(iw+nef(k)*(dj+1)+pj+2),work(iw + nef(k)*(dj
@@ -118,16 +119,16 @@ C Output from Public domain Ratfor, version 1.0
       do23030 i=1,n
       eta(i)=eta(i)+s(i,k)-old(i)
 23030 continue
-23031 continue
+      continue
       deltaf=deltaf+dwrss(n,old,s(1,k),w)
-23026 k=k+1
+      k=k+1
       goto 23025
 23027 continue
       normf=0d0
       do23032 i=1,n
       normf=normf+w(i)*eta(i)*eta(i)
 23032 continue
-23033 continue
+      continue
       if(normf.gt.0d0)then
       ratio=dsqrt(deltaf/normf)
       else
@@ -135,15 +136,15 @@ C Output from Public domain Ratfor, version 1.0
       endif
       goto 23019
       endif
-23020 continue
+      continue
       do23036 j=1,p 
       work(j)=beta(j)
 23036 continue
-23037 continue
+      continue
       do23038 j=1,p 
       beta(qpivot(j))=work(j)
 23038 continue
-23039 continue
+      continue
       if(anyzwt)then
       do23042 i=1,n 
       if(w(i) .le. 0d0)then
@@ -151,14 +152,14 @@ C Output from Public domain Ratfor, version 1.0
       do23046 j=1,p
       etal(i)=etal(i)+beta(j)*x(i,j)
 23046 continue
-23047 continue
+      continue
       endif
 23042 continue
-23043 continue
+      continue
       endif
       do23048 i=1,n
       eta(i)=eta(i)+etal(i)
 23048 continue
-23049 continue
+      continue
       return
       end

@@ -30,15 +30,15 @@ C Output from Public domain Ratfor, version 1.0
       do23010 j=1,3 
       knot(j) = x(1) 
 23010 continue
-23011 continue
+      continue
       do23012 j=1,ndk 
       knot(j+3) = x( 1 + (j-1)*(n-1)/(ndk-1) ) 
 23012 continue
-23013 continue
+      continue
       do23014 j=1,3 
       knot(ndk+3+j) = x(n) 
 23014 continue
-23015 continue
+      continue
       return
       end
       subroutine splsm(x,y,w,n,match,nef,spar,dof,smo,s0,cov,ifcov,work)
@@ -65,7 +65,7 @@ C Output from Public domain Ratfor, version 1.0
       do23016 i=1,nef 
       xin(i)=(xin(i)-xmin)/xrange
 23016 continue
-23017 continue
+      continue
       call sknotl(xin,nef,knot,k)
       nk=k-4
       ld4=4
@@ -120,12 +120,12 @@ C Output from Public domain Ratfor, version 1.0
       do23022 i=1,nef
       sout(i)=yin(i)*yin(i)
 23022 continue
-23023 continue
+      continue
       sumwin=0d0
       do23024 i=1,nef
       sumwin=sumwin+win(i)
 23024 continue
-23025 continue
+      continue
       yssw=wmean(nef,sout,win)
       s0=wmean(n,y,w)
       yssw=yssw*(sumwin-s0*s0)
@@ -135,18 +135,18 @@ C Output from Public domain Ratfor, version 1.0
       do23026 i=1,nef 
       win(i)=win(i)*win(i)
 23026 continue
-23027 continue
+      continue
       sbar=wmean(nef,sout,win)
       xbar=wmean(nef,xin,win)
       do23028 i=1,nef 
       lev(i)=(xin(i)-xbar)*sout(i) 
 23028 continue
-23029 continue
+      continue
       xsbar=wmean(nef,lev,win)
       do23030 i=1,nef 
       lev(i)=(xin(i)-xbar)**2 
 23030 continue
-23031 continue
+      continue
       dsum=wmean(nef,lev,win)
       do23032 i=1,nef 
       if(win(i).gt.0d0)then
@@ -155,17 +155,17 @@ C Output from Public domain Ratfor, version 1.0
       lev(i)=0d0
       endif
 23032 continue
-23033 continue
+      continue
       dof=0d0
       do23036 i=1,nef 
       dof=dof+lev(i)*win(i)
 23036 continue
-23037 continue
+      continue
       dof=dof+1d0
       do23038 i=1,nef
       sout(i)=sout(i)-sbar -(xin(i)-xbar)*xsbar/dsum
 23038 continue
-23039 continue
+      continue
       call unpck(n,nef,match,sout,smo)
       return
       end
@@ -178,7 +178,7 @@ C Output from Public domain Ratfor, version 1.0
       wsum=wsum+y(i)*w(i)
       wtot=wtot+w(i)
 23040 continue
-23041 continue
+      continue
       if(wtot .gt. 0d0)then
       wmean=wsum/wtot
       else

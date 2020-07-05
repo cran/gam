@@ -190,6 +190,8 @@ the residual sum of squares. Where sensible, the constant is chosen so that a
 the number of local scoring
 iterations used to compute the estimates.
 }
+\item{bf.iter}{a vector of length \code{iter} giving number of
+  backfitting iterations used at each inner loop.}
 \item{family}{
 a three-element character vector giving the name of the family, the link, and the variance function; mainly for printing purposes.
 }

@@ -48,7 +48,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 		qr = x,
 		qraux = double(p),
 		qpivot = as.integer(1:p),
-                effects=double(n),        
+                effects=double(n),
 		double((10 + 2 * 4 + 5) * (max(smooth.frame$nef) + 2) + 15 *
 			n + 15 + length(which)),
                         PACKAGE="gam")
@@ -68,11 +68,11 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
         effects<-fit$effects    #qr.qty(qrx,fit$y)
         r1 <- seq(len = qrx$rank)
         dn <- colnames(x)
-        if (is.null(dn)) 
+        if (is.null(dn))
           dn <- paste("x", 1:p, sep = "")
         names(effects) <- c(dn[qrx$pivot[r1]], rep.int("", n - qrx$rank))
 
- 	rl <- list(coefficients = fit$beta, residuals = fit$y - fit$eta, 
+ 	rl <- list(coefficients = fit$beta, residuals = fit$y - fit$eta,
                    fitted.values = fit$eta,
                    effects=effects, weights=w, rank=qrank,
                    assign=attr(x,"assign"),
@@ -81,6 +81,7 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
                    nl.df = fit$df - 1
                    )
 	rl$df.residual <- n - qrank - sum(rl$nl.df) - sum(fit$w == 0.)
+        rl$iter=NA
 	if(se)
 		rl <- c(rl, list(var = fit$var))
 	c(list(smooth.frame = smooth.frame), rl)

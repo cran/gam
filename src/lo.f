@@ -5,24 +5,30 @@ C Output from Public domain Ratfor, version 1.0
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),v(lv),work(
      **)
       double precision beta(p+1)
-      integer qrank
+      double precision zrank
       call lo1(x,y,w,n,d,p,nvmax,span,degree,match,nef,0,dof,s,var,beta,
      * work(1),work(nef*d+1),work(nef*(d+1)+2),work(nef*(d+2)+2), work(n
-     *ef*(d+3)+2),qrank,iwork(1),work(nef*(p+d+4)+3+p), iv,liv,lv,v, wor
+     *ef*(d+3)+2),zrank,iwork(1),work(nef*(p+d+4)+3+p), iv,liv,lv,v, wor
      *k(nef*(p+d+4)+4+2*p) )
       return
       end
       subroutine lo1(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,v
-     *ar,beta, xin,win,sqwin,sqwini,xqr,qrank,qpivot,qraux, iv,liv,lv,v,
+     *ar,beta, xin,win,sqwin,sqwini,xqr,zrank,qpivot,qraux, iv,liv,lv,v,
      * work)
       integer n,d,p,nvmax,degree,match(*),nef,nit,qrank,qpivot(p+1)
       integer iv(liv),liv,lv
+C     Trevor did some fiddling here 6/30/2020
+C     made qrank zrank so lto errors go away
+C     make it integer qrank, use it, then convert back to double
+      double precision zrank
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),beta(p+1), 
      *xin(nef,d),win(nef+1),sqwin(nef),sqwini(nef),xqr(nef,p+1), qraux(p
      *+1),v(lv), work(*)
+      qrank=int(zrank)
       call lo2(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,var,bet
      *a, xin,win,sqwin,sqwini,xqr,qrank,qpivot,qraux, iv,liv,lv,v, work(
      *1),work(nef+2),work(2*nef+3),work(3*nef+4))
+      zrank=dble(qrank)
       return
       end
       subroutine lo2(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,v
@@ -51,41 +57,41 @@ C Output from Public domain Ratfor, version 1.0
       sqwini(i)=1d5
       endif
 23002 continue
-23003 continue
+      continue
       do23006 i=1,n
       k=match(i)
       if(k.le.nef)then
       do23010 j=1,d
       xin(k,j)=x(i,j)
 23010 continue
-23011 continue
+      continue
       j=d+1
 23012 if(.not.(j.le.p))goto 23014
       xqr(k,j+1)=x(i,j)
-23013 j=j+1
+      j=j+1
       goto 23012
 23014 continue
       endif
 23006 continue
-23007 continue
+      continue
       do23015 i=1,nef
       xqr(i,1)=sqwin(i)
       do23017 j=1,d
       xqr(i,j+1)=xin(i,j)*sqwin(i)
 23017 continue
-23018 continue
+      continue
       j=d+2
 23019 if(.not.(j.le.p+1))goto 23021
       xqr(i,j)=xqr(i,j)*sqwin(i)
-23020 j=j+1
+      j=j+1
       goto 23019
 23021 continue
 23015 continue
-23016 continue
+      continue
       j=1
 23022 if(.not.(j.le.p+1))goto 23024
       qpivot(j)=j
-23023 j=j+1
+      j=j+1
       goto 23022
 23024 continue
       call dqrdca(xqr,nef,nef,p+1,qraux,qpivot,work,qrank,onedm7)
@@ -96,12 +102,12 @@ C Output from Public domain Ratfor, version 1.0
       do23025 i=1,n
       work(i)=y(i)*w(i)
 23025 continue
-23026 continue
+      continue
       call pck(n,nef,match,work,yin)
       do23027 i=1,nef
       yin(i)=yin(i)*sqwini(i)*sqwini(i)
 23027 continue
-23028 continue
+      continue
       if(nit.le.1)then
       call lowesb(xin,yin,win,levout,ifvar,iv,liv,lv,v)
       else
@@ -111,13 +117,13 @@ C Output from Public domain Ratfor, version 1.0
       do23031 i=1,nef
       sout(i)=sout(i)*sqwin(i)
 23031 continue
-23032 continue
+      continue
       call dqrsl(xqr,nef,nef,qrank,qraux,sout,work(1),work(1),beta, sout
      *,work(1),job,info)
       do23033 i=1,nef
       sout(i)=sout(i)*sqwini(i)
 23033 continue
-23034 continue
+      continue
       if(nit.le.1)then
       job=10000
       j=1
@@ -125,15 +131,15 @@ C Output from Public domain Ratfor, version 1.0
       do23040 i=1,nef
       work(i)=0d0
 23040 continue
-23041 continue
+      continue
       work(j)=1d0
       call dqrsl(xqr,nef,nef,qrank,qraux,work,var,junk,junk, junk,junk,j
      *ob,info)
       do23042 i=1,nef
       levout(i)=levout(i) - var(i)**2
 23042 continue
-23043 continue
-23038 j=j+1
+      continue
+      j=j+1
       goto 23037
 23039 continue
       dof=0d0
@@ -144,22 +150,22 @@ C Output from Public domain Ratfor, version 1.0
       levout(i)=0d0
       endif
 23044 continue
-23045 continue
+      continue
       do23048 i=1,nef 
       dof=dof+levout(i)*win(i)
 23048 continue
-23049 continue
+      continue
       call unpck(n,nef,match,levout,var)
       j=1
 23050 if(.not.(j.le.p+1))goto 23052
       work(j)=beta(j)
-23051 j=j+1
+      j=j+1
       goto 23050
 23052 continue
       j=1
 23053 if(.not.(j.le.p+1))goto 23055
       beta(qpivot(j))=work(j)
-23054 j=j+1
+      j=j+1
       goto 23053
 23055 continue
       endif
@@ -172,11 +178,11 @@ C Output from Public domain Ratfor, version 1.0
       do23056 i=1,p
       xbar(i)=0d0
 23056 continue
-23057 continue
+      continue
       do23058 i=1,n
       xbar(match(i))=xbar(match(i))+x(i)
 23058 continue
-23059 continue
+      continue
       return
       end
       subroutine suff(n,p,match,x,y,w,xbar,ybar,wbar,work)
@@ -186,11 +192,11 @@ C Output from Public domain Ratfor, version 1.0
       do23060 i=1,n
       xbar(match(i))=x(i)
 23060 continue
-23061 continue
+      continue
       do23062 i=1,n
       work(i)=y(i)*w(i)
 23062 continue
-23063 continue
+      continue
       call pck(n,p,match,work,ybar)
       do23064 i=1,p
       if(wbar(i).gt.0d0)then
@@ -199,7 +205,7 @@ C Output from Public domain Ratfor, version 1.0
       ybar(i)=0d0
       endif
 23064 continue
-23065 continue
+      continue
       return
       end
       subroutine unpck(n,p,match,xbar,x)
@@ -211,7 +217,7 @@ C Output from Public domain Ratfor, version 1.0
       do23070 i = 1,n
       x(i)=xbar(match(i))
 23070 continue
-23071 continue
+      continue
       return
       end
       double precision function dwrss(n,y,eta,w)
@@ -224,7 +230,7 @@ C Output from Public domain Ratfor, version 1.0
       wsum=wsum+w(i)*work*work
       wtot=wtot+w(i)
 23072 continue
-23073 continue
+      continue
       if(wtot .gt. 0d0)then
       dwrss=wsum/wtot
       else
