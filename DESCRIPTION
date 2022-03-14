@@ -2,7 +2,7 @@ Package: gam
 Type: Package
 Title: Generalized Additive Models
 Date: 2020-6-27
-Version: 1.20
+Version: 1.20.1
 Author: Trevor Hastie
 Description: Functions for fitting and working with generalized
 		additive models, as described in chapter 7 of "Statistical Models in S" (Chambers and Hastie (eds), 1991), and "Generalized Additive Models" (Hastie and Tibshirani, 1990).
@@ -11,6 +11,6 @@ Depends: R (>= 3.5.0),stats, splines, foreach
 Suggests: akima, testthat
 License: GPL-2
 NeedsCompilation: yes
-Packaged: 2020-07-01 23:25:31 UTC; hastie
+Packaged: 2022-03-13 20:43:42 UTC; ripley
 Repository: CRAN
-Date/Publication: 2020-07-05 04:50:37 UTC
+Date/Publication: 2022-03-14 05:03:42 UTC

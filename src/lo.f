@@ -39,7 +39,7 @@ C     make it integer qrank, use it, then convert back to double
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),beta(p+1), 
      *xin(nef,d),win(nef+1),sqwin(nef),sqwini(nef),xqr(nef,p+1), qraux(p
      *+1),v(lv), levout(nef+1), sout(nef+1),yin(nef+1),work(*)
-      double precision junk, onedm7
+      double precision junk(1), onedm7
       integer job, info
       logical setlf, ifvar
       job=110
@@ -133,8 +133,8 @@ C     make it integer qrank, use it, then convert back to double
 23040 continue
       continue
       work(j)=1d0
-      call dqrsl(xqr,nef,nef,qrank,qraux,work,var,junk,junk, junk,junk,j
-     *ob,info)
+      call dqrsl(xqr,nef,nef,qrank,qraux,work,var,junk,junk,
+     * junk,junk,job,info)
       do23042 i=1,nef
       levout(i)=levout(i) - var(i)**2
 23042 continue
