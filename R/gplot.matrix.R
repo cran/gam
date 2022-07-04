@@ -1,5 +1,5 @@
 "gplot.matrix" <-
-  function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale = 
+  function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale =
            0, se = FALSE, fit, ...)
 {
   if(ncol(x) != 2) {
@@ -16,15 +16,12 @@
     }
 
 
-#  interp.loaded<-require("akima")
-  interp.loaded<-TRUE
-#  if(!interp.loaded)
   xname <- dimnames(x)[[2]]
   dups <- bivar.dup(x)
-  if (requireNamespace("akima", quietly = TRUE)) {
-    xyz <- akima::interp(x[!dups, 1], x[!dups, 2], y[!dups])
+  if (requireNamespace("interp", quietly = TRUE)) {
+    xyz <- interp::interp(x[!dups, 1], x[!dups, 2], y[!dups])
    } else {
-    stop("You need to install the package 'akima' from the R contributed libraries to use this plotting method for bivariate functions")
+    stop("You need to install the package 'interp' from the R contributed libraries to use this plotting method for bivariate functions")
    }
 
   zmin <- min(xyz$z[!is.na(xyz$z)])

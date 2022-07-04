@@ -31,7 +31,7 @@ a list is returned, consisting of the five parameters, conveniently packaged up 
   Hastie, T. J. (1992)
   \emph{Generalized additive models.}
   Chapter 7 of \emph{Statistical Models in S}
-  eds J. M. Chambers and T. J. Hastie, Wadsworth \& Brooks/Cole.
+  eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
   }
 \examples{
 \dontrun{gam(formula, family, control = gam.control(bf.maxit=15))}

@@ -32,7 +32,7 @@ copy in the users namespace.}
   Hastie, T. J. (1992)
   \emph{Generalized additive models.}
   Chapter 7 of \emph{Statistical Models in S}
-  eds J. M. Chambers and T. J. Hastie, Wadsworth \& Brooks/Cole.
+  eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
   }
 \examples{
 \dontrun{gam.smoothers()$slist # get the gam.smooth.list, and extract component slist}

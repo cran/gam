@@ -45,9 +45,6 @@
 
 
 #include <R.h>
-
-/* for Sint .. */
-
 #include <Rinternals.h>
 
 
@@ -66,81 +63,81 @@ void BDRksmooth(double *x, double *y, int *n,
 
 void
 
-loess_raw(double *y, double *x, double *weights, double *robust, Sint *d,
+loess_raw(double *y, double *x, double *weights, double *robust, int *d,
 
-	  Sint *n, double *span, Sint *degree, Sint *nonparametric,
+	  int *n, double *span, int *degree, int *nonparametric,
 
-	  Sint *drop_square, Sint *sum_drop_sqr, double *cell,
+	  int *drop_square, int *sum_drop_sqr, double *cell,
 
-	  char **surf_stat, double *surface, Sint *parameter,
+	  char **surf_stat, double *surface, int *parameter,
 
-	  Sint *a, double *xi, double *vert, double *vval, double *diagonal,
+	  int *a, double *xi, double *vert, double *vval, double *diagonal,
 
-	  double *trL, double *one_delta, double *two_delta, Sint *setLf);
+	  double *trL, double *one_delta, double *two_delta, int *setLf);
 
 void
 
 loess_dfit(double *y, double *x, double *x_evaluate, double *weights,
 
-	   double *span, Sint *degree, Sint *nonparametric,
+	   double *span, int *degree, int *nonparametric,
 
-	   Sint *drop_square, Sint *sum_drop_sqr,
+	   int *drop_square, int *sum_drop_sqr,
 
-	   Sint *d, Sint *n, Sint *m, double *fit);
+	   int *d, int *n, int *m, double *fit);
 
 void
 
 loess_dfitse(double *y, double *x, double *x_evaluate, double *weights,
 
-	     double *robust, Sint *family, double *span, Sint *degree,
+	     double *robust, int *family, double *span, int *degree,
 
-	     Sint *nonparametric, Sint *drop_square,
+	     int *nonparametric, int *drop_square,
 
-	     Sint *sum_drop_sqr,
+	     int *sum_drop_sqr,
 
-	     Sint *d, Sint *n, Sint *m, double *fit, double *L);
+	     int *d, int *n, int *m, double *fit, double *L);
 
 void
 
-loess_ifit(Sint *parameter, Sint *a, double *xi, double *vert,
+loess_ifit(int *parameter, int *a, double *xi, double *vert,
 
-	   double *vval, Sint *m, double *x_evaluate, double *fit);
+	   double *vval, int *m, double *x_evaluate, double *fit);
 
 void
 
 loess_ise(double *y, double *x, double *x_evaluate, double *weights,
 
-	  double *span, Sint *degree, Sint *nonparametric,
+	  double *span, int *degree, int *nonparametric,
 
-	  Sint *drop_square, Sint *sum_drop_sqr, double *cell,
+	  int *drop_square, int *sum_drop_sqr, double *cell,
 
-	  Sint *d, Sint *n, Sint *m, double *fit, double *L);
+	  int *d, int *n, int *m, double *fit, double *L);
 
 
 
 void Srunmed(double *y, double *smo,
 
-	     Sint *n, Sint *band, Sint *end_rule, Sint *debug);
+	     int *n, int *band, int *end_rule, int *debug);
 
 
 
-void Trunmed(Sint *nn,/* = length(data) */
+void Trunmed(int *nn,/* = length(data) */
 
-	     Sint *kk,/* is odd <= nn */
+	     int *kk,/* is odd <= nn */
 
 	     const double *data,
 
 	     double *median, /* (n) */
 
-	     Sint   *outlist,/* (k+1) */
+	     int   *outlist,/* (k+1) */
 
-	     Sint   *nrlist,/* (2k+1) */
+	     int   *nrlist,/* (2k+1) */
 
 	     double *window,/* (2k+1) */
 
-	     Sint   *end_rule,
+	     int   *end_rule,
 
-	     Sint   *print_level);
+	     int   *print_level);
 
 
 

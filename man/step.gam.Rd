@@ -87,7 +87,7 @@ The entire process is repeated until either the maximum number of steps has been
   Hastie, T. J. (1992)
   \emph{Generalized additive models.}
   Chapter 7 of \emph{Statistical Models in S}
-  eds J. M. Chambers and T. J. Hastie, Wadsworth \& Brooks/Cole.
+  eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 
   Hastie, T. and Tibshirani, R. (1990)
   \emph{Generalized Additive Models.}

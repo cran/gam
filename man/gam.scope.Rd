@@ -46,7 +46,7 @@ for each term, which describes the candidates for that term in the Gam.
   Hastie, T. J. (1991)
   \emph{Generalized additive models.}
   Chapter 7 of \emph{Statistical Models in S}
-  eds J. M. Chambers and T. J. Hastie, Wadsworth \& Brooks/Cole.
+  eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 }
 \author{
   Written by Trevor Hastie, following closely the design in the

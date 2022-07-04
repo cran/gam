@@ -231,7 +231,7 @@ with
   Hastie, T. J. (1991)
   \emph{Generalized additive models.}
   Chapter 7 of \emph{Statistical Models in S}
-  eds J. M. Chambers and T. J. Hastie, Wadsworth \& Brooks/Cole.
+  eds J. M. Chambers and T. J. Hastie, Wadsworth & Brooks/Cole.
 
   Hastie, T. and Tibshirani, R. (1990)
   \emph{Generalized Additive Models.}
