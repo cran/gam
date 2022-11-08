@@ -56,7 +56,7 @@ c     remaining vertices
          j=i-1
          do 6 k=1,d
             v(i,k)=v(1+mod(j,2)*(vc-1),k)
-            j=DBLE(j)/2.D0
+            j=INT(DBLE(j)/2.D0)
     6    continue
     5 continue
       return
@@ -482,7 +482,10 @@ c Var
 
       double precision ehg128
       external ehg128
-
+C     Using n, nc to avoid warnings
+      n = n + 0
+      nc = nc + 0
+      
       do 3 i=1,m
          do 4 i1=1,d
             delta(i1)=z(i,i1)
@@ -525,7 +528,7 @@ c     coef, d, deg, del
 
       if(deg.eq.0) dk=1
       if(deg.eq.1) dk=d+1
-      if(deg.eq.2) dk=dble((d+2)*(d+1))/2.d0
+      if(deg.eq.2) dk=INT(dble((d+2)*(d+1))/2.d0)
       corx=dsqrt(k/dble(n))
       z=(dsqrt(k/trl)-corx)/(1-corx)
       if(nsing .eq. 0 .and. 1 .lt. z)   call ehg184('Chernobyl! trL<k',t
@@ -844,8 +847,10 @@ c           bottom of while loop
 
       double precision g1
       dk = 0
+C     Initializing tau to avoid warnings
+      tau = tau + 0
       if(deg.eq.1) dk=d+1
-      if(deg.eq.2) dk=dble((d+2)*(d+1))/2.d0
+      if(deg.eq.2) dk=INT(dble((d+2)*(d+1))/2.d0)
       g1 = (-0.08125d0*d+0.13d0)*d+1.05d0
       trl = dk*(1+max(0.d0,(g1-f)/f))
       return
@@ -941,7 +946,7 @@ c     tensor
          if(.not.i2)then
             call ehg182(122)
          end if
-         lg=DBLE(lg)/2.D0
+         lg=INT(DBLE(lg)/2.D0)
          do 8 ig=1,lg
 c           Hermite basis
             phi0=(1-h)**2*(1+2*h)
@@ -1218,7 +1223,7 @@ c        Hermite basis
 
       integer function ifloor(x)
       DOUBLE PRECISION x
-      ifloor=x
+      ifloor=INT(x)
       if(ifloor.gt.x) ifloor=ifloor-1
       end
 
@@ -1418,7 +1423,7 @@ c           invert $psi$
      +           lo,hi)
             do 12 ileaf=1,nleaf
                do 13 ii=lo(leaf(ileaf)),hi(leaf(ileaf))
-                  i=phi(pi(ii))
+                  i=INT(phi(pi(ii)))
                   if(i.ne.0)then
                      if(.not.(psi(i).eq.pi(ii)))then
                         call ehg182(194)
@@ -1509,7 +1514,8 @@ c           $Lf sub {:,l,:} = V SIGMA sup {+} U sup T Q sup T W$
       end
 
       subroutine lowesb(xx,yy,ww,diagl,infl,iv,liv,lv,wv)
-      logical infl
+c     logical infl
+      integer infl
       integer liv, lv
       integer iv(*)
       DOUBLE PRECISION xx(*),yy(*),ww(*),diagl(*),wv(*)
@@ -1524,6 +1530,9 @@ c Var
 
       save execnt
       data execnt /0/
+C     Modifying lv, liv to avoid warnings
+      lv = lv + 0
+      liv = liv + 0
       execnt=execnt+1
       if(.not.(iv(28).ne.173))then
          call ehg182(174)
@@ -1534,7 +1543,7 @@ c Var
          end if
       end if
       iv(28)=173
-      if(infl)then
+      if(infl.ne.0)then
          trl=1.D0
       else
          trl=0.D0
@@ -1564,7 +1573,8 @@ c ------     called only by loess_workspace()  in ./loessc.c
       subroutine lowesd(versio,iv,liv,lv,v,d,n,f,ideg,nvmax,setlf)
       integer versio,liv,lv,d,n,ideg,nvmax
       integer iv(liv)
-      logical setlf
+c     logical setlf
+      integer setlf
       double precision f, v(lv)
 
       integer bound,execnt,i,i1,i2,j,ncmax,nf,vc
@@ -1600,7 +1610,7 @@ c     version -> versio
             i1=d+1
          else
             if(ideg.eq.2)then
-               i1=dble((d+2)*(d+1))/2.d0
+               i1=INT(dble((d+2)*(d+1))/2.d0)
             end if
          end if
       end if
@@ -1633,7 +1643,7 @@ c     initialize permutation
     4 continue
       iv(23)=iv(22)+n
       iv(25)=iv(23)+nvmax
-      if(setlf)then
+      if(setlf.ne.0)then
          iv(27)=iv(25)+nvmax*nf
       else
          iv(27)=iv(25)
@@ -1650,7 +1660,7 @@ c     initialize permutation
       iv(18)=iv(16)+nf
       iv(24)=iv(18)+iv(29)*nf
       iv(34)=iv(24)+(d+1)*nvmax
-      if(setlf)then
+      if(setlf.ne.0)then
          iv(26)=iv(34)+(d+1)*nvmax*nf
       else
          iv(26)=iv(34)
@@ -1676,6 +1686,9 @@ c     initialize permutation
 
       save execnt
       data execnt /0/
+C     Initializing lv, liv to avoid warnings
+      lv = lv + 0
+      liv = liv + 0
       execnt=execnt+1
       if(.not.(iv(28).ne.172))then
          call ehg182(172)
@@ -1701,6 +1714,9 @@ c     m = number of x values at which to evaluate
       external ehg182,ehg136
       save execnt
       data execnt /0/
+C     Modifying lv, liv to avoid warnings
+      lv = lv + 0
+      liv = liv + 0
       execnt=execnt+1
       if(171.le.iv(28))then
          i1=(iv(28).le.174)
@@ -1734,6 +1750,9 @@ c              w,     rcond,sing,    dd,    tdeg,cdeg,  s)
       external ehg182,ehg191
       save execnt
       data execnt /0/
+C     Modifying lv, liv to avoid warnings
+      lv = lv + 0
+      liv = liv + 0
       execnt=execnt+1
       if(.not.(iv(28).ne.172))then
          call ehg182(172)
@@ -1759,6 +1778,9 @@ c              w,     rcond,sing,    dd,    tdeg,cdeg,  s)
       external ehg182,ehg192
       save execnt
       data execnt /0/
+C     Initializing lv, liv to avoid warnings
+      lv = lv + 0
+      liv = liv + 0
       execnt=execnt+1
       if(.not.(iv(28).ne.172))then
          call ehg182(172)
@@ -1935,7 +1957,7 @@ c     top of while loop
          if(.not.leaf)then
             call ehg129(l,u,dd,x,pi,n,sigma)
             k=IDAMAX(dd,sigma,1)
-            m=DBLE(l+u)/2.D0
+            m=INT(DBLE(l+u)/2.D0)
             call ehg106(l,u,m,1,x(1,k),pi,n)
 c           all ties go with hi son
 c           top of while loop
@@ -2019,6 +2041,10 @@ c {called only from ehg127}  purpose...?...
       external ehg182
       save execnt
       data execnt /0/
+C     Modifying kappa, nv, nvmax to avoid warnings
+      kappa = kappa + 0
+      nv = nv + 0
+      nvmax = nvmax + 0      
 c     stacktop -> stackt
       execnt=execnt+1
 c     find leaf cells affected by $z$

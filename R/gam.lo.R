@@ -1,3 +1,5 @@
+#' @rdname lo
+#' @export
 "gam.lo" <-
 function(x, y, w = rep(1, length(y)), span = 0.5, degree = 1, ncols = p, xeval
 	 = x)

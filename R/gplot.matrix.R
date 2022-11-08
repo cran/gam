@@ -1,3 +1,6 @@
+#' @method gplot matrix
+#' @export
+#' @export gplot.matrix
 "gplot.matrix" <-
   function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale =
            0, se = FALSE, fit, ...)

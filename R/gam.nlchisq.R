@@ -1,3 +1,4 @@
+#' @export
 "gam.nlchisq" <-
 function(qr, resid, w, s)
 {

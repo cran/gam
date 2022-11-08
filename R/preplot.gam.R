@@ -1,3 +1,7 @@
+#' @rdname plot.Gam
+#' @method preplot Gam
+#' @export
+#' @export preplot.Gam
 "preplot.Gam" <-
   function(object, newdata, terms = labels.Gam(object),...)
 {

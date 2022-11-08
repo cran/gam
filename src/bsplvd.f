@@ -207,8 +207,12 @@ C Local Variables
 
       save j,deltal,deltar
       data j/1/
-c
-      go to (10,20), index
+c     Naras replaced computed goto exactly as it worked
+c     even though it can cause error!
+c     go to (10,20), index
+      if (index.eq.1) goto 10
+      if (index.eq.2) goto 20
+      call intpr1('Error in bsplvb index value', 27, index) 
    10 j = 1
       biatx(1) = 1e0
       if (j .ge. jhigh) return

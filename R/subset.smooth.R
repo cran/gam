@@ -1,3 +1,5 @@
+#' @method `[` smooth
+#' @export
 "[.smooth" <-
 function(x, ..., drop = FALSE)
 {

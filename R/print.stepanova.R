@@ -1,3 +1,5 @@
+#' @method print stepanova
+#' @export
 "print.stepanova"<-
 function(x, digits = .Options$digits, quote = F, drop = F, ...)
 {

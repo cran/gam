@@ -1,3 +1,5 @@
+#' @rdname gam.random
+#' @export random
 "random" <-
     function (f, df = NULL, lambda = 0, intercept = TRUE)
 {

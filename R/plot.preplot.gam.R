@@ -1,3 +1,6 @@
+#' @method plot preplot.Gam
+#' @export
+#' @export plot.preplot.Gam
 "plot.preplot.Gam" <-
 function(x, y = NULL, residuals = NULL, rugplot = TRUE, se = FALSE, scale = 0, fit = TRUE,
 	...)

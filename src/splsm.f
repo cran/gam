@@ -11,16 +11,16 @@ C Output from Public domain Ratfor, version 1.0
       ndk = n 
       else
       if(n.ge.50 .and. n.lt.200)then
-      ndk = 2.**(a1+(a2-a1)*(n-50.)/150.) 
+      ndk = INT(2.**(a1+(a2-a1)*(n-50.)/150.))
       else
       if(n.ge.200 .and. n.lt.800)then
-      ndk = 2.**(a2+(a3-a2)*(n-200.)/600.) 
+      ndk = INT(2.**(a2+(a3-a2)*(n-200.)/600.))
       else
       if(n.ge.800 .and. n.lt.3200)then
-      ndk = 2.**(a3+(a4-a3)*(n-800.)/2400.) 
+      ndk = INT(2.**(a3+(a4-a3)*(n-800.)/2400.))
       else
       if(n.ge.3200)then
-      ndk = 200. + float(n-3200)**.2 
+      ndk = INT(200. + float(n-3200)**.2)
       endif
       endif
       endif
@@ -96,6 +96,10 @@ C Output from Public domain Ratfor, version 1.0
       double precision yssw, eps
       integer maxit
       double precision wmean
+C     Initializing ifcov to avoid warnings
+      ifcov = 0
+C     Touching x to avoid warnings
+      x(1) = x(1) * 1.0
       crit=0d0
       if(dof .le. 0d0)then
       ispar=1

@@ -1,3 +1,4 @@
+#' @export
 assign.list<-function(assignx,term.labels){
   ass<-as.list(seq(term.labels))
   names(ass)<-term.labels

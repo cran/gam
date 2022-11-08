@@ -71,23 +71,23 @@ void loess_grow (int *parameter, int *a,
 
 /* These (and many more) are in ./loessf.f : */
 
-void F77_NAME(lowesa)();
+void F77_NAME(lowesa)(double*, int*, int*, int*, int*, double*, double*);
 
-void F77_NAME(lowesb)();
+void F77_NAME(lowesb)(double*, double*, double*, double*, int*, int*, int*, int*, double*);
 
-void F77_NAME(lowesc)();
+void F77_NAME(lowesc)(int*, double*, double*, double*, double*, double*);
 
-void F77_NAME(lowesd)();
+void F77_NAME(lowesd)(int*, int*, int*, int*, double*, int*, int*, double*, int*, int*, int*);
 
-void F77_NAME(lowese)();
+void F77_NAME(lowese)(int*, int*, int*, double*, int*, double*, double*);
 
-void F77_NAME(lowesf)();
+void F77_NAME(lowesf)(double*, double*, double*, int*, int*, int*, double*, int*, double*, double*, int*, double*);
 
-void F77_NAME(lowesl)();
+void F77_NAME(lowesl)(int*, int*, int*, double*, int*, double*, double*);
 
-void F77_NAME(ehg169)();
+void F77_NAME(ehg169)(int*, int*, int*, int*, int*, int*, double*, int*, double*, int*, int*, int*);
 
-void F77_NAME(ehg196)();
+void F77_NAME(ehg196)(int*, int*, double*, double*);
 
 /* exported (for loessf.f) : */
 
@@ -161,7 +161,7 @@ loess_raw(double *y, double *x, double *weights, double *robust, int *d,
 {
 
     int zero = 0, one = 1, two = 2, nsing, i, k;
-
+    double dzero = 0;
     double *hat_matrix, *LL;
 
 
@@ -178,7 +178,7 @@ loess_raw(double *y, double *x, double *weights, double *robust, int *d,
 
     if(!strcmp(*surf_stat, "interpolate/none")) {
 
-	F77_CALL(lowesb)(x, y, robust, &zero, &zero, iv, &liv, &lv, v);
+	F77_CALL(lowesb)(x, y, robust, &dzero, &zero, iv, &liv, &lv, v);
 
 	F77_CALL(lowese)(iv, &liv, &lv, v, n, x, surface);
 
@@ -190,7 +190,7 @@ loess_raw(double *y, double *x, double *weights, double *robust, int *d,
 
 	F77_CALL(lowesf)(x, y, robust, iv, &liv, &lv, v, n, x,
 
-			&zero, &zero, surface);
+			&dzero, &zero, surface);
 
     }
 
@@ -212,7 +212,7 @@ loess_raw(double *y, double *x, double *weights, double *robust, int *d,
 
     else if (!strcmp(*surf_stat, "interpolate/2.approx")) {
 
-	F77_CALL(lowesb)(x, y, robust, &zero, &zero, iv, &liv, &lv, v);
+	F77_CALL(lowesb)(x, y, robust, &dzero, &zero, iv, &liv, &lv, v);
 
 	F77_CALL(lowese)(iv, &liv, &lv, v, n, x, surface);
 
@@ -264,7 +264,7 @@ loess_raw(double *y, double *x, double *weights, double *robust, int *d,
 
 	LL = (double *) R_alloc((*n)*(*n), sizeof(double));
 
-	F77_CALL(lowesf)(x, y, weights, iv, liv, lv, v, n, x,
+	F77_CALL(lowesf)(x, y, weights, iv, &liv, &lv, v, n, x,
 
 			hat_matrix, &two, surface);
 
@@ -297,6 +297,7 @@ loess_dfit(double *y, double *x, double *x_evaluate, double *weights,
 {
 
     int zero = 0;
+    double dzero = 0;
 
 
 
@@ -306,7 +307,7 @@ loess_dfit(double *y, double *x, double *x_evaluate, double *weights,
 
     F77_CALL(lowesf)(x, y, weights, iv, &liv, &lv, v, m, x_evaluate,
 
-		    &zero, &zero, fit);
+		    &dzero, &zero, fit);
 
     loess_free();
 
@@ -329,7 +330,7 @@ loess_dfitse(double *y, double *x, double *x_evaluate, double *weights,
 {
 
     int zero = 0, two = 2;
-
+    double dzero = 0;
 
 
     loess_workspace(d, n, span, degree, nonparametric, drop_square,
@@ -352,7 +353,7 @@ loess_dfitse(double *y, double *x, double *x_evaluate, double *weights,
 
 	F77_CALL(lowesf)(x, y, robust, iv, &liv, &lv, v, m,
 
-			x_evaluate, &zero, &zero, fit);
+			x_evaluate, &dzero, &zero, fit);
 
     }
 
@@ -393,7 +394,7 @@ loess_ise(double *y, double *x, double *x_evaluate, double *weights,
 {
 
     int zero = 0, one = 1;
-
+    double dzero = 0;
 
 
     loess_workspace(d, n, span, degree, nonparametric, drop_square,
@@ -402,7 +403,7 @@ loess_ise(double *y, double *x, double *x_evaluate, double *weights,
 
     v[1] = *cell;
 
-    F77_CALL(lowesb)(x, y, weights, &zero, &zero, iv, &liv, &lv, v);
+    F77_CALL(lowesb)(x, y, weights, &dzero, &zero, iv, &liv, &lv, v);
 
     F77_CALL(lowesl)(iv, &liv, &lv, v, m, x_evaluate, L);
 
@@ -432,11 +433,11 @@ loess_workspace(int *d, int *n, double *span, int *degree,
 
     nvmax = max(200, N);
 
-    nf = min(N, floor(N * (*span) + 1e-5));
+    nf = min(N, (int) floor(N * (*span) + 1e-5));
 
     if(nf <= 0) error("span is too small");
 
-    tau0 = ((*degree) > 1) ? ((D + 2) * (D + 1) * 0.5) : (D + 1);
+    tau0 = ((*degree) > 1) ? (int)((D + 2) * (D + 1) * 0.5) : (D + 1);
 
     tau = tau0 - (*sum_drop_sqr);
 

@@ -1,3 +1,6 @@
+#' @method gplot factor
+#' @export
+#' @export gplot.factor
 "gplot.factor" <-
 function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale = 
 	0, se = FALSE, xlim = NULL, ylim = NULL, fit = TRUE, ...)

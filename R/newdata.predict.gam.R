@@ -1,3 +1,4 @@
+#' @export
 "newdata.predict.Gam" <-
   function(object, newdata, type = c("link", "response", "terms"), dispersion=NULL, se.fit = FALSE, na.action=na.pass,terms=labels(object), ...)
 {

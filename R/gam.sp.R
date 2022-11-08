@@ -1,3 +1,4 @@
+#' @export
 "gam.sp" <-
 function(x, knots, nknots, coef, smallest, scale)
 {

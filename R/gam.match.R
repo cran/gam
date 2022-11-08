@@ -1,3 +1,4 @@
+#' @export
 "gam.match" <-
 function(x)
 {

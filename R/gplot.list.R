@@ -1,3 +1,6 @@
+#' @method gplot list
+#' @export
+#' @export gplot.list
 "gplot.list" <-
 function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale = 
 	0, se = FALSE, fit = TRUE, ...)

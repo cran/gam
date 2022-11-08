@@ -1,3 +1,6 @@
+#' @method gplot numeric
+#' @export
+#' @export gplot.numeric
 "gplot.numeric" <-
 function(x, y, se.y = NULL, xlab, ylab, residuals = NULL, rugplot = FALSE, scale = 
 	0, se = FALSE, xlim = NULL, ylim = NULL, fit = TRUE, ...)

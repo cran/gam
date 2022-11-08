@@ -1,3 +1,4 @@
+#' @export
 "s.wam" <-
 function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 	se = TRUE, ...)

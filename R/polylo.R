@@ -1,3 +1,4 @@
+#' @export
 polylo <-
   function (x, degree = 1, monomial = FALSE) 
 {

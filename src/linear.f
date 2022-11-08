@@ -731,6 +731,16 @@ C Output from Public domain Ratfor, version 1.0
       double precision h(nm,n),wr(n),wi(n)
       double precision p,q,r,s,t,w,x,y,zz,norm,tst1,tst2
       logical notlas
+c     Initializing zz, b, s, r, q, m, p, zrank to avoid warnings
+      zz = 0d0
+      b = 0d0
+      s = 0d0
+      r = 0d0
+      q = 0d0
+      m = 0
+      p = 0d0
+      zrank = 0d0
+      
       ierr = 0
       norm = 0.0d0
       k = 1
@@ -927,6 +937,14 @@ C Output from Public domain Ratfor, version 1.0
       double precision h(nm,n),wr(n),wi(n),z(nm,n)
       double precision p,q,r,s,t,w,x,y,ra,sa,vi,vr,zz,norm,tst1,tst2
       logical notlas
+c     Setting zz, r, s, q, p, m, l to zero to avoid warnings
+      zz = 0d0
+      r = 0d0
+      s = 0d0
+      q = 0d0
+      p = 0d0
+      m = 0
+      l = 0
       ierr = 0
       norm = 0.0d0
       k = 1
@@ -1353,6 +1371,9 @@ C Output from Public domain Ratfor, version 1.0
       integer i,j,k,l,m,n,ii,l1,l2,nm,mml,ierr
       double precision d(n),e(n),z(nm,n)
       double precision c,c2,c3,dl1,el1,f,g,h,p,r,s,s2,tst1,tst2,pythag
+C     Initializing s2, c3 and ensuring ierr is not clobbered      
+      s2 = 0.0
+      c3 = 0.0
       ierr = 0
       if(n.ne.1)then
       do23475 i = 2,n
@@ -1466,6 +1487,9 @@ C Output from Public domain Ratfor, version 1.0
       integer i,j,l,m,n,ii,l1,mml,ierr
       double precision d(n),e2(n)
       double precision b,c,f,g,h,p,r,s,t,epslon,pythag
+C     Initializing b, c and making sure ierr is not globbered
+      c = 0.0
+      b = 0.0
       ierr = 0
       if(n.ne.1)then
       do23512 i = 2,n
@@ -2127,6 +2151,12 @@ C Output from Public domain Ratfor, version 1.0
       double precision b,c,cs,el,emm1,f,g,dnrm2,scale,shift,sl,sm,sn,smm
      *1,t1,test,ztest
       logical wantu,wantv
+c     Setting l, ls, c, g, b to zero just to initialize and avoid warnings
+      l = 0
+      ls = 0
+      c = 0d0
+      g = 0d0
+      b = 0d0
       maxit = 30
       wantu = .false.
       wantv = .false.

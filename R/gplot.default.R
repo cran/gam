@@ -1,3 +1,5 @@
+#' @method gplot default
+#' @export
 "gplot.default" <-
 function(x, y, se.y = NULL, xlab = "", ylab = "", residuals = NULL, rugplot = FALSE,
 	scale = 0, se = FALSE, fit = TRUE, ...)

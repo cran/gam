@@ -1,3 +1,6 @@
+#' @method print summary.Gam
+#' @export
+#' @export print.summary.Gam
 "print.summary.Gam" <-
   function(x,  digits = max(3, getOption("digits") - 3), quote = TRUE, prefix = "", ...)
 {

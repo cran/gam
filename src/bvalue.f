@@ -76,6 +76,8 @@ c
 
 c     initialize
       data i/1/
+c Just setting lent to avoid warnings of unusued variable
+      lent = 1 
 
       bvalue = 0.
       if (jderiv .ge. k) go to 99

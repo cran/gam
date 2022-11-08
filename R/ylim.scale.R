@@ -1,3 +1,4 @@
+#' @export
 "ylim.scale" <-
 function(ylim, scale = 0.)
 {

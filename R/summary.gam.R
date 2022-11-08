@@ -1,3 +1,7 @@
+#' @rdname anova.Gam
+#' @method summary Gam
+#' @export
+#' @export summary.Gam
 "summary.Gam" <-
    function (object, dispersion = NULL, ...)
 {

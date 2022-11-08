@@ -3,7 +3,7 @@ C Output from Public domain Ratfor, version 1.0
      *,beta,var,tol, qr,qraux,qpivot,effect,work)
       implicit double precision(a-h,o-z)
       integer ifvar
-      integer npetc(7),iter
+      integer npetc(7)
       integer n,p,q,which(*),match(*),nef(*),nit,maxit,qrank,qpivot(*)
       double precision x(*),y(*),w(*),spar(*),dof(*), etal(*),s(*),eta(*
      *),beta(*),var(*),tol, qr(*),qraux(*),effect(*),work(*)

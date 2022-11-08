@@ -1,3 +1,6 @@
+#' @method as.data.frame lo.smooth
+#' @export
+#' @export as.data.frame.lo.smooth
 "as.data.frame.lo.smooth" <-
 function(x, row.names = NULL, optional = FALSE,...)
 {

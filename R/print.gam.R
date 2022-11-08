@@ -1,3 +1,6 @@
+#' @method print Gam
+#' @export
+#' @export print.Gam
 "print.Gam" <-
   function(x, digits = 5, ...)
 {

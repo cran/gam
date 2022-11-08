@@ -1,3 +1,5 @@
+#' @rdname gam.s
+#' @export s
 "s" <-
   function(x, df = 4, spar = 1)
 {

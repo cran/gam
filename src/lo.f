@@ -6,6 +6,8 @@ C Output from Public domain Ratfor, version 1.0
      **)
       double precision beta(p+1)
       double precision zrank
+c     Initializing zrank to avoid warnings      
+      zrank = 0.0
       call lo1(x,y,w,n,d,p,nvmax,span,degree,match,nef,0,dof,s,var,beta,
      * work(1),work(nef*d+1),work(nef*(d+1)+2),work(nef*(d+2)+2), work(n
      *ef*(d+3)+2),zrank,iwork(1),work(nef*(p+d+4)+3+p), iv,liv,lv,v, wor
@@ -24,6 +26,8 @@ C     make it integer qrank, use it, then convert back to double
       double precision x(n,d),y(n),w(n),span,dof,s(n),var(n),beta(p+1), 
      *xin(nef,d),win(nef+1),sqwin(nef),sqwini(nef),xqr(nef,p+1), qraux(p
      *+1),v(lv), work(*)
+C     Naras did some fiddling here to initialize zrank
+      zrank = zrank * 1.0
       qrank=int(zrank)
       call lo2(x,y,w,n,d,p,nvmax,span,degree,match,nef,nit,dof,s,var,bet
      *a, xin,win,sqwin,sqwini,xqr,qrank,qpivot,qraux, iv,liv,lv,v, work(
@@ -41,10 +45,11 @@ C     make it integer qrank, use it, then convert back to double
      *+1),v(lv), levout(nef+1), sout(nef+1),yin(nef+1),work(*)
       double precision junk(1), onedm7
       integer job, info
-      logical setlf, ifvar
+c      logical setlf, ifvar
+      integer setlf, ifvar
       job=110
       info=1
-      ifvar=.true.
+      ifvar=1
       onedm7=1d-7
       if(nit.le.1)then
       call pck(n,nef,match,w,win)
@@ -95,7 +100,11 @@ C     make it integer qrank, use it, then convert back to double
       goto 23022
 23024 continue
       call dqrdca(xqr,nef,nef,p+1,qraux,qpivot,work,qrank,onedm7)
-      setlf = (nit.eq.1)
+      if (nit.eq.1) then
+         setlf = 1
+      else
+         setlf = 0
+      endif
       call lowesd(106,iv,liv,lv,v,d,nef,span,degree,nvmax,setlf)
       v(2)=span/5d0
       endif

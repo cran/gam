@@ -1,3 +1,4 @@
+#' @export
 "as.anova" <-
   function(df, heading)
 {
