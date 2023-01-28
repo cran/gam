@@ -735,7 +735,7 @@ switch(*i){
 
  case 999:MSG("not yet implemented")
 
- default: sprintf(msg=msg2,"Assert failed; error code %d\n",*i);
+ default: snprintf(msg=msg2, sizeof(msg2), "Assert failed; error code %d\n",*i);
 
 }
 
@@ -764,7 +764,7 @@ void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc)
 
     for (j=0; j<*n; j++) {
 
-	sprintf(num," %d",i[j * *inc]);
+      snprintf(num, sizeof(num), " %d",i[j * *inc]);
 
 	strcat(mess,num);
 
@@ -795,7 +795,7 @@ void F77_SUB(ehg184a)(char *s, int *nc, double *x, int *n, int *inc)
 
     for (j=0; j<*n; j++) {
 
-	sprintf(num," %.5g",x[j * *inc]);
+      snprintf(num, sizeof(num), " %.5g",x[j * *inc]);
 
 	strcat(mess,num);
 

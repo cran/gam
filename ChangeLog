@@ -1,3 +1,5 @@
+2023-01-26   Trevor Hastie <hastie@stanford.edu> version 1.21-1
+	* Change all uses of `sprintf` to `snprintf`.
 2022-11-04   Trevor Hastie <hastie@stanford.edu> version 1.21
 	* Fixes to avoid prototype warnings in C code (`loessc.c`) and
 	corresponding changes to `loessf.f` for logical variables.
