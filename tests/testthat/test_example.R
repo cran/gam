@@ -14,6 +14,17 @@ fit6 <- gam(y~x+z, data=gam.data)
 step1 <-step.Gam(Gam.object, scope=list("x"=~1+x+s(x,4)+s(x,6)+s(x,12),"z"=~1+z+s(z,4)))
 data(gam.newdata)
 pred1=predict(Gam.object,type="terms",newdata=gam.newdata)
+if (getRversion() >= numeric_version("4.3.0")) {
+    ## Fix to account for changes in family objects for R >= 4.3.0
+    fit1$family$dispersion <- NULL
+    fit2$family$dispersion <- NULL
+    fit3$family$dispersion <- NULL
+    fit4$family$dispersion <- NULL
+    fit5$family$dispersion <- NULL
+    fit6$family$dispersion <- NULL
+    step1$family$dispersion <- NULL
+}
+
 
 objects  <- list(
     fit1=fit1,

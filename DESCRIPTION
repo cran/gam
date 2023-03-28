@@ -1,8 +1,8 @@
 Package: gam
 Type: Package
 Title: Generalized Additive Models
-Date: 2023-01-26
-Version: 1.22-1
+Date: 2023-03-27
+Version: 1.22-2
 Author: Trevor Hastie
 Description: Functions for fitting and working with generalized
 		additive models, as described in chapter 7 of "Statistical Models in S" (Chambers and Hastie (eds), 1991), and "Generalized Additive Models" (Hastie and Tibshirani, 1990).
@@ -14,6 +14,6 @@ RoxygenNote: 7.2.1
 Encoding: UTF-8
 Imports: methods
 NeedsCompilation: yes
-Packaged: 2023-01-28 14:33:33 UTC; hastie
+Packaged: 2023-03-27 22:47:20 UTC; hastie
 Repository: CRAN
-Date/Publication: 2023-01-28 15:30:04 UTC
+Date/Publication: 2023-03-28 02:50:02 UTC
