@@ -739,7 +739,7 @@ switch(*i){
 
 }
 
-warning(msg);
+ warning("%s",msg);
 
 }
 
@@ -772,7 +772,7 @@ void F77_SUB(ehg183a)(char *s, int *nc,int *i,int *n,int *inc)
 
     strcat(mess,"\n");
 
-    warning(mess);
+    warning("%s",mess);
 
 }
 
@@ -803,7 +803,7 @@ void F77_SUB(ehg184a)(char *s, int *nc, double *x, int *n, int *inc)
 
     strcat(mess,"\n");
 
-    warning(mess);
+    warning("%s",mess);
 
 }
 

@@ -1,3 +1,5 @@
+2023-11-28 Trevor Hastie <hastie@stanford.edu> version 1.21-3
+	* character problem in loessc reported by Kurt	
 2023-03-26 Trevor Hastie <hastie@stanford.edu> version 1.21-2
 	* Change tests because of discrepancy in family object components.	
 2023-01-26   Trevor Hastie <hastie@stanford.edu> version 1.21-1
