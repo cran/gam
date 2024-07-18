@@ -1,5 +1,5 @@
 f2c1e10f8fccfeb3ad602d28a1f4e443 *ChangeLog
-ec8c7c33dbaabd13ca77a58588b3862e *DESCRIPTION
+22cdd9d475bded6023cbe87ac84bd7b5 *DESCRIPTION
 925c443b54adb66ef081ee4a122ee306 *NAMESPACE
 45a6dd6611459b8d2de7169e2037111e *R/anova.gam.R
 7a320a8e7b45eddd80986125849c1a14 *R/anova.gamlist.R
@@ -36,7 +36,7 @@ c04bea19d2a7a99a676b658ab9e6c585 *R/lo.R
 b56811cc898935544f3e3f483c629ee6 *R/plot.gam.R
 b4c2974cb3759b300dd261caf4c4c3b6 *R/plot.preplot.gam.R
 d16fb40d09974a208b004bbbd3670169 *R/polylo.R
-9f9c96deba336fb3b8f4940c80289a95 *R/predict.gam.R
+3e43fa336c0efd0f2840b2fcfa0fc147 *R/predict.gam.R
 b1bc2f4a9b796515d9f5d36136d8c708 *R/preplot.gam.R
 07738753bd098545a6abb1b31f63d1cd *R/print.gam.R
 30e8060b1547d99e6947a5d5c2376341 *R/print.gamex.R

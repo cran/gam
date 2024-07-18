@@ -1,8 +1,8 @@
 #' Predict method for GAM fits
-#' 
+#'
 #' Obtains predictions and optionally estimates standard errors of those
 #' predictions from a fitted generalized additive model object.
-#' 
+#'
 #' @param object a fitted \code{Gam} object, or one of its
 #'   inheritants, such as a \code{glm} or \code{lm} object.
 #' @param newdata a data frame containing the values at which
@@ -42,7 +42,7 @@
 #'   attribute which, when added to the sum of these centered terms,
 #'   gives the additive predictor. See the documentation of
 #'   \code{predict} for more details on the components returned.
-#' 
+#'
 #' When \code{newdata} are supplied, \code{predict.Gam} simply invokes
 #' inheritance and gets \code{predict.glm} to produce the parametric part of
 #' the predictions. For each nonparametric term, \code{predict.Gam}
@@ -50,11 +50,11 @@
 #' the local scoring algorithm. The appropriate smoother is called for each
 #' term, with the appropriate \code{xeval} argument (see \code{\link{s}} or
 #' \code{\link{lo}}), and the prediction for that term is produced.
-#' 
+#'
 #' The standard errors are based on an approximation given in Hastie (1992).
 #' Currently \code{predict.Gam} does not produce standard errors for
 #' predictions at \code{newdata}.
-#' 
+#'
 #' Warning: naive use of the generic \code{predict} can produce incorrect
 #' predictions when the \code{newdata} argument is used, if the formula in
 #' \code{object} involves transformations such as \code{sqrt(Age - min(Age))}.
@@ -70,20 +70,20 @@
 #' @references Hastie, T. J. (1992) \emph{Generalized additive models.} Chapter
 #' 7 of \emph{Statistical Models in S} eds J. M. Chambers and T. J. Hastie,
 #' Wadsworth & Brooks/Cole.
-#' 
+#'
 #' Hastie, T. and Tibshirani, R. (1990) \emph{Generalized Additive Models.}
 #' London: Chapman and Hall.
-#' 
+#'
 #' Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied Statistics
 #' with S.} New York: Springer.
 #' @keywords models regression nonparametric smooth
 #' @examples
-#' 
+#'
 #' data(gam.data)
 #' Gam.object <- gam(y ~ s(x,6) + z, data=gam.data)
 #' predict(Gam.object) # extract the additive predictors
 #' data(gam.newdata)
-#' predict(Gam.object, gam.newdata, type="terms") 
+#' predict(Gam.object, gam.newdata, type="terms")
 #' @method predict Gam
 #' @export
 #' @export predict.Gam
@@ -96,7 +96,7 @@
       if(se.fit)
         switch(type,
                response = {
-                 out <- predict.Gam(object,
+                 out <- predict(object,
                                     type = "link", se.fit
                                     = TRUE, ...)
                  famob <- family(object)
