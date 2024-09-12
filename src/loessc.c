@@ -136,9 +136,9 @@ static void loess_free(void)
 
 {
 
-    Free(v);
+    R_Free(v);
 
-    Free(iv);
+    R_Free(iv);
 
 }
 
@@ -453,9 +453,9 @@ loess_workspace(int *d, int *n, double *span, int *degree,
 
     }
 
-    iv = Calloc(liv, int);
+    iv = R_Calloc(liv, int);
 
-    v = Calloc(lv, double);
+    v = R_Calloc(lv, double);
 
 
 
@@ -567,9 +567,9 @@ loess_grow(int *parameter, int *a, double *xi,
 
     lv = parameter[6];
 
-    iv = Calloc(liv, int);
+    iv = R_Calloc(liv, int);
 
-    v = Calloc(lv, double);
+    v = R_Calloc(lv, double);
 
 
 

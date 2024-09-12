@@ -1,8 +1,16 @@
-2023-11-28 Trevor Hastie <hastie@stanford.edu> version 1.21-3
+2024-09-12 Trevor Hastie <hastie@stanford.edu> version 1.22-5
+	* New restrictions on Fortran Calloc and implicit
+	definitions. Thanks to Naras for taking care of this.
+2024-07-17 Trevor Hastie <hastie@stanford.edu> version 1.22-4
+	* character problem in predict reported by  Mat
+	Vickers. NextMethod() was used in an inappropriate way.
+	* Also corrected this changelog file which was incorrectly numbered as
+	1.21-1 up till 1.21-3.
+2023-11-28 Trevor Hastie <hastie@stanford.edu> version 1.22-3
 	* character problem in loessc reported by Kurt	
-2023-03-26 Trevor Hastie <hastie@stanford.edu> version 1.21-2
+2023-03-26 Trevor Hastie <hastie@stanford.edu> version 1.22-2
 	* Change tests because of discrepancy in family object components.	
-2023-01-26   Trevor Hastie <hastie@stanford.edu> version 1.21-1
+2023-01-26   Trevor Hastie <hastie@stanford.edu> version 1.22-1
 	* Change all uses of `sprintf` to `snprintf`.
 2022-11-04   Trevor Hastie <hastie@stanford.edu> version 1.21
 	* Fixes to avoid prototype warnings in C code (`loessc.c`) and
