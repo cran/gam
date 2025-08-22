@@ -1,8 +1,8 @@
 Package: gam
 Type: Package
 Title: Generalized Additive Models
-Date: 2024-09-12
-Version: 1.22-5
+Date: 2025-08-20
+Version: 1.22-6
 Authors@R: c(person(given = "Trevor",
                     family = "Hastie",
                     role = c("aut", "cre"),
@@ -16,9 +16,9 @@ RoxygenNote: 7.2.1
 Encoding: UTF-8
 Imports: methods
 NeedsCompilation: yes
-Packaged: 2024-09-12 19:31:55 UTC; hastie
+Packaged: 2025-08-21 20:33:51 UTC; hastie
 Author: Trevor Hastie [aut, cre],
   Balasubramanian Narasimhan [ctb]
 Maintainer: Trevor Hastie <hastie@stanford.edu>
 Repository: CRAN
-Date/Publication: 2024-09-12 22:10:25 UTC
+Date/Publication: 2025-08-22 06:40:01 UTC

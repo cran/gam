@@ -1,5 +1,5 @@
 45f2800e538e83c8a1e339ffbc37c561 *ChangeLog
-6d19af820c14d929b22bac1106ee2477 *DESCRIPTION
+1abffd314e700237dc07071f7f999ed4 *DESCRIPTION
 925c443b54adb66ef081ee4a122ee306 *NAMESPACE
 45a6dd6611459b8d2de7169e2037111e *R/anova.gam.R
 7a320a8e7b45eddd80986125849c1a14 *R/anova.gamlist.R
@@ -82,7 +82,7 @@ b91f939de8d7c795907316c374ce51c2 *man/step.gam.Rd
 30c0bb30ef2574b3d555a62338bc3eef *src/bsplvd.f
 a584f30cc63c75d163222d2264c4dbf7 *src/bvalue.f
 40c1f6b57d6c3a03a1d972f009c5e5df *src/bvalus.f
-bf5f2d130e9f4ea39fe81367d8ceb35a *src/gam_init.c
+268791f760d7f01a41fbe2287e675aab *src/gam_init.c
 9d3f7aa5149ccdb2a6ece27026774c74 *src/linear.f
 9749fbbaf1adaacc55e629824e33ee44 *src/lo.f
 d2574529cc7b5185f12d4a1fdacca88a *src/loessc.c
@@ -96,5 +96,5 @@ bb20f950f41f3c0d5173c374ce731782 *src/splsm.f
 86f67fc697130d2622aab95955e7e558 *src/sslvrg.f
 4f6275039d4731d4f2920fc3de5f61e7 *src/stxwx.f
 f22ec598690ab6be3e1744dd8a6e5666 *tests/testthat.R
-5837755a3f8a782816e5f6a28a343897 *tests/testthat/test_example.R
-ecac26c90344ffd54e66357d037bf9b3 *tests/testthat/test_results/gam-1.20-results.RDS
+d7dbbd7cf5a162bae0e5e7903022afac *tests/testthat/test_example.R
+121be52e33b67719ca205547eb63cb03 *tests/testthat/test_results/gam-results.RDS

@@ -4,11 +4,19 @@
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+
 #ifdef ENABLE_NLS
+#if defined(__has_include)
+#if __has_include(<libintl.h>)
+#define HAVE_LIBINTL_H
+#endif
+#endif
+#ifdef HAVE_LIBINTL_H
 #include <libintl.h>
 #define _(String) dgettext ("gam", String)
 #else
 #define _(String) (String)
+#endif
 #endif
 
 #define FDEF(name)  {#name, (DL_FUNC) &F77_SUB(name), sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
