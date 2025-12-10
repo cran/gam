@@ -9,7 +9,7 @@
 #' @import methods stats splines foreach
 #' @importFrom graphics axis lines mtext persp plot points rug segments
 #' @importFrom utils head tail packageDescription menu assignInMyNamespace
-NULL
+"_PACKAGE"
 
 #' Internal gam functions
 #' 

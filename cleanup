@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rm -f src/*.o src/*.so src/*.ts src/*.dll src/*.a

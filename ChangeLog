@@ -1,3 +1,5 @@
+2025-12-09 Trevor Hastie <hastie@stanford.edu> version 1.22-7
+	* non-API header issues resolved, thanks to Naras
 2024-09-12 Trevor Hastie <hastie@stanford.edu> version 1.22-5
 	* New restrictions on Fortran Calloc and implicit
 	definitions. Thanks to Naras for taking care of this.

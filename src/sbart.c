@@ -14,7 +14,7 @@
 
 #include <Rmath.h>
 
-#include <R_ext/PrtUtil.h>
+/* #include <R_ext/PrtUtil.h> */
 
 
 

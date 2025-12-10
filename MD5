@@ -1,12 +1,12 @@
-45f2800e538e83c8a1e339ffbc37c561 *ChangeLog
-1abffd314e700237dc07071f7f999ed4 *DESCRIPTION
+355b439b6bc86cfbf9485d1790b116c8 *ChangeLog
+b5576492fd03c669cfca8c59fa279612 *DESCRIPTION
 925c443b54adb66ef081ee4a122ee306 *NAMESPACE
 45a6dd6611459b8d2de7169e2037111e *R/anova.gam.R
 7a320a8e7b45eddd80986125849c1a14 *R/anova.gamlist.R
 305f56e3f22adff045a0e2ee51b6bc10 *R/as.anova.R
 85161fca0cf065f463e2583306f8afe2 *R/as.data.frame.lo.smooth.R
 304308d3643d20a38b53084f6e0008af *R/assign.list.R
-ec281b5b676da6825d38a1a3b2b8f9ae *R/gam-package.R
+298e38de8622c6804755352cb2ee45ab *R/gam-package.R
 929d4a67d517fcbcf35ccee9265efc87 *R/gam.R
 b857105ac05db0cec4adc1f7e3c1a760 *R/gam.control.R
 6d62ea564a04fa500ff62dfefd9a6469 *R/gam.exact.R
@@ -50,6 +50,7 @@ f393835ccc0c054898ddfc200e40f24f *R/random.R
 b9f2968a22d99c8f319ba256fbd3c203 *R/summary.gam.R
 1619805fd6e9f40a4a63afb624ec3679 *R/ylim.scale.R
 4342548df46914e45085f921b8251caf *README.md
+98f8d1590a66e5af5e473bfa146dd4c7 *cleanup
 ba66638e3de17b868b4d98dffe95009d *data/gam.data.RData
 83529cbff37939aff8d96d32d6458f12 *data/gam.newdata.RData
 4df6bee1aa3bee402b8f1083dda04b04 *data/kyphosis.RData
@@ -73,7 +74,7 @@ ea4ebeeabc4925580a0184572439b02b *man/gam.scope.Rd
 9fe802f1961a2e5dc6cf5b5653570dcc *man/lo.Rd
 3e562dd1ccb7d1615d96ccc0bd06b0cb *man/na.gam.replace.Rd
 25db5cb95489f1bb6247b0d18562633d *man/plot.gam.Rd
-54d97424827aef2ccce15acc0914b152 *man/predict.gam.Rd
+e51333d97d7e37ef52476aa80edcc83d *man/predict.gam.Rd
 b91f939de8d7c795907316c374ce51c2 *man/step.gam.Rd
 2bf8ef7e1425c36f4be16667cdcdd3b3 *src/Makevars
 2fa4c7011c2bc0f7449ae151d5cc44ae *src/Makevars.win
@@ -89,7 +90,7 @@ d2574529cc7b5185f12d4a1fdacca88a *src/loessc.c
 3fd0e9e83115f6cc0ed2d86ddcaa4a1b *src/loessf.f
 a677b63352a629403575888656ac13ef *src/modreg.h
 d2baa8a158ee73576984f57a4a5df005 *src/qsbart.f
-876032799d52ef84fb846af58939a318 *src/sbart.c
+e27b1de371631129fc266f246f75c4f4 *src/sbart.c
 82da999d24034505301e31c78d1e58cc *src/sgram.f
 d277bb97eef775673f5fa2da911d81de *src/sinerp.f
 bb20f950f41f3c0d5173c374ce731782 *src/splsm.f
