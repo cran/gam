@@ -1,5 +1,5 @@
-355b439b6bc86cfbf9485d1790b116c8 *ChangeLog
-b5576492fd03c669cfca8c59fa279612 *DESCRIPTION
+86b9fc1fbe768bf6eb1583b669a279af *ChangeLog
+5a9b33769de31ff4c5473aa201585964 *DESCRIPTION
 925c443b54adb66ef081ee4a122ee306 *NAMESPACE
 45a6dd6611459b8d2de7169e2037111e *R/anova.gam.R
 7a320a8e7b45eddd80986125849c1a14 *R/anova.gamlist.R
@@ -29,7 +29,7 @@ d47bfd243e9d7ff67638dffa823823cc *R/gplot.matrix.R
 458f99426517fae46bda1cf6c4ce9c29 *R/gplot.numeric.R
 97efd4e1ea6fcea890a5a41dccf69356 *R/labels.gam.R
 c04bea19d2a7a99a676b658ab9e6c585 *R/lo.R
-0300abfe654d7a0c658ee13a13e880f4 *R/lo.wam.R
+539288193a3464a083a8ab4da5ce7f45 *R/lo.wam.R
 2e33008274c19dfd9c955114fec84785 *R/na.gam.replace.R
 0adee00be27de48768858d03b7e09e82 *R/newdata.predict.gam.R
 39cfb671132d4928c0a77a79edb1967d *R/onAttach.R

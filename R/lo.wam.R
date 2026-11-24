@@ -40,12 +40,13 @@ function(x, y, w, s, which, smooth.frame, maxit = 30, tol = 1e-7, trace = FALSE,
 		storage.mode(wddnfl) <- "integer"
 		spatol <- as.double(c(span, tol))
 		nwork <- 9 * dx[1] + sum(nef * (nvars + ndim + 4) + 5 +
-                                         3 * ndim)
-                ###I put in a factor 2 here because I dont know what else to do to solved this seg fault
-		liv <- as.integer(2*ceiling(sum(liv)))
-		lv <- as.integer(2*ceiling(sum(lv)))
+		                                 3 * ndim)
+		liv <- as.integer(2 * ceiling(sum(liv)))
+		lv <- as.integer(2 * ceiling(sum(lv)))
+		# lo1 needs p + 1 integers for its QR pivot array; for degree 2,
+		# p is ndim and can exceed the linear-term count in nvars.
 		smooth.frame <- c(smooth.frame, list(npetc = npetc, wddnfl =
-			wddnfl, spatol = spatol,niwork=2*sum(nvars), nwork = nwork, liv = liv,
+			wddnfl, spatol = spatol,niwork=sum(ndim + 1), nwork = nwork, liv = liv,
 			lv = lv))
 	}
 	else first <- FALSE
